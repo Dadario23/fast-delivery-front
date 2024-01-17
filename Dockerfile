@@ -19,5 +19,5 @@ RUN npm run build
 
 EXPOSE 3000
 
-# Define el comando por defecto para ejecutar la aplicación
+
 CMD ["npm", "start"]
