@@ -19,7 +19,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "release": "standard-version"
   },
   "dependencies": {
     "next": "14.0.4",
