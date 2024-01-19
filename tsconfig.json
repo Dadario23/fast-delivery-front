@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2021",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "baseUrl": "src",
     "paths": {
       "*": ["*", "src/*"]
@@ -21,6 +25,7 @@
     "checkJs": false,
     "emitDeclarationOnly": false,
     "jsx": "react",
+
     "incremental": true,
     "plugins": [
       {
@@ -33,6 +38,8 @@
       "name": "typescript-plugin-css-modules"
     }
   ],
+
   "include": ["src", "custom.d.ts", "src/**/*.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
+
 }
