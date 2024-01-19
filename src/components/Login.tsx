@@ -1,15 +1,11 @@
 import Image from 'next/image'
-import logo from '../assets/logo.svg'
-import userIcon from '../assets/user-icon.svg'
-import passIcon from '../assets/pass-icon.svg'
-import eyeCrossedIcon from '../assets/eye-crossed-icon.svg'
 import React from 'react'
 
 export default function Login() {
 	return (
 		<>
 			<Image
-				src={logo as unknown as string}
+				src='../assets/logo.svg'
 				alt='logo'
 				width={250}
 				height={117}
@@ -22,7 +18,7 @@ export default function Login() {
 				>
 					<span className='absolute inset-y-0 left-0 pl-3 flex items-center'>
 						<Image
-							src={userIcon as unknown as string}
+							src='../assets/user-icon.svg'
 							alt='user icon'
 							width={14}
 							height={14}
@@ -45,7 +41,7 @@ export default function Login() {
 				>
 					<span className='absolute inset-y-0 left-0 pl-3 flex items-center'>
 						<Image
-							src={passIcon as unknown as string}
+							src='../assets/pass-icon.svg'
 							alt='pass icon'
 							width={14}
 							height={16}
@@ -63,7 +59,7 @@ export default function Login() {
 					/>
 					<span className='absolute inset-y-0 right-0 pr-3 flex items-center'>
 						<Image
-							src={eyeCrossedIcon as unknown as string}
+							src='../assets/eye-crossed-icon.svg'
 							alt='eye crossed icon'
 							width={20}
 							height={20}
