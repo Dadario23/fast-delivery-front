@@ -22,23 +22,23 @@ const CreateAccountForm: React.FC = () => {
           <input
             type="text"
             placeholder="Nombre"
-            className="w-270 h-495 mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+            className="w-[94%] h-495 mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
           />
           <input
             type="text"
             placeholder="Apellido"
-            className="w-270 mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+            className="w-[94%] mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
           />
           <input
             type="text"
             placeholder="Email@contraseña"
-            className="w-270 mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+            className="w-[94%] mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
           />
           <div className="relative items-center">
             <input
               type="text"
               placeholder="*********"
-              className="w-270 mb-2 p-2 border border-[#3d1df3] rounded-xl relative placeholder-[#3d1df3]  "
+              className="w-[94%] mb-2 p-2 border border-[#3d1df3] rounded-xl relative placeholder-[#3d1df3]  "
             />
             <div className="absolute right-7 top-2">
               <EyeBlocked />
@@ -48,7 +48,7 @@ const CreateAccountForm: React.FC = () => {
             <input
               type="text"
               placeholder="Confirmar contraseña"
-              className="w-270 mb-2 p-2 border-[0.5px] border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+              className="w-[94%] mb-2 p-2 border-[0.5px] border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
             />
             <div className="absolute right-7 top-2">
               <Eye />
