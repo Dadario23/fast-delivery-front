@@ -15,7 +15,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended" //
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -25,7 +26,7 @@
     "sourceType": "module",
     "requireConfigFile": false
   },
-  "plugins": ["react", "cypress"],
+  "plugins": ["react", "cypress", "@typescript-eslint"],
   "rules": {
     "indent": ["warn", "tab"],
     "linebreak-style": ["warn", "unix"],
@@ -34,7 +35,8 @@
     "react/prop-types": "off",
     "react/display-name": "off",
     "react-hooks/exhaustive-deps": "off",
-    "react-hooks/rules-of-hooks": "error"
+    "react-hooks/rules-of-hooks": "error",
+    "react/react-in-jsx-scope": "off"
   },
   "overrides": [
     {
