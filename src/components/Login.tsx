@@ -1,11 +1,15 @@
 import Image from 'next/image'
 import React from 'react'
+import logo from '../assets/logo.svg'
+import userIcon from '../assets/user-icon.svg'
+import passIcon from '../assets/pass-icon.svg'
+import eyeCrossedIcon from '../assets/eye-crossed-icon.svg'
 
 export default function Login() {
 	return (
 		<>
 			<Image
-				src='../assets/logo.svg'
+				src={logo}
 				alt='logo'
 				width={250}
 				height={117}
@@ -17,12 +21,7 @@ export default function Login() {
 					style={{ position: 'absolute', top: '289px', left: '30px' }}
 				>
 					<span className='absolute inset-y-0 left-0 pl-3 flex items-center'>
-						<Image
-							src='../assets/user-icon.svg'
-							alt='user icon'
-							width={14}
-							height={14}
-						/>
+						<Image src={userIcon} alt='user icon' width={14} height={14} />
 					</span>
 					<input
 						type='text'
@@ -40,12 +39,7 @@ export default function Login() {
 					style={{ position: 'absolute', top: '334px', left: '30px' }}
 				>
 					<span className='absolute inset-y-0 left-0 pl-3 flex items-center'>
-						<Image
-							src='../assets/pass-icon.svg'
-							alt='pass icon'
-							width={14}
-							height={16}
-						/>
+						<Image src={passIcon} alt='pass icon' width={14} height={16} />
 					</span>
 					<input
 						type='password'
@@ -59,7 +53,7 @@ export default function Login() {
 					/>
 					<span className='absolute inset-y-0 right-0 pr-3 flex items-center'>
 						<Image
-							src='../assets/eye-crossed-icon.svg'
+							src={eyeCrossedIcon}
 							alt='eye crossed icon'
 							width={20}
 							height={20}
