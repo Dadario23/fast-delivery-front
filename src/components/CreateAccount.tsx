@@ -5,7 +5,7 @@ import CameraIcon from "assets/CameraIcon/camera-icon";
 import BackIcon from "assets/BackIcon/back-icon";
 const CreateAccountForm: React.FC = () => {
   return (
-    <div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] bg-[#C7FFB1] relative ">
+    <div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mb-[60px] bg-[#C7FFB1] relative ">
       <div className="w-full h-[55px] pl-0 flex items-center font-bold rounded-t-xl bg-[#C7FFB1] z-10 ">
         <div className="ml-3">
           <BackIcon />
