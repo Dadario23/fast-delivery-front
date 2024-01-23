@@ -5,7 +5,7 @@ import logoutIcon from '../assets/logout-icon.svg'
 
 const Navbar = () => {
 	return (
-		<nav className='w-[360px] h-[50px]'>
+		<nav className='w-[360px] h-[50px] shadow-[0px_4px_0px_0px_rgba(0,0,0,0.25)]'>
 			<div className='pl-[30px] pt-[10px]'>
 				<Image src={logoIcon} alt='logo' width={44} height={30} />
 			</div>
