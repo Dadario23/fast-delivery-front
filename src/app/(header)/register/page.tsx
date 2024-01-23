@@ -1,7 +1,12 @@
 import React from 'react'
+import CreateAccount from '../../../components/CreateAccount'
 
-const page = () => {
-	return <div>Registrate</div>
+const CreateAccountPage: React.FC = () => {
+	return (
+		<div className='min-h-screen flex items-center justify-center bg-[#3d1df3]'>
+			<CreateAccount />
+		</div>
+	)
 }
 
-export default page
+export default CreateAccountPage
