@@ -64,11 +64,6 @@
   position: relative;
 }
 
-.breakOnComma > div {
-  white-space: pre-wrap;
-}
-
-
 
 .packageTitle {
   @apply text-custom-indigo;
