@@ -17,6 +17,7 @@
 }
 
 body {
-  /* color: rgb(var(--foreground-rgb)); */
   background: #3d1df3;
+  width: 360px;
+  height: 640px;
 }
