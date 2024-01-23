@@ -4,14 +4,14 @@ import BackIcon from 'assets/BackIcon/back-icon'
 import Map from 'assets/map'
 const RepartoEnCurso: React.FC = () => {
 	return (
-		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mb-10 bg-[#C7FFB1] relative ">
-			<div className="w-full h-[50px] pl-0 flex items-center rounded-t-xl  z-10 ">
+		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mb-20 bg-[#C7FFB1] relative ">
+			<div className="w-full h-[50px] pl-0 flex items-center rounded-t-xl  z-10  font-bold ">
 				<div className="ml-3">
 					<BackIcon />
 				</div>
-				<h2 className="text-[#3d1df3] text-[16px] font-bold mr-10 flex-grow text-center leading-[1px]">
+				<div className="title text-[#3d1df3] text-[16px] font-[700px] mr-10 flex-grow text-center leading-[1px]">
           Reparto en curso
-				</h2>
+				</div>
 			</div>
 			<div className="bg-white rounded-xl z-20 text-[#3d1df3] text-[12px] w-[19rem] pl-4">
 				<div className="mt-4 border border-[#3d1df3] rounded-md w-[273px]">
