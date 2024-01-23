@@ -1,42 +1,55 @@
-.background {
-  @apply bg-custom-indigo h-screen flex items-center;
-}
-
 .TopContainer { 
   @apply absolute top-0 left-1/2 transform -translate-x-1/2 bg-custom-light-green rounded-lg;
   top: 75px;
   height: 70px;
-  width: 300px;
+  width: 83.2%;
  }
 
  .headerText3 {
   @apply text-custom-indigo;
   font-size: 16px; 
   text-align: center;
-  font-family: 'Poppins', sans-serif;
-  margin-top: 1.4rem;
+  margin-top: 1.1rem;
   font-weight: 700;
   line-height: 20px; 
 }
 
+.backIcon {
+  position: absolute;
+  top: 11px;
+  left: 18px;
+}
+
 .container {
-  @apply bg-white rounded-lg shadow-md p-6 max-w-md mx-auto max-w-[calc(100%-60px)];
+  /* @apply bg-white rounded-lg shadow-md p-6 max-w-md mx-auto max-w-[calc(100%-60px)]; */
+  @apply bg-white rounded-lg max-w-[calc(100%-60px)];
   height: 440px;
-  top: 35px;
-  position: relative; 
+  position: absolute;
+   top: 130px;
+   left: 30px;  
+}
+
+.checkbox{
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  border: 1px solid #3D1DF3;
+  left: 0.7rem;
+  top: 0.9rem
+  
 }
 
 .headerText2 {
   @apply text-custom-indigo;
   font-size: 12px; 
   text-align: center;
-  font-family: 'Poppins', sans-serif;
   margin-top: -0.4rem;
 }
 
 .lineHorizontal {
   border-top: 1px solid #3D1DF3;
-  width: 270px;
   margin-top: 0.5rem;
   margin-bottom: 0.9rem;
 }
@@ -49,12 +62,12 @@
   margin: 0.5rem 0;
   /*SOLUCIONA LA LINEA VERTICAL*/
   position: relative;
-  /**/
 }
 
-.packageCard:nth-child(1) {
-  margin-top: 2.3rem; 
+.breakOnComma > div {
+  white-space: pre-wrap;
 }
+
 
 
 .packageTitle {
@@ -63,9 +76,7 @@
   margin-bottom: 1rem;
   font-size: 12px;
   margin-left: 3rem;
-  font-family: 'Poppins', sans-serif;
-  white-space: normal;
-  word-wrap: break-word;
+
 }
 
 /*LINEA VERTICAL*/
@@ -81,24 +92,22 @@
 /**/
 
 .centerBtn {
-  @apply bg-custom-green;
-  @apply text-custom-indigo;
+  @apply bg-custom-green text-custom-indigo;
   position: absolute;
   justify-content: center;
   align-items: center;
-  margin-top: 3rem;
-  right: 2.8rem;
-  width: 17rem;
+  margin-top: 34.6rem;
+  right: 13.2%;
+  width: 73.5%;
   height: 30px;
   border-radius: 15px;
-  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight:400
 }
 
 @media only screen and (max-width: 600px) {
   .container {
-    @apply w-full p-4;
+     @apply w-full p-4; 
   }
 
   .package-card {

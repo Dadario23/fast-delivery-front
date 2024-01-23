@@ -1,4 +1,4 @@
-import PackagesSelection from "../../components/PackagesSelection"
+import PackagesSelection from "../../../components/PackagesSelection"
 
 const PackagesSelectionPage = () => {
   return (
