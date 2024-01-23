@@ -13,42 +13,26 @@ export default function Login() {
 				alt='logo'
 				width={250}
 				height={117}
-				style={{ position: 'absolute', top: '122px', left: '55px' }}
+				className='absolute top-[122px] left-[55px]'
 			/>
 			<form className='flex flex-col items-center relative'>
-				<div
-					className='relative mb-4'
-					style={{ position: 'absolute', top: '289px', left: '30px' }}
-				>
+				<div className='absolute mb-4 top-[289px] left-[30px]'>
 					<span className='absolute inset-y-0 left-0 pl-3 flex items-center'>
 						<Image src={userIcon} alt='user icon' width={14} height={14} />
 					</span>
 					<input
 						type='text'
-						className='w-80 h-9 border border-white bg-transparent'
-						style={{
-							borderRadius: '10px',
-							borderWidth: '0.5px',
-							paddingLeft: '2.5rem',
-						}}
+						className='w-[300px] h-[35px] border pl-[44px] rounded-[10px] border-[#fff] bg-transparent'
 						placeholder='email@contraseña.com'
 					/>
 				</div>
-				<div
-					className='relative mb-4'
-					style={{ position: 'absolute', top: '334px', left: '30px' }}
-				>
+				<div className='absolute mb-4 top-[334px] left-[30px]'>
 					<span className='absolute inset-y-0 left-0 pl-3 flex items-center'>
 						<Image src={passIcon} alt='pass icon' width={14} height={16} />
 					</span>
 					<input
 						type='password'
-						className='w-80 h-9 border border-white bg-transparent relative pr-10'
-						style={{
-							borderRadius: '10px',
-							borderWidth: '0.5px',
-							paddingLeft: '2.5rem',
-						}}
+						className='w-[300px] h-[35px] border pl-[44px] rounded-[10px] border-[#fff] bg-transparent'
 						placeholder='*******'
 					/>
 					<span className='absolute inset-y-0 right-0 pr-3 flex items-center'>
@@ -61,43 +45,13 @@ export default function Login() {
 					</span>
 				</div>
 
-				<button
-					className='w-72 h-7 text-blue-600 border-white'
-					style={{
-						borderRadius: '13px',
-						position: 'absolute',
-						top: '404px',
-						left: '45px',
-						background: '#00EA77',
-					}}
-				>
+				<button className='absolute w-[270px] h-[30px] top-[404px] left-[45px]  border-white rounded-[13px] bg-[#00EA77] text-[#3D1DF3]'>
           Ingresar
 				</button>
-				<button
-					className='w-72 h-7 text-white border border-white bg-transparent'
-					style={{
-						borderRadius: '13px',
-						position: 'absolute',
-						top: '449px',
-						left: '45px',
-					}}
-				>
+				<button className='absolute w-[270px] h-[30px] top-[449px] left-[45px]  border border-white rounded-[13px] bg-transparent'>
           Crear cuenta
 				</button>
-				<p
-					style={{
-						width: '137px',
-						position: 'absolute',
-						top: '504px',
-						left: '111px',
-						fontSize: '12px',
-						fontWeight: 300,
-						letterSpacing: '0em',
-						textAlign: 'left',
-						color: 'white',
-						whiteSpace: 'nowrap',
-					}}
-				>
+				<p className='absolute w-[137px] top-[504px] left-[111px] font-light text-xs whitespace-nowrap'>
           OLVIDE MI CONTRASEÑA
 				</p>
 			</form>
