@@ -1,4 +1,3 @@
-
 import React from 'react'
 import Login from '../components/Login'
 export default function Home() {
@@ -7,5 +6,4 @@ export default function Home() {
 			<Login />
 		</main>
 	)
-
 }

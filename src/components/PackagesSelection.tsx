@@ -1,60 +1,3 @@
-// import React from 'react'
-// import styles from './PackagesSelection.module.css'
-// import BackIcon from 'assets/BackIcon/back-icon'
-// import Check from 'assets/Check/check'
-
-// interface Package {
-//   title: string
-// }
-
-// const packages: Package[] = [
-//   {
-//     title: 'Amenabar 2100, CABA'
-//   },
-//   {
-//     title: 'Av Carabobo y Rivadavia, CABA',
-//   },
-//   {
-//     title: 'Melian 1242, CABA',
-//   },
-//   {
-//     title: 'Castillo 670, CABA',
-//   },
-//   {
-//     title: 'Gorriti 4595, CABA',
-//   },
-//   {
-//     title: 'Av. Gral. Mosconi 1056, CABA',
-//   },
-//   {
-//     title: 'Tacuari 1797, CABA',
-//   },
-// ]
-// const PackagesSelection = () => {
-//   return (
-//     <div className={styles.background}>
-//       <div className={styles.TopContainer}>
-//         <h1 className={styles.headerText3}>Obtener paquetes</h1>
-//         <div className={styles.backIcon}><BackIcon /></div>
-//       </div>
-//         <div className={styles.container}>
-//         <h1 className={styles.headerText2}>¿Cuántos paquetes repartirás hoy?</h1>
-//         <hr className={styles.lineHorizontal} />
-//           {packages.map((packageItem, index) => (
-//             <div className={styles.packageCard} key={index}>
-//               <div className={styles.checkbox}></div>
-//               <div> <Check/> </div>
-//               <div className={styles.packageTitle}>{packageItem.title}</div>
-//               </div>
-//           ))}
-//         </div>
-//         <button className={styles.centerBtn} >Iniciar jornada</button>
-//     </div>
-//   )
-// }
-
-// export default PackagesSelection
-
 "use client";
 import React from "react";
 import BackIcon from "assets/BackIcon/back-icon";
@@ -62,31 +5,34 @@ import Check from "assets/Check/check";
 import "tailwindcss/tailwind.css";
 import { useState } from "react";
 
-interface Package {
-  title: string;
-}
-
-const packages: Package[] = [
+const packages = [
   {
-    title: "Amenabar 2100, CABA",
+    title: "Amenabar 2100,",
+    location: "CABA",
   },
   {
-    title: "Av Carabobo y Rivadavia, CABA",
+    title: "Av Carabobo y Rivadavia,",
+    location: "CABA",
   },
   {
-    title: "Melian 1242, CABA",
+    title: "Melian 1242,",
+    location: "CABA",
   },
   {
-    title: "Castillo 670, CABA",
+    title: "Castillo 670,",
+    location: "CABA",
   },
   {
-    title: "Gorriti 4595, CABA",
+    title: "Gorriti 4595,",
+    location: "CABA",
   },
   {
-    title: "Av. Gral. Mosconi 1056, CABA",
+    title: "Av. Gral. Mosconi 1056,",
+    location: "CABA",
   },
   {
-    title: "Tacuari 1797, CABA",
+    title: "Tacuari 1797,",
+    location: "CABA",
   },
 ];
 
@@ -100,31 +46,6 @@ const PackagesSelection: React.FC = () => {
         : [...prevSelected, index]
     );
   };
-
-  // return (
-  //   <div className={styles.background}>
-  //     <div className={styles.TopContainer}>
-  //       <h1 className={styles.headerText3}>Obtener paquetes</h1>
-  //       <div className={styles.backIcon}><BackIcon /></div>
-  //     </div>
-  //     <div className={styles.container}>
-  //       <h1 className={styles.headerText2}>¿Cuántos paquetes repartirás hoy?</h1>
-  //       <hr className={styles.lineHorizontal} />
-  //       {packages.map((packageItem, index) => (
-  //         <div className={styles.packageCard} key={index}>
-  //           <div
-  //             className={styles.checkbox}
-  //             onClick={() => handleClick(index)}
-  //           >
-  //             {selectedPackages.includes(index) && <Check />}
-  //           </div>
-  //           <div className={styles.packageTitle}>{packageItem.title}</div>
-  //         </div>
-  //       ))}
-  //     </div>
-  //     <button className={styles.centerBtn}>Iniciar jornada</button>
-  //   </div>
-  // );
 
   return (
     <div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] bg-[#C7FFB1] mt-[30px] h-[74px] relative ">
@@ -159,6 +80,9 @@ const PackagesSelection: React.FC = () => {
             <div className="text-[#3d1df3] text-[12px] ml-[50px] mt-[9px]">
               {packageItem.title}
             </div>
+            <div className="text-[#3d1df3] text-[12px] ml-[50px] mt-[-2px]">
+              {packageItem.location}
+              </div>
             <div className="bg-[#3d1df3] absolute w-[1px] h-[70%] left-[37px] top-[0.5rem]"></div>
           </div>
         ))}
@@ -171,3 +95,9 @@ const PackagesSelection: React.FC = () => {
 };
 
 export default PackagesSelection;
+
+
+
+
+
+
