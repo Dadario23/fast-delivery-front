@@ -48,7 +48,7 @@ const PackagesSelection: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] bg-[#C7FFB1] mt-[30px] h-[74px] relative ">
+    <div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] bg-[#C7FFB1] mt-[20px] h-[74px] relative ">
       <div className="w-full h-[55px] pl-0 flex items-center font-bold rounded-t-xl bg-[#C7FFB1] z-10 ">
         <div className="ml-3">
           <BackIcon />
