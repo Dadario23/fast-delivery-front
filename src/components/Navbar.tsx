@@ -13,7 +13,7 @@ const Navbar = () => {
 				className='absolute top-[12px] left-[305px] text-[#fff]'
 				src={logoutIcon}
 				alt='logo'
-				width={25}
+				width={32}
 				height={26}
 			/>
 		</nav>
