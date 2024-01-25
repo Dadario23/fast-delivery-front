@@ -1,11 +1,19 @@
+"use client"
 import Image from 'next/image';
 import React from 'react';
 import logo from '../assets/logo.svg';
 import userIcon from '../assets/user-icon.svg';
 import passIcon from '../assets/pass-icon.svg';
 import eyeCrossedIcon from '../assets/eye-crossed-icon.svg';
+import { useRouter } from 'next/navigation';
 
-export default function Login() {
+const Login: React.FC = () => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/register');
+  };
+  
   return (
     <>
       <Image
@@ -48,13 +56,15 @@ export default function Login() {
         <button className='absolute w-[270px] h-[30px] top-[404px] left-[45px]  border-white rounded-[13px] bg-[#00EA77] text-[#3D1DF3]'>
           Ingresar
         </button>
-        <button className='absolute w-[270px] h-[30px] top-[449px] left-[45px]  border border-white rounded-[13px] bg-transparent'>
+        <button type='button' className='absolute w-[270px] h-[30px] top-[449px] left-[45px]  border border-white rounded-[13px] bg-transparent' onClick={handleClick}>
           Crear cuenta
         </button>
-        <p className='absolute w-[137px] top-[504px] left-[111px] font-light text-xs whitespace-nowrap'>
-          OLVIDE MI CONTRASEÑA
+        <p className='absolute w-[137px] top-[498px] left-[111px] font-light text-xs whitespace-nowrap'>
+          OLVIDÉ MI CONTRASEÑA
         </p>
       </form>
     </>
   );
 }
+
+export default Login
