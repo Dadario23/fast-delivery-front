@@ -1,11 +1,19 @@
+"use client"
 import React from 'react'
 import 'tailwindcss/tailwind.css'
 import Eye, { EyeBlocked } from '../assets/Eye/eye'
 import CameraIcon from 'assets/CameraIcon/camera-icon'
 import BackIcon from 'assets/BackIcon/back-icon'
+import { useRouter } from 'next/navigation'
 const CreateAccountForm: React.FC = () => {
+	const router = useRouter();
+
+	const handleClick = () => {
+    router.push('/');
+  };
 	return (
-		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[10px] mb-[60px] bg-[#C7FFB1] relative ">
+		//  <div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[-5px] mb-[60px] bg-[#C7FFB1] relative ">
+		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[-68px] bg-[#C7FFB1] relative ">
 			<div className="w-full h-[50px] pl-0 flex items-center font-bold rounded-t-xl bg-[#C7FFB1] z-10 ">
 				<div className="ml-3">
 					<BackIcon />
@@ -60,7 +68,7 @@ const CreateAccountForm: React.FC = () => {
 					<h2 className="mb-2 flex items-center justify-center text-[#3d1df3] text-[12px]">
             ¿Ya tenés una cuenta?
 					</h2>
-					<button className="w-[270px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3]  rounded-full pl-50 flex items-center justify-center ">
+					<button type='button' className="w-[270px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3]  rounded-full pl-50 flex items-center justify-center" onClick={handleClick}>
             Iniciar sesión
 					</button>
 				</form>

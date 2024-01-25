@@ -4,7 +4,7 @@ import BackIcon from 'assets/BackIcon/back-icon'
 import Map from 'assets/map'
 const RepartoEnCurso: React.FC = () => {
 	return (
-		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mb-20 bg-[#C7FFB1] relative ">
+		<div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] mb-[110px] bg-[#C7FFB1] relative ">
 			<div className="w-full h-[50px] pl-0 flex items-center rounded-t-xl  z-10  font-bold ">
 				<div className="ml-3">
 					<BackIcon />
@@ -35,7 +35,7 @@ const RepartoEnCurso: React.FC = () => {
           Finalizar
 				</button>
 			</div>
-			<button className="w-[270px] h-7 text-white border border-[#00ea77] bg-transparent rounded-[13px] absolute mt-[555px]">
+			<button className="w-[270px] h-7 text-[14px] text-white border border-[#00ea77] bg-transparent rounded-[13px] absolute mt-[555px]">
         Cancelar entrega
 			</button>
 		</div>
