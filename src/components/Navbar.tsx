@@ -2,7 +2,8 @@ import React from 'react'
 import Image from 'next/image'
 import logoIcon from '../assets/icon-logo.svg'
 import logoutIcon from '../assets/logout-icon.svg'
-
+//hacer que no se renderize el icono de logout en vista register
+//hacer que con el icono de la app vaya a home solo si esta logeado
 const Navbar = () => {
 	return (
 		<nav className='relative w-[360px] h-[50px] shadow-[0px_4px_0px_0px_rgba(0,0,0,0.25)]'>
@@ -13,7 +14,7 @@ const Navbar = () => {
 				className='absolute top-[12px] left-[305px] text-[#fff]'
 				src={logoutIcon}
 				alt='logo'
-				width={25}
+				width={32}
 				height={26}
 			/>
 		</nav>
