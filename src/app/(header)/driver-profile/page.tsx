@@ -4,7 +4,7 @@ import React from 'react'
 
 const Driver_Profile:React.FC = () => {
   return (
-    <DriverProfile repartos={[]} historial={[]}/>
+    <DriverProfile/>
   )
 }
 
