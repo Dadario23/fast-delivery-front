@@ -67,7 +67,7 @@ const PackagesSelection: React.FC = () => {
 				<h1 className="text-[#3d1df3] text-center text-[12px] mt-2 mb-2">
           ¿Cuántos paquetes repartirás hoy?
 				</h1>
-				<hr className="border-t border-[#3d1df3] mb-4 w-[270px] h-[0.5px] ml-4" />
+				<hr className="border-t border-[#CAC0FF] mb-4 w-[270px] h-[0.5px] ml-4" />
 				{packages.map((packageItem, index) => (
 					<div
 						className="relative border border-[#3d1df3] h-[46px] w-[270px] ml-[15px] mb-[10px] rounded-[10px]"
@@ -89,7 +89,7 @@ const PackagesSelection: React.FC = () => {
 						<div className="text-[#3d1df3] text-[12px] ml-[50px] mt-[-2px]">
 							{packageItem.location}
 						</div>
-						<div className="bg-[#3d1df3] absolute w-[1px] h-[70%] left-[37px] top-[0.5rem]"></div>
+						<div className="bg-[#CAC0FF] absolute w-[1px] h-[75%] left-[37px] top-[0.4rem]"></div>
 					</div>
 				))}
 			</div>

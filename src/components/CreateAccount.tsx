@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -116,6 +117,7 @@ const CreateAccountForm: React.FC = () => {
           </button>
           <h2 className="mb-2 flex items-center justify-center text-[#3d1df3] text-[12px]">
             ¿Ya tenés una cuenta?
+
           </h2>
           <button className="w-[270px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3]  rounded-full pl-50 flex items-center justify-center ">
             Iniciar sesión
