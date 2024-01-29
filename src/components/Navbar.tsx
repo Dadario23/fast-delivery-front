@@ -1,7 +1,10 @@
-import React from 'react';
-import Image from 'next/image';
-import logoIcon from '../assets/icon-logo.svg';
-import logoutIcon from '../assets/logout-icon.svg';
+
+import React from 'react'
+import Image from 'next/image'
+import logoIcon from '../assets/icon-logo.svg'
+import logoutIcon from '../assets/logout-icon.svg'
+//hacer que no se renderize el icono de logout en vista register
+//hacer que con el icono de la app vaya a home solo si esta logeado
 
 const Navbar = () => {
   return (
