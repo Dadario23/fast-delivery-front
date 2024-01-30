@@ -4,7 +4,7 @@ import React from 'react'
 
 const HomeSWD:React.FC = () => {
   return (
-    <StartWorkingDay repartos={[]} historial={[]}/>
+    <StartWorkingDay/>
   )
 }
 
