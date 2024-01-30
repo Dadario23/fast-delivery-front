@@ -87,7 +87,7 @@ import PackageIcon from 'assets/Package/package'
 import TrashIcon from 'assets/TrashIcon/trashIcon'
 import ArrowDown from 'assets/ArrowDown/arrowDown'
 import 'tailwindcss/tailwind.css'
-
+import { useRouter } from 'next/navigation'
 const packages = [
 	{
 		number: '#0A235',
@@ -136,7 +136,7 @@ const packagesTwo = [
 
 const PackagesOffice: React.FC = () => {
 	const [expanded, setExpanded] = useState<boolean>(false)
-
+	const router = useRouter()
 	const toggleExpansion = () => {
 		setExpanded(!expanded)
 	}
@@ -144,7 +144,7 @@ const PackagesOffice: React.FC = () => {
 	return (
 		<div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] bg-[#C7FFB1] mt-[20px] h-[555px] relative ">
 			<div className="w-full h-[55px] pl-0 flex items-center font-bold rounded-t-xl bg-[#C7FFB1] z-10 ">
-				<div className="ml-3">
+				<div className="ml-3" onClick={() => router.back()}>
 					<BackIcon />
 				</div>
 				<h1 className="font-bold text-[#3d1df3] mr-10 flex-grow text-center">
@@ -163,11 +163,11 @@ const PackagesOffice: React.FC = () => {
             03
 					</p>
 				</div>
-				<hr className="border-t border-dotted border-[#CAC0FF] mb-4 w-[230px] h-[0.5px] ml-4"/>
+				<hr className="border-t border-dotted border-[#CAC0FF] mb-4 w-[230px] h-[0.5px] ml-4" />
 				{/* <hr className="border-t border-[#CAC0FF] mb-4 w-[230px] h-[0.5px] ml-4" /> */}
 				<h1 className=" realtive font-bold text-[#3d1df3] text-center text-[12px] ml-[-11.6rem] mt-[24px]">
 					{/* {packages.length + packagesTwo.length} paquetes */}
-        523 paquetes
+          523 paquetes
 				</h1>
 				<div style={{ position: 'relative', top: '-5px' }}>
 					{expanded
@@ -193,7 +193,6 @@ const PackagesOffice: React.FC = () => {
 								</div>
 								{/* <div className="bg-[#CAC0FF] absolute w-[1px] h-[60px] left-[39px] top-[0.6rem]"></div> */}
 								<div className="border-l border-dotted border-[#CAC0FF] h-[60px] ml-[39px] mt-[0.6rem]"></div>
-
 							</div>
 						))
 						: packages.map((packageItem, index) => (
@@ -233,5 +232,3 @@ const PackagesOffice: React.FC = () => {
 }
 
 export default PackagesOffice
-
-
