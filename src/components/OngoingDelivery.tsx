@@ -5,7 +5,6 @@ import BackIcon from "assets/BackIcon/back-icon";
 import Map from "assets/map";
 import { useRouter } from "next/navigation";
 const RepartoEnCurso: React.FC = () => {
-
   const router = useRouter();
   return (
     <div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[25px] mb-20 bg-[#C7FFB1] relative ">
@@ -35,11 +34,14 @@ const RepartoEnCurso: React.FC = () => {
             <span className="font-extrabold ">Recibe:</span> David Rodriguez
           </h3>
         </div>
-        <button className="w-[270px] h-[30px] text-[14px] mt-6 mb-4 p-2 bg-[#00ea77] text-[#3d1df3] rounded-full pl-50 flex items-center justify-center ">
+        <button
+          className="w-[270px] h-[30px] text-[14px] mt-6 mb-4 p-2 bg-[#00ea77] text-[#3d1df3] rounded-full pl-50 flex items-center justify-center "
+          onClick={() => router.push("/home-swd")}
+        >
           Finalizar
-				</button>
-			</div>
-			<button className="w-[270px] h-7 text-[14px] text-white border border-[#00ea77] bg-transparent rounded-[13px] absolute mt-[555px]">
+        </button>
+      </div>
+      <button className="w-[270px] h-7 text-[14px] text-white border border-[#00ea77] bg-transparent rounded-[13px] absolute mt-[555px]">
         Cancelar entrega
       </button>
     </div>

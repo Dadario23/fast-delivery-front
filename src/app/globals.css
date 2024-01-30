@@ -22,3 +22,7 @@ body {
   height: 640px;
   color: #ffffff;
 }
+
+input:focus {
+  border-color: #00ea77;
+}

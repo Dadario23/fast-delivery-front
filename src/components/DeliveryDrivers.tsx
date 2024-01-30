@@ -5,6 +5,7 @@ import DateSquare from "assets/DateSquare/DateSquare";
 import Card from "commons/Card";
 import MoreArrow from "assets/moreArrow";
 import { useRouter } from "next/navigation";
+import avatarIcon2 from "../assets/avatar-icon2.svg";
 type Profile = {
   name: string;
   percentage: any;
