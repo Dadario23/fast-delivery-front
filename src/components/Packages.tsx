@@ -163,7 +163,8 @@ const PackagesOffice: React.FC = () => {
             03
 					</p>
 				</div>
-				<hr className="border-t border-[#CAC0FF] mb-4 w-[230px] h-[0.5px] ml-4" />
+				<hr className="border-t border-dotted border-[#CAC0FF] mb-4 w-[230px] h-[0.5px] ml-4"/>
+				{/* <hr className="border-t border-[#CAC0FF] mb-4 w-[230px] h-[0.5px] ml-4" /> */}
 				<h1 className=" realtive font-bold text-[#3d1df3] text-center text-[12px] ml-[-11.6rem] mt-[24px]">
 					{/* {packages.length + packagesTwo.length} paquetes */}
         523 paquetes
@@ -190,7 +191,9 @@ const PackagesOffice: React.FC = () => {
 								<div className="absolute text-[#3d1df3] text-[12px] ml-[50px] mt-[50px]">
 									{packageItem.location}
 								</div>
-								<div className="bg-[#CAC0FF] absolute w-[1px] h-[60px] left-[39px] top-[0.6rem]"></div>
+								{/* <div className="bg-[#CAC0FF] absolute w-[1px] h-[60px] left-[39px] top-[0.6rem]"></div> */}
+								<div className="border-l border-dotted border-[#CAC0FF] h-[60px] ml-[39px] mt-[0.6rem]"></div>
+
 							</div>
 						))
 						: packages.map((packageItem, index) => (
@@ -213,7 +216,8 @@ const PackagesOffice: React.FC = () => {
 								<div className="absolute text-[#3d1df3] text-[12px] ml-[50px] mt-[50px]">
 									{packageItem.location}
 								</div>
-								<div className="bg-[#CAC0FF] absolute w-[1px] h-[60px] left-[39px] top-[0.6rem]"></div>
+								{/* <div className="bg-[#CAC0FF] absolute w-[1px] h-[60px] left-[39px] top-[0.6rem]"></div> */}
+								<div className="border-l border-dotted border-[#CAC0FF] h-[60px] ml-[39px] mt-[0.6rem]"></div>
 							</div>
 						))}
 				</div>
@@ -229,3 +233,5 @@ const PackagesOffice: React.FC = () => {
 }
 
 export default PackagesOffice
+
+

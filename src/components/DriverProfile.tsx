@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { FaCircleUser } from "react-icons/fa6";
 import { Switch } from "antd";
+import BackIcon from 'assets/BackIcon/back-icon'
 import DeliveriesAndHistory from "./DeliveriesAndHistory";
 
 const DriverProfile: React.FC = () => {
@@ -21,10 +21,10 @@ const DriverProfile: React.FC = () => {
           style={{ backgroundColor: "#c7ffb1" }}
         >
           <div className="flex flex-row w-full items-center p-4 pt-2 pb-2  justify-ceter">
-            <IoArrowBackCircleOutline style={{ fontSize: "30px" }} />
+          <BackIcon/>
             <div className="flex w-full justify-center px-7">
               <h1>
-                <b>Perfil Repartidor</b>
+                <b>Perfil del repartidor</b>
               </h1>
             </div>
           </div>

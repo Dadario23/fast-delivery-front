@@ -1,9 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { BsBoxSeam } from 'react-icons/bs';
-
-import { MdDeleteOutline } from 'react-icons/md';
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti';
+import PackageIcon from 'assets/Package/package'
+import TrashIcon from 'assets/TrashIcon/trashIcon'
 
 interface Reparto {
   id: number;
@@ -122,14 +121,14 @@ const DeliveriesAndHistory: React.FC<{
           showReps &&
           reps.map((rep) => (
             <div
-              className='mt-4 mr-0 flex p-3 pr-0 w-full h-24 rounded-2xl border border-indigo-400 justify-between'
+              className='mt-4 mr-0 flex p-3 pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between'
               key={rep.id}
             >
               {' '}
               {/*box*/}
               <div className='flex items-center h-full w-15 justify-between'>
                 {/*boxLeft*/}
-                <BsBoxSeam style={{ fontSize: '30px' }} />
+              <PackageIcon/>
                 <div className='w-px bg-indigo-400 h-full ml-2 mr-2'></div>
                 {/*separator*/}
               </div>
@@ -168,9 +167,7 @@ const DeliveriesAndHistory: React.FC<{
                   >
                     {' '}
                     {/*boton 2 customizado*/}
-                    <MdDeleteOutline
-                      style={{ color: 'red', fontSize: '25px' }}
-                    />
+                  <TrashIcon/>
                   </div>
                 )}
                 {rep.status === 'pending' && (
@@ -225,7 +222,7 @@ const DeliveriesAndHistory: React.FC<{
               key={rep.id}
             >
               <div className='flex items-center h-full w-15 justify-evenly'>
-                <BsBoxSeam style={{ fontSize: '30px' }} />
+              <PackageIcon/>
                 <div className='w-px bg-indigo-400 h-full ml-2 mr-2'></div>
               </div>
               <div className='flex w-6/12 flex-col justify-around h-full text-xs'>
