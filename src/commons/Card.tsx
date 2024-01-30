@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   GreenCircle,
   FullCircle,
@@ -15,8 +16,12 @@ type Profile = {
 };
 
 const Card = ({ profile, id }: { profile: Profile; id: string }) => {
+  const router = useRouter();
   return (
-    <div className=" flex space-x-1 mr-2 relative">
+    <div
+      className=" flex space-x-1 mr-2 relative"
+      onClick={() => router.push("/delivery-profile")}
+    >
       <div className="mb-2 text-[#3d1df3]">
         {profile.percentage === "52%" && (
           <GreenCircle percentage={profile.percentage} />

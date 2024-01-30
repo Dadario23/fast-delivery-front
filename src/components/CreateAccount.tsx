@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -9,8 +8,10 @@ import BackIcon from "assets/BackIcon/back-icon";
 import { useRouter } from "next/navigation";
 
 const CreateAccountForm: React.FC = () => {
+  const router = useRouter();
   const [visible, setVisible] = useState<Boolean>(false);
   const [visible2, setVisible2] = useState<Boolean>(true);
+  const [error, setError] = useState<Boolean>(false);
 
   const [data, setData] = useState({
     nombre: "",
@@ -19,7 +20,15 @@ const CreateAccountForm: React.FC = () => {
     contraseña: "",
     confirmarContraseña: "",
   });
-  const router = useRouter();
+
+  const [passChecker, setPassChecker] = useState({
+    uppercaseLetter: false,
+    lowercaseLetter: false,
+    oneNumber: false,
+    lenght: false,
+    validation: false,
+  });
+
   const handleVisibleClick = (e: any) => {
     setVisible(!visible);
   };
@@ -27,19 +36,50 @@ const CreateAccountForm: React.FC = () => {
     setVisible2(!visible2);
   };
   const handleChanges = (e: any) => {
-    const { name } = e.target;
+    const { name, value } = e.target;
 
     setData((prevState) => {
-      return { ...prevState, [name]: e.target.value };
+      return { ...prevState, [name]: value };
     });
+  };
+
+  const handleInputPassword = (e: any) => {
+    const inputValue = e.target.value;
+
+    setData({ ...data, contraseña: inputValue });
+    setPassChecker({
+      uppercaseLetter: /[A-ZÑ]/.test(inputValue),
+      lowercaseLetter: /[a-zñ]/.test(inputValue),
+      oneNumber: /\d/.test(inputValue),
+      lenght: inputValue.length >= 8,
+      validation:
+        /[A-ZÑ]/.test(inputValue) &&
+        /[a-zñ]/.test(inputValue) &&
+        /\d/.test(inputValue) &&
+        inputValue.length >= 8,
+    });
+    if (Object.values(passChecker).includes(false)) {
+      setError(true);
+    } else {
+      setError(false);
+    }
   };
   function handleSubmit(e: any) {
     e.preventDefault();
-    if (data.contraseña === data.confirmarContraseña) {
-      router.push("/home-swd");
-    } else {
+    if (data.confirmarContraseña && !passChecker.validation) {
+      alert(
+        "Revise que la contraseña contenga al menos un número, una letra mayúscula, una minúscula y que tenga al menos 8 caracteres "
+      );
+
+      return;
+    } else if (data.confirmarContraseña !== data.contraseña) {
       alert("LAS CONTRASEÑAS NO COINCIDEN");
+      return;
+    } else if (Object.values(data).includes("")) {
+      alert("HAY CAMPOS VACÍOS QUE ES NECESARIO COMPLETAR");
+      return;
     }
+    router.push("/home-swd");
   }
   return (
     <div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[25px] mb-[60px] bg-[#C7FFB1] relative ">
@@ -47,7 +87,10 @@ const CreateAccountForm: React.FC = () => {
         <div className="ml-3" onClick={() => router.back()}>
           <BackIcon />
         </div>
-        <h2 className="text-[#3d1df3] mr-10 flex-grow text-center">
+        <h2
+          className="text-[#3d1df3] mr-10 flex-grow text-center"
+          onClick={() => router.push("/login")}
+        >
           Creá tu cuenta
         </h2>
       </div>
@@ -60,7 +103,7 @@ const CreateAccountForm: React.FC = () => {
             name="nombre"
             type="text"
             placeholder="Nombre"
-            className="w-[270px] h-495 mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+            className={`w-[270px] mb-2 p-2 pl-4 border border-[#654ede] rounded-xl placeholder-[#3d1df3] focus:outline-none `}
             value={data.nombre}
             onChange={handleChanges}
           />
@@ -68,15 +111,15 @@ const CreateAccountForm: React.FC = () => {
             name="apellido"
             type="text"
             placeholder="Apellido"
-            className="w-[270px] mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+            className={`w-[270px] mb-2 p-2 pl-4 border border-[#654ede] rounded-xl placeholder-[#3d1df3] focus:outline-none `}
             value={data.apellido}
             onChange={handleChanges}
           />
           <input
             name="email"
-            type="text"
+            type="email"
             placeholder="Email@contraseña"
-            className="w-[270px] mb-2 p-2 border border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+            className={`w-[270px] mb-2 p-2 pl-4 border border-[#654ede] rounded-xl placeholder-[#3d1df3] focus:outline-none `}
             value={data.email}
             onChange={handleChanges}
           />
@@ -84,9 +127,11 @@ const CreateAccountForm: React.FC = () => {
             <input
               name="contraseña"
               placeholder="Contraseña"
-              className="w-[270px] mb-2 p-2 border border-[#3d1df3] rounded-xl relative placeholder-[#3d1df3]  "
+              className={`w-[270px] mb-2 p-2 pl-4 border ${
+                error ? "border-[#ff0000]" : "border-[#654ede]"
+              } rounded-xl placeholder-[#3d1df3] focus:outline-none `}
               value={data.contraseña}
-              onChange={handleChanges}
+              onChange={handleInputPassword}
               type={visible ? "text" : "password"}
             />
             <div
@@ -101,7 +146,8 @@ const CreateAccountForm: React.FC = () => {
               name="confirmarContraseña"
               type={visible2 ? "text" : "password"}
               placeholder="Confirmar contraseña"
-              className="w-[270px] mb-2 p-2 border-[0.5px] border-[#3d1df3] rounded-xl placeholder-[#3d1df3] "
+              className={`w-[270px] mb-2 p-2 pl-4 border border-[#654ede]
+              rounded-xl placeholder-[#3d1df3] focus:outline-none `}
               value={data.confirmarContraseña}
               onChange={handleChanges}
             />
@@ -112,14 +158,16 @@ const CreateAccountForm: React.FC = () => {
               {visible2 ? <Eye /> : <EyeBlocked />}
             </div>
           </div>
-          <button className="w-[270px] h-[30px] mt-4 mb-2 p-2 bg-[#00ea77] text-[#3d1df3] rounded-full pl-50 flex items-center justify-center ">
+          <button className="w-[270px] h-[30px] mt-4 mb-2 p-2 bg-[#00ea77] text-[#3d1df3] rounded-full pl-50 flex items-center justify-center hover:bg-white hover:border border-[#00ea77]">
             Crear
           </button>
           <h2 className="mb-2 flex items-center justify-center text-[#3d1df3] text-[12px]">
             ¿Ya tenés una cuenta?
-
           </h2>
-          <button className="w-[270px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3]  rounded-full pl-50 flex items-center justify-center ">
+          <button
+            className="w-[270px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3]  rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77]"
+            onClick={() => router.push("/login")}
+          >
             Iniciar sesión
           </button>
         </form>
