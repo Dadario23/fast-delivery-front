@@ -121,18 +121,20 @@ const DeliveriesAndHistory: React.FC<{
           showReps &&
           reps.map((rep) => (
             <div
-              className='mt-4 mr-0 flex p-3 pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between'
+              className='mt-3 mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between'
               key={rep.id}
             >
               {' '}
               {/*box*/}
-              <div className='flex items-center h-full w-15 justify-between'>
+              <div className='flex items-center h-full w-15 justify-center'>
                 {/*boxLeft*/}
               <PackageIcon/>
-                <div className='w-px bg-indigo-400 h-full ml-2 mr-2'></div>
+              
+                <div className='w-px bg-indigo-400 h-14 ml-1 mr-1'></div>
                 {/*separator*/}
+              
               </div>
-              <div className='flex w-6/12 flex-col justify-around h-full text-xs'>
+              <div className='flex w-6/12 flex-col justify-center h-full text-xs'>
                 {' '}
                 {/*boxMid*/}
                 <h3 className='mb-1'>
@@ -144,7 +146,7 @@ const DeliveriesAndHistory: React.FC<{
                   {rep.subAddress}
                 </p>
               </div>
-              <div className='flex items-end flex-col  w-35 justify-between h-full '>
+              <div className='flex items-end flex-col  w-35 justify-around between h-full '>
                 {' '}
                 {/*boxRight*/}
                 <div
@@ -156,13 +158,13 @@ const DeliveriesAndHistory: React.FC<{
                   className={`flex justify-center w-max items-center pl-2 pr-3 rounded-l-xl rounded-tr`}
                 >
                   {/*title*/}
-                  <h4 style={{ fontSize: '13px' }}>
+                  <h4 style={{ fontSize: '11px' }}>
                     <b>{rep.status.toUpperCase()}</b>
                   </h4>
                 </div>
                 {rep.status === 'ongoing' && (
                   <div
-                    className='flex items-center justify-center p-1 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-2 active:bg-gray-500'
+                    className='flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500'
                     onClick={(e) => onClickButton1(rep.id, 'cancelled', e)}
                   >
                     {' '}
@@ -172,13 +174,13 @@ const DeliveriesAndHistory: React.FC<{
                 )}
                 {rep.status === 'pending' && (
                   <div
+                    className='flex items-center justify-center  p-1 w-16 text-indigo-700 rounded-2xl mr-2 transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500'
                     style={{ backgroundColor: '#00ea77' }}
-                    className='flex items-center justify-center  p-1 w-16 text-indigo-700 rounded-2xl transition-all duration-200 ease-in-out active:bg-green-600 mr-2 mb-1'
                     onClick={(e) => onClickButton1(rep.id, 'ongoing', e)}
                   >
                     {' '}
                     {/*boton 1 customizado*/}
-                    <h4 style={{ fontSize: '13px' }}>Iniciar</h4>
+                    <h4 style={{ fontSize: '12px' }}>Iniciar</h4>
                   </div>
                 )}
               </div>
@@ -218,14 +220,14 @@ const DeliveriesAndHistory: React.FC<{
           showRepsHistory &&
           repsHistory.map((rep) => (
             <div
-              className='mt-4 mr-0 flex p-3 pr-0 w-full h-24 rounded-2xl border border-indigo-400 justify-between'
+              className='mt-3 mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between'
               key={rep.id}
             >
-              <div className='flex items-center h-full w-15 justify-evenly'>
+              <div className='flex items-center h-full w-15 justify-center'>
               <PackageIcon/>
-                <div className='w-px bg-indigo-400 h-full ml-2 mr-2'></div>
+              <div className='w-px bg-indigo-400 h-14 ml-1 mr-1'></div>
               </div>
-              <div className='flex w-6/12 flex-col justify-around h-full text-xs'>
+              <div className='flex w-6/12 flex-col justify-center h-full text-xs'>
                 <h3 className='mb-1'>
                   <b>{rep.code}</b>
                 </h3>
@@ -235,15 +237,15 @@ const DeliveriesAndHistory: React.FC<{
                   {rep.subAddress}
                 </p>
               </div>
-              <div className='flex items-end flex-col  w-35 justify-between h-full '>
+              <div className='flex items-end flex-col  w-35 justify-between h-full'>
                 <div
                   style={{
-                    fontSize: '13px',
+                    fontSize: '11px',
                     backgroundColor: `${
                       rep.status === 'delivered' ? '#c7ffb1' : '#FFA1A1'
                     }`,
                   }}
-                  className={`flex justify-center w-max items-center pl-2 pr-3 rounded-l-xl rounded-tr`}
+                  className={`flex justify-center w-max items-center pl-2 pr-3 mt-3 rounded-l-xl rounded-tr`}
                 >
                   <h4>
                     <b>{rep.status.toUpperCase()}</b>
