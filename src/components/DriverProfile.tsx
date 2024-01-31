@@ -35,7 +35,9 @@ const DriverProfile: React.FC = () => {
 					<div className="flex flex-row justify-between bg-white w-full rounded-2xl p-4">
 						<div className="flex flex-row w-full items-center justify-start">
 							<FaCircleUser style={{ fontSize: '60px' }} />
-							<div className="flex flex-col ml-4">
+							<div className="flex flex-col ml-4"
+								style={{fontSize:"14px"}}
+							>
 								<h2>
 									<b>Name</b>
 								</h2>
@@ -43,10 +45,10 @@ const DriverProfile: React.FC = () => {
 									style={{
 										backgroundColor: `${switchValue ? '#c7ffb1' : '#bfbfbf'}`,
 									}}
-									className="flex justify-center items-center pl-2 pr-2 rounded-3xl"
+									className="flex justify-center items-center pl-2 pr-2 rounded-3xl mt-1"
 								>
 									{/*title*/}
-									<h4 style={{ fontSize: '13px' }}>
+									<h4 style={{ fontSize: '11px' }}>
 										<b>{switchValue ? 'HABILITADO' : 'DESHABILITADO'}</b>
 									</h4>
 								</div>
