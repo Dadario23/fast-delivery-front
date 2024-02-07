@@ -6,6 +6,7 @@ import Eye, { EyeBlocked } from '../assets/Eye/eye'
 import CameraIcon from 'assets/CameraIcon/camera-icon'
 import BackIcon from 'assets/BackIcon/back-icon'
 import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 const CreateAccountForm: React.FC = () => {
 	const router = useRouter()
@@ -44,7 +45,25 @@ const CreateAccountForm: React.FC = () => {
 			alert('HAY CAMPOS VACÍOS QUE ES NECESARIO COMPLETAR')
 			return
 		}
-		router.push('/home-swd')
+		else{
+			axios.post("http://localhost:3001/api/users/register",
+			{
+				name: data.nombre,
+				surname: data.apellido,
+				email:data.email,
+				password:data.contraseña,
+				isAdmin:false
+			}, 
+			{
+				withCredentials:true,
+			})
+			.then(()=>{
+				alert("Usario registrado con exito");
+			})
+			.then(()=>router.push('/home-swd'))
+			.catch((err)=>console.error(err))
+		}
+		
 	}
 	return (
 		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[25px] mb-[60px] bg-[#C7FFB1] relative ">
