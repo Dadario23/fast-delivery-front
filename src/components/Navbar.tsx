@@ -4,11 +4,21 @@ import Image from 'next/image'
 import logoIcon from '../assets/icon-logo.svg'
 import logoutIcon from '../assets/logout-icon.svg'
 import { useRouter } from 'next/navigation'
+import dataLogout from 'services/dataLogout'
 //hacer que no se renderize el icono de logout en vista register
 //hacer que con el icono de la app vaya a home solo si esta logeado
 
 const Navbar = () => {
 	const router = useRouter()
+
+	const clickLogout = async () => {
+    try {
+      await dataLogout();
+      router.push("/");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 	return (
 		<nav className="relative w-[360px] h-[50px] shadow-[0px_4px_0px_0px_rgba(0,0,0,0.25)]">
 			<div className="pl-[30px] pt-[10px]">
@@ -20,7 +30,7 @@ const Navbar = () => {
 				alt="logo"
 				width={32}
 				height={26}
-				onClick={() => router.push('/')}
+				onClick={clickLogout} 
 			/>
 		</nav>
 	)
