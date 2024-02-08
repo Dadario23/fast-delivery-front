@@ -60,7 +60,7 @@ const CreateAccountForm: React.FC = () => {
 			.then(()=>{
 				alert("Usario registrado con exito");
 			})
-			.then(()=>router.push('/home-swd'))
+			.then(()=>router.push('/'))
 			.catch((err)=>console.error(err))
 		}
 		

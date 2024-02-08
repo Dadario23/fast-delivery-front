@@ -1,22 +1,46 @@
 'use client'
 import Image from 'next/image'
-
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import logo from '../assets/logo.svg'
 import userIcon from '../assets/user-icon.svg'
 import passIcon from '../assets/pass-icon.svg'
 import eyeCrossedIcon from '../assets/eye-crossed-icon.svg'
 import { useRouter } from 'next/navigation'
 import eyeIcon from '../assets/eye-icon.svg'
+import { loginUser } from 'services/dataLogin'
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
 
 const Login: React.FC = () => {
 	const router = useRouter()
+	const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
 
 	const [showPassword, setShowPassword] = useState(false)
 
 	const togglePasswordVisibility = () => {
 		setShowPassword(!showPassword)
 	}
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  
+    try {
+      const response = await loginUser(formData.email, formData.password);
+      console.log(response);
+			router.push("/home-swd")
+
+    } catch (error) {
+			console.error('Error en el inicio de sesión:', error);
+  };
+}
 
 	return (
 		<>
@@ -27,7 +51,7 @@ const Login: React.FC = () => {
 				height={117}
 				className='absolute top-[122px] left-[55px]'
 			/>
-			<form className='flex flex-col items-center relative'>
+			<form onSubmit={handleSubmit} className='flex flex-col items-center relative'>
 				<div className='absolute mb-4 top-[289px] left-[30px]'>
 					<span className='absolute inset-y-0 left-0 pl-3 flex items-center'>
 						<Image src={userIcon} alt='user icon' width={14} height={14} />
@@ -36,6 +60,9 @@ const Login: React.FC = () => {
 						type='text'
 						className='w-[300px] h-[35px] border pl-[44px] rounded-[10px] border-[#fff] bg-transparent'
 						placeholder='email@contraseña.com'
+						name='email'
+            value={formData.email}
+            onChange={handleChange}
 					/>
 				</div>
 				<div className='absolute mb-4 top-[334px] left-[30px]'>
@@ -43,13 +70,16 @@ const Login: React.FC = () => {
 						<Image src={passIcon} alt='pass icon' width={14} height={16} />
 					</span>
 					<input
-						type={showPassword ? 'text' : 'password'} // Cambia el tipo según el estado
+						type={showPassword ? 'text' : 'password'} 
 						className='w-[300px] h-[35px] border pl-[44px] rounded-[10px] border-[#fff] bg-transparent'
 						placeholder='*******'
+						name='password'
+            value={formData.password}
+            onChange={handleChange}
 					/>
 					<span className='absolute inset-y-0 right-0 pr-3 flex items-center'>
 						<Image
-							src={showPassword ? eyeIcon : eyeCrossedIcon} // Cambia el ícono según el estado
+							src={showPassword ? eyeIcon : eyeCrossedIcon} 
 							alt='eye icon'
 							width={20}
 							height={20}
@@ -60,11 +90,10 @@ const Login: React.FC = () => {
 				</div>
 
 				<button
-					type='button'
+					type='submit'
 					className='absolute w-[270px] h-[30px] top-[404px] left-[45px]  border-white rounded-[13px] bg-[#00EA77] text-[#3D1DF3]'
-					onClick={() => router.push('/manage-orders')}
 				>
-          Ingresar
+        Ingresar
 				</button>
 				<button
 					type='button'
