@@ -7,7 +7,7 @@ import passIcon from '../assets/pass-icon.svg'
 import eyeCrossedIcon from '../assets/eye-crossed-icon.svg'
 import { useRouter } from 'next/navigation'
 import eyeIcon from '../assets/eye-icon.svg'
-import { loginUser, getPrivateData } from 'services/dataLogin'
+import { loginUser } from 'services/dataLogin'
 
 interface FormData {
   email: string;
@@ -35,8 +35,6 @@ const Login: React.FC = () => {
     try {
       const response = await loginUser(formData.email, formData.password);
       console.log(response);
-			const privateDataResponse = await getPrivateData();
-      console.log('Mensaje autenticado:', privateDataResponse);
 			router.push("/home-swd")
 
     } catch (error) {

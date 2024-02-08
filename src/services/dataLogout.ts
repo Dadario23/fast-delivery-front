@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const dataLogout = async (): Promise<any> => {
   try {
     const response = await axios.post(
-      `${API_URL}/users/logout`,
+      `${API_URL}/api/users/logout`,
       {},
       { withCredentials: true }
     );
