@@ -19,7 +19,8 @@
     "lint": "next lint",
     "prepare": "husky install",
     "type-check": "tsc --noEmit",
-    "release": "standard-version"
+    "release": "standard-version",
+    "test": "jest"
   },
   "dependencies": {
     "@types/react-datepicker": "^4.19.5",
@@ -43,6 +44,7 @@
     "eslint-config-next": "14.0.4",
     "eslint-plugin-cypress": "^2.15.1",
     "husky": "^8.0.3",
+    "jest": "^29.7.0",
     "lint-staged": "^15.2.0",
     "postcss": "^8",
     "standard-version": "^9.5.0",
