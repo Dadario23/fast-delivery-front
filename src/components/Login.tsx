@@ -7,7 +7,7 @@ import passIcon from '../assets/pass-icon.svg'
 import eyeCrossedIcon from '../assets/eye-crossed-icon.svg'
 import { useRouter } from 'next/navigation'
 import eyeIcon from '../assets/eye-icon.svg'
-import { loginUser } from 'services/dataLogin'
+import { loginUser } from 'services/dataAuth'
 
 interface FormData {
   email: string;
