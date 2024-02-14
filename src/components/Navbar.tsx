@@ -4,7 +4,7 @@ import Image from 'next/image'
 import logoIcon from '../assets/icon-logo.svg'
 import logoutIcon from '../assets/logout-icon.svg'
 import { useRouter } from 'next/navigation'
-import dataLogout from 'services/dataLogout'
+import {dataLogout }from 'services/dataAuth'
 //hacer que no se renderize el icono de logout en vista register
 //hacer que con el icono de la app vaya a home solo si esta logeado
 
