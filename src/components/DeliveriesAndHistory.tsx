@@ -157,7 +157,6 @@ const DeliveriesAndHistory: React.FC<{
 		const div = c == 'h' ? divHistoryH.current : divRepsH.current
 
 		if (div && div.clientHeight != div.scrollHeight) {
-			console.log('entre al handle')
 			const isAtTop = div.scrollTop === 0
 			const isAtBottom =
         div.scrollHeight - div.scrollTop <= div.clientHeight + 1
