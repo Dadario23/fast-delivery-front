@@ -38,10 +38,6 @@ export const registerUser = async (userData: UserRegister) => {
 };
 
 
-
-
-
-
 export const loginUser = async (email: string, password: string): Promise<UserLogin> => {
   try {
     const response: AxiosResponse = await axios.post(

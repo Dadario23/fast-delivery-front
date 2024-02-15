@@ -3,7 +3,7 @@ export interface UserRegister {
   apellido: string;
   email: string;
   contraseña: string;
-  // urlphoto: string;
+  //photo: string;
   isAdmin?: boolean;
 }
 
