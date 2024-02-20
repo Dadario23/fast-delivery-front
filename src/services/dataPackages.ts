@@ -39,3 +39,12 @@ export const assignPackageToUser = async (packageId: number) => {
 		throw error
 	}
 }
+
+export const removeUserFromPackage = async (packageId: number) => {
+  try {
+    const response = await axios.delete(`${API_URL}/api/packages/removeUserId/${packageId}`);
+    return response.data; 
+  } catch (error) {
+    throw error
+  }
+};

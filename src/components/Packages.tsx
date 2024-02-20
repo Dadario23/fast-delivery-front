@@ -269,7 +269,7 @@ const PackagesOffice: React.FC = () => {
 				setPackages(data)
 			} catch (error) {
 				console.error('Error al obtener los paquetes:', error)
-			}
+			} 
 		}
 		fetchPackages()
 	}, [])
