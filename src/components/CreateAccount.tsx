@@ -220,6 +220,7 @@ const CreateAccountForm: React.FC = () => {
     try {
       await registerUser(data);
       alert('Usuario registrado exitosamente');
+			router.push("/")
     } catch (error) {
       console.error('Error during registration:', error);
     }

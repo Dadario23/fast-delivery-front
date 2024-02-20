@@ -14,6 +14,7 @@ interface Reparto {
 }
 
 const DeliveriesAndHistory: React.FC<{
+	
 	repartos: object[];
 	historial: object[];
 }> = ({ repartos, historial }) => {
@@ -383,3 +384,6 @@ const DeliveriesAndHistory: React.FC<{
 	)
 }
 export default DeliveriesAndHistory
+
+
+
