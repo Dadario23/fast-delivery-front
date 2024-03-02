@@ -48,3 +48,13 @@ export const removeUserFromPackage = async (packageId: number) => {
     throw error
   }
 };
+
+export const getUserPackages = async () => {
+	try {
+		const response: AxiosResponse = await axios.get(`${API_URL}/api/packages/userPackages`, {withCredentials: true})
+		return response.data
+	} catch (error) {
+		console.error('Error al obtener los paquetes:', error)
+		throw error
+	}
+}

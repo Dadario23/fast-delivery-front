@@ -3,17 +3,17 @@ import { UserLogin, UserRegister } from 'types/userTypes';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-// export const checkAuth = async (user: any, router: any, dispatch: any): Promise<any> => {
-//   try {
-//     const response: AxiosResponse = await axios.get(`${API_URL}/users/me`, {
-//       withCredentials: true,
-//     });
-//     const userData = response.data;
-//     return userData;
-//   } catch (error) {
-//     console.error("Error al verificar la autenticación:", error);
-//   }
-// };
+export const checkAuth = async (): Promise<any> => {
+  try {
+    const response: AxiosResponse = await axios.get(`${API_URL}/api/users/me`, {
+      withCredentials: true,
+    });
+    const userData = response.data;
+    return userData;
+  } catch (error) {
+    console.error("Error al verificar la autenticación:", error);
+  }
+};
 
 export const registerUser = async (userData: UserRegister) => {
   try {
