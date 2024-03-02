@@ -181,8 +181,8 @@ interface Package {
 const StartWorkingDay: React.FC = () => {
   const [isExpanded1, setIsExpanded1] = useState(true);
   const [isExpanded2, setIsExpanded2] = useState(true);
-  const [maxHeight1, setMaxHeight1] = useState("230px");
-  const [maxHeight2, setMaxHeight2] = useState("230px");
+  const [maxHeight1, setMaxHeight1] = useState("230px"); 
+  const [maxHeight2, setMaxHeight2] = useState("230px"); 
   const router = useRouter();
   const [packages, setPackages] = useState<Package[]>([]);
 
