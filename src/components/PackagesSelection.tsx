@@ -206,10 +206,10 @@ import BackIcon from 'assets/BackIcon/back-icon'
 import Check from 'assets/Check/check'
 import { useRouter } from 'next/navigation'
 import { getAllPackages } from 'services/dataPackages'
-import { assignPackageToUser } from 'services/dataPackages' 
+import { assignPackageToUser } from 'services/dataPackages'
 
 interface Package {
-	id: number; 
+	id: number;
 	address: string;
 }
 const PackagesSelection: React.FC = () => {
@@ -221,7 +221,9 @@ const PackagesSelection: React.FC = () => {
 		const fetchPackages = async () => {
 			try {
 				const data = await getAllPackages()
-				const filteredPackages = data.filter(packageItem => !packageItem.userId) //DA ESTE ERROR PERO FUNCIONA IGUAL
+				const filteredPackages = data.filter(
+					(packageItem) => !packageItem.userId
+				) //DA ESTE ERROR PERO FUNCIONA IGUAL
 				setPackages(filteredPackages)
 			} catch (error) {
 				console.error('Error al obtener los paquetes:', error)
@@ -240,8 +242,10 @@ const PackagesSelection: React.FC = () => {
 
 	const handleStartJourney = async () => {
 		try {
-			await Promise.all(selectedPackages.map((packageId) => assignPackageToUser(packageId)))
-			router.push('/home-swd')
+			await Promise.all(
+				selectedPackages.map((packageId) => assignPackageToUser(packageId))
+			)
+			router.push('/affidavit')
 		} catch (error) {
 			console.error('Error al iniciar la jornada:', error)
 		}
@@ -268,9 +272,7 @@ const PackagesSelection: React.FC = () => {
 						key={packageItem.id}
 						onClick={() => handleClick(packageItem.id)}
 					>
-						<div
-							className="absolute border-[1px] border-[#3d1df3] w-[16px] h-[16px] rounded-[5px] ml-[10px] mt-[14px] "
-						>
+						<div className="absolute border-[1px] border-[#3d1df3] w-[16px] h-[16px] rounded-[5px] ml-[10px] mt-[14px] ">
 							{selectedPackages.includes(packageItem.id) && (
 								<div className="ml-[-1px] mt-[-1px]">
 									<Check />
