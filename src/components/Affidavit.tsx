@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import BackIcon from 'assets/BackIcon/back-icon'
 import { useRouter } from 'next/navigation'
 
@@ -7,6 +7,29 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 const Affidavit = () => {
 	const router = useRouter()
+	const [drunk, setDrunk] = useState<string | null>(null)
+	const [consumedPsychot, setConsumedPsychot] = useState<string | null>(null)
+	const [depressed, setDepressed] = useState<string | null>(null)
+	const handleClickAlcohol = (e: string) => {
+		setDrunk(e)
+	}
+	const handleClickPiscotrop = (e: string) => {
+		setConsumedPsychot(e)
+	}
+	const handleClickDepression = (e: string) => {
+		setDepressed(e)
+	}
+	const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+		if (drunk === 'si' || consumedPsychot === 'si' || depressed === 'si') {
+			alert(
+				'siguiendo las normativas de la Comisión Nacional de Regulación de Transporte, USTED NO PUEDE CONTINUAR'
+			)
+			router.push('/')
+		} else {
+			router.push('/home-swd')
+		}
+	}
 
 	return (
 		<div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] mt-[25px] mb-[60px] bg-[#C7FFB1] relative">
@@ -25,14 +48,22 @@ const Affidavit = () => {
             ¿Ha consumido bebidas alcohólicas en las últimas 12 horas?{' '}
 						<div className="flex justify-self-stretch space-x-3 ml-12 mt-2">
 							<button
-								className="w-[74px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77]"
-								onClick={() => router.push('/login')}
+								className={`w-[74px] h-[30px] mb-2 p-2 ${
+									drunk === 'si' ? 'bg-[#00ea77] text-white' : 'bg-white'
+								} border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77] `}
+								onClick={() => {
+									handleClickAlcohol('si')
+								}}
 							>
                 Sí
 							</button>
 							<button
-								className="w-[74px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77]"
-								onClick={() => router.push('/login')}
+								className={`w-[74px] h-[30px] mb-2 p-2 ${
+									drunk === 'no' ? 'bg-[#00ea77] text-white' : 'bg-white'
+								} border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77] `}
+								onClick={() => {
+									handleClickAlcohol('no')
+								}}
 							>
                 No
 							</button>
@@ -48,14 +79,26 @@ const Affidavit = () => {
 						</p>
 						<div className="flex justify-self-stretch space-x-3 ml-14 mt-1">
 							<button
-								className="w-[74px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77]"
-								onClick={() => router.push('/login')}
+								className={`w-[74px] h-[30px] mb-2 p-2 ${
+									consumedPsychot === 'si'
+										? 'bg-[#00ea77] text-white'
+										: 'bg-white'
+								} border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77] `}
+								onClick={() => {
+									handleClickPiscotrop('si')
+								}}
 							>
                 Sí
 							</button>
 							<button
-								className="w-[74px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77]"
-								onClick={() => router.push('/login')}
+								className={`w-[74px] h-[30px] mb-2 p-2 ${
+									consumedPsychot === 'no'
+										? 'bg-[#00ea77] text-white'
+										: 'bg-white'
+								} border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77] `}
+								onClick={() => {
+									handleClickPiscotrop('no')
+								}}
 							>
                 No
 							</button>
@@ -67,20 +110,31 @@ const Affidavit = () => {
             cualquier tipo que lo distraiga ?
 						<div className="flex justify-self-stretch space-x-3 ml-12 mt-1">
 							<button
-								className="w-[74px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77]"
-								onClick={() => router.push('/login')}
+								className={`w-[74px] h-[30px] mb-2 p-2 ${
+									depressed === 'si' ? 'bg-[#00ea77] text-white' : 'bg-white'
+								} border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77] `}
+								onClick={() => {
+									handleClickDepression('si')
+								}}
 							>
                 Sí
 							</button>
 							<button
-								className="w-[74px] h-[30px] mb-2 p-2 bg-white border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77]"
-								onClick={() => router.push('/login')}
+								className={`w-[74px] h-[30px] mb-2 p-2 ${
+									depressed === 'no' ? 'bg-[#00ea77] text-white' : 'bg-white'
+								} border border-[#00ea77] text-[#3d1df3] text-[14px] rounded-full pl-50 flex items-center justify-center hover:bg-[#00ea77] `}
+								onClick={() => {
+									handleClickDepression('no')
+								}}
 							>
                 No
 							</button>
 						</div>
 					</div>
-					<button className="w-[270px] h-[30px] text-[14px] mt-[20px] mb-4 p-2 bg-[#00ea77] text-[#3d1df3] rounded-full pl-50 flex items-center justify-center hover:bg-white hover:border border-[#00ea77]">
+					<button
+						className="w-[270px] h-[30px] text-[14px] mt-[20px] mb-4 p-2 bg-[#00ea77] text-[#3d1df3] rounded-full pl-50 flex items-center justify-center hover:bg-white hover:border border-[#00ea77]"
+						onClick={handleSubmit}
+					>
             Continuar
 					</button>
 				</div>
