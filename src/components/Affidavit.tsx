@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import BackIcon from 'assets/BackIcon/back-icon'
 import { useRouter } from 'next/navigation'
-
+import { postAffidavit } from '../services/dataAffidavit'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const Affidavit = () => {
@@ -25,8 +25,10 @@ const Affidavit = () => {
 			alert(
 				'siguiendo las normativas de la Comisión Nacional de Regulación de Transporte, USTED NO PUEDE CONTINUAR'
 			)
+			postAffidavit({ drunk, consumedPsychot, depressed })
 			router.push('/')
 		} else {
+			postAffidavit({ drunk, consumedPsychot, depressed })
 			router.push('/home-swd')
 		}
 	}
