@@ -3,5 +3,6 @@ export function percentageCalculator(value: number, total: number): number {
 		throw new Error('El total no puede ser cero')
 	}
 
-	return (value / total) * 100
+	const percentage = (value / total) * 100
+	return Math.round(percentage)
 }

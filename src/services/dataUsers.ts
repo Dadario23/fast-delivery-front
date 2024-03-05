@@ -8,7 +8,23 @@ export const getUser = async () => {
 		const response: AxiosResponse = await axios.get(`${API_URL}/api/users/`, {
 			withCredentials: true,
 		})
-		console.log('dataUsers en SErvices trae esto', response)
+
+		return response.data
+	} catch (error) {
+		console.error('Error al obtener los usuarios:', error)
+		throw error
+	}
+}
+
+export const updateUser = async () => {
+	try {
+		const response: AxiosResponse = await axios.put(
+			`${API_URL}/api/users/update`,
+			{
+				withCredentials: true,
+			}
+		)
+		console.log('updateUsers---->', response)
 		return response.data
 	} catch (error) {
 		console.error('Error al obtener los usuarios:', error)
