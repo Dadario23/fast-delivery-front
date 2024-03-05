@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-import { UserLogin, UserRegister } from 'types/userTypes';
+import axios, { AxiosResponse } from "axios";
+import { UserLogin, UserRegister } from "types/userTypes";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,21 +24,23 @@ export const registerUser = async (userData: UserRegister) => {
         surname: userData.apellido,
         email: userData.email,
         password: userData.contraseña,
-        isAdmin: false
+        isAdmin: false,
       },
       {
         withCredentials: true,
       }
     );
-    return true; 
+    return true;
   } catch (error) {
-    console.error('Error during registration:', error);
-    throw error; 
+    console.error("Error during registration:", error);
+    throw error;
   }
 };
 
-
-export const loginUser = async (email: string, password: string): Promise<UserLogin> => {
+export const loginUser = async (
+  email: string,
+  password: string
+): Promise<UserLogin> => {
   try {
     const response: AxiosResponse = await axios.post(
       `${API_URL}/api/users/login`,
@@ -61,6 +63,20 @@ export const dataLogout = async (): Promise<void> => {
     return response.data;
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+};
+
+export const getUserProfileImage = async () => {
+  try {
+    const response: AxiosResponse = await axios.get(
+      // `${API_URL}/api/packages/userPackages/${id}`
+      `http://localhost:3001/api/users/profile-image`
+      // { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
     throw error;
   }
 };
