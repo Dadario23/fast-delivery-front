@@ -9,11 +9,18 @@ import { useRouter } from 'next/navigation'
 // import { UserData } from "../types/userTypes";
 // import { PackageData } from "types/packageTypes";
 import { getAllPackages } from 'services/dataPackages'
+
 export interface Package {
 	id: number;
 	trackId?: string;
 	address: string;
-	status: 'delivered' | 'cancelled' | 'pending' | 'ongoing' | undefined | null;
+	status:
+	| 'ENTREGADO'
+	| 'CANCELADO'
+	| 'PENDIENTE'
+	| 'EN CURSO'
+	| undefined
+	| null;
 	client: string;
 	weight: number;
 	date: Date;
@@ -23,41 +30,86 @@ export interface Package {
 		id: number;
 		name: string;
 		email: string;
+		isDisabled: boolean;
 	};
 	userId: number;
 	percentage: number;
+	total: number;
+	delivered: number;
 }
+interface LastPackagesByUser {
+	[userId: number]: Package;
+}
+type PackagesByUser = { [user: string]: number };
 const DeliveryDrivers = () => {
-	// const [users, setUsers] = useState<UserData[]>([]);
 	const [firstUserIndex, setFirstUserIndex] = useState<number>(0)
-
-	const [packages, setPackages] = useState<Package[]>([])
 	const [ongoingPackage, setOngoingPackage] = useState<Package[]>([])
-	// useEffect(() => {
-	//   const fetchUsers = async () => {
-	//     try {
-	//       const data = await getUser();
-	//       setUsers(data);
-	//     } catch (error) {
-	//       console.error("Error al obtener los paquetes:", error);
-	//     }
-	//   };
-	//   fetchUsers();
-	// }, []);
+
 	useEffect(() => {
 		const fetchPackages = async () => {
 			try {
 				const data = await getAllPackages()
 				if (data.length > 1) {
-					const ongoingPackage = data.filter(
-						(paq: any) => paq.status === 'ongoing'
+					const today = new Date().toISOString().slice(0, 10)
+
+					const assignedPackages = data.filter(
+						(paq: any) => paq.date.slice(0, 10) === today && paq.user !== null
 					)
 
-					setOngoingPackage(ongoingPackage)
+					const total: PackagesByUser = {}
+					const delivered: PackagesByUser = {}
+
+					assignedPackages.forEach((paq: Package) => {
+						if (!total[paq.user.id]) {
+							total[paq.user.id] = 0
+							delivered[paq.user.id] = 0
+						}
+
+						total[paq.user.id]++
+
+						if (paq.status === 'ENTREGADO') {
+							delivered[paq.user.id]++
+						}
+					})
+
+					assignedPackages.forEach((paq: Package) => {
+						paq.total = total[paq.user.id] || 0
+						paq.delivered = delivered[paq.user.id] || 0
+					})
+
+					const lastPackages: LastPackagesByUser = assignedPackages.reduce(
+						(prev: LastPackagesByUser, current: Package) => {
+							if (
+								current.status === 'EN CURSO' &&
+                (!prev[current.user.id] ||
+                  prev[current.user.id]?.status !== 'EN CURSO')
+							) {
+								prev[current.user.id] = current
+							} else if (
+								current.status === 'PENDIENTE' &&
+                (!prev[current.user.id] ||
+                  (prev[current.user.id]?.status !== 'EN CURSO' &&
+                    prev[current.user.id]?.status !== 'PENDIENTE'))
+							) {
+								prev[current.user.id] = current
+							} else if (
+								!prev[current.user.id] ||
+                prev[current.user.id]?.date < current.date
+							) {
+								prev[current.user.id] = current
+							}
+							return prev
+						},
+						{}
+					)
+					const lastPackagesArray = Object.values(lastPackages)
+
+					console.log('Últimos paquetes para cada usuario:', lastPackagesArray)
+
+					setOngoingPackage(lastPackagesArray)
 				} else {
 					setOngoingPackage(data)
 				}
-				setPackages(data)
 			} catch (error) {
 				console.error('Error al obtener los paquetes:', error)
 			}
@@ -65,24 +117,14 @@ const DeliveryDrivers = () => {
 		fetchPackages()
 	}, [])
 	const handleClickNext = () => {
-		if (firstUserIndex + 4 < packages.length) {
+		if (firstUserIndex + 4 < ongoingPackage.length) {
 			setFirstUserIndex((prevIndex) => prevIndex + 4)
 		} else {
 			setFirstUserIndex(0)
 		}
 	}
-	console.log(
-		'DATA DE PAQUETESSS',
-		packages,
-		'paquetes finltradd----->',
-		ongoingPackage
-	)
-	// if (ongoingPackage.length > 4) {
-	//   const visibleUsers = ongoingPackage.slice(
-	//     firstUserIndex,
-	//     firstUserIndex + 4
-	//   );
-	// }
+
+	const visibleUsers = ongoingPackage.slice(firstUserIndex, firstUserIndex + 4)
 	console.log('ASI QUEDA ONGOINPAGA', ongoingPackage)
 	const router = useRouter()
 	return (
@@ -99,15 +141,17 @@ const DeliveryDrivers = () => {
 			<div className="h-[495px] w-[300px] bg-white rounded-xl ">
 				<h1 className="text-[#3d1df3] font-bold mt-3 mb-[1px] ml-4  ">Enero</h1>
 				<div className="border-t border-dotted border-[#3d1df3] text-[#3d1df3] border-w-270 mt-[2px] mx-4 mr-14 relative z-[1]"></div>
-				{ongoingPackage.length > 2 ? (
-					ongoingPackage.map((profile, index) => (
-						<div
-							key={index}
-							className="mt-4 mx-4  border-b border-dotted border-[#3d1df3] border-w-270"
-						>
-							<Card profile={profile} />
-						</div>
-					))
+				{visibleUsers.length > 1 ? (
+					visibleUsers.map((profile, index) => {
+						return (
+							<div
+								key={index}
+								className="mt-4 mx-4 border-b border-dotted border-[#3d1df3] border-w-270"
+							>
+								<Card profile={profile} />
+							</div>
+						)
+					})
 				) : (
 					<div className="mt-4 mx-4  border-b border-dotted border-[#3d1df3] border-w-270">
 						<Card profile={ongoingPackage[0]} />

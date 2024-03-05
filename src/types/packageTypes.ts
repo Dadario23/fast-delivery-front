@@ -5,23 +5,24 @@
 //   fecha: Date | null
 // }
 export enum PackageStatus {
-	DELIVERED = 'delivered',
-	CANCELLED = 'cancelled',
-	PENDING = 'pending',
-	ONGOING = 'ongoing',
+	DELIVERED = 'ENTREGADO',
+	CANCELLED = 'CANCELADO',
+	PENDING = 'PENDIENTE',
+	ONGOING = 'EN CURSO',
 }
 export interface PackageData {
 	trackId?: string;
 	address: string;
-	status: 'delivered' | 'cancelled' | 'pending' | 'ongoing';
+	status: 'ENTREGADO' | 'CANCELADO' | 'PENDIENTE' | 'EN CURSO';
 	client: string;
 	id: number;
 	weight: number;
 	date: Date;
-	// user: {
-	//   id: number;
-	//   name: string;
-	//   email: string;
-	// };
+	user: {
+		id: number;
+		name: string;
+		email: string;
+		isDisabled: boolean;
+	};
 	userId: number;
 }
