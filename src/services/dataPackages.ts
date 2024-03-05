@@ -41,13 +41,14 @@ export const assignPackageToUser = async (packageId: number) => {
 }
 
 export const removeUserFromPackage = async (packageId: number) => {
-  try {
-    const response = await axios.delete(`${API_URL}/api/packages/removeUserId/${packageId}`);
-    return response.data; 
-  } catch (error) {
-    throw error
-  }
-};
+	try {
+		const response = await axios.put(`${API_URL}/api/packages/removeUserId/${packageId}`, null, {withCredentials: true})
+		return response.data 
+	} catch (error) {
+		console.error('Error al eliminar usuario del paquete:', error)
+		throw error
+	}
+}
 
 export const getUserPackages = async () => {
 	try {
@@ -55,6 +56,16 @@ export const getUserPackages = async () => {
 		return response.data
 	} catch (error) {
 		console.error('Error al obtener los paquetes:', error)
+		throw error
+	}
+}
+
+export const updatePackageStatusToOngoing = async (packageId: number) => {
+	try {
+		const response: AxiosResponse = await axios.put(`${API_URL}/api/packages/updateToOngoing/${packageId}`, null, {withCredentials: true})
+		return response.data 
+	} catch (error) {
+		console.error('Error al actualizar el estado del paquete:', error)
 		throw error
 	}
 }
