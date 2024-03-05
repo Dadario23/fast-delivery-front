@@ -3,12 +3,16 @@ import axios, { AxiosResponse } from 'axios'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-export const getUser = async () => {
+export const postAffidavit = async (declaration: object) => {
 	try {
-		const response: AxiosResponse = await axios.get(`${API_URL}/api/users/`, {
-			withCredentials: true,
-		})
-		console.log('dataUsers en SErvices trae esto', response)
+		const response: AxiosResponse = await axios.post(
+			`${API_URL}/api/users/affidavit`,
+			declaration,
+			{
+				withCredentials: true,
+			}
+		)
+
 		return response.data
 	} catch (error) {
 		console.error('Error al obtener los usuarios:', error)
