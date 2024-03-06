@@ -19,8 +19,8 @@ interface Package {
 }
 
 const StartWorkingDay: React.FC = () => {
-	const [isExpanded1, setIsExpanded1] = useState(true)
-	const [isExpanded2, setIsExpanded2] = useState(true)
+	const [isExpanded1, setIsExpanded1] = useState(false)
+	const [isExpanded2, setIsExpanded2] = useState(false)
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [maxHeight1, setMaxHeight1] = useState('230px')
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
