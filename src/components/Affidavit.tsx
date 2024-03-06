@@ -1,4 +1,3 @@
-
 'use client'
 import React, { useState } from 'react'
 import BackIcon from 'assets/BackIcon/back-icon'
@@ -6,25 +5,25 @@ import { useRouter } from 'next/navigation'
 import { postAffidavit } from '../services/dataAffidavit'
 import 'react-datepicker/dist/react-datepicker.css'
 import { updateUser } from 'services/dataUsers'
-import {dataLogout }from 'services/dataAuth'
-import {removeUserFromPackage} from 'services/dataPackages'
+import { dataLogout } from 'services/dataAuth'
+import { removeUserFromPackage } from 'services/dataPackages'
 
 const Affidavit = () => {
 	const router = useRouter()
 	const [drunk, setDrunk] = useState<string | null>(null)
 	const [consumedPsychot, setConsumedPsychot] = useState<string | null>(null)
 	const [depressed, setDepressed] = useState<string | null>(null)
-	
+
 	const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
 		e.preventDefault()
-		
+
 		if (drunk && consumedPsychot && depressed) {
 			const selectedPackages = localStorage.getItem('selectedPackages')
-			
-			if (selectedPackages) {
-				const parsedSelectedPackages = JSON.parse(selectedPackages)
-				
-				if (drunk === 'si' && consumedPsychot === 'si' && depressed === 'si') {
+
+			if (drunk === 'si' || consumedPsychot === 'si' || depressed === 'si') {
+				if (selectedPackages) {
+					const parsedSelectedPackages = JSON.parse(selectedPackages)
+
 					parsedSelectedPackages.forEach(async (packageId: number) => {
 						try {
 							await removeUserFromPackage(packageId)
@@ -32,19 +31,16 @@ const Affidavit = () => {
 							console.error('Error al eliminar al usuario del paquete:', error)
 						}
 					})
+					localStorage.removeItem('selectedPackages')
 				}
-				
-				localStorage.removeItem('selectedPackages')
-			}
-			
-			if (drunk === 'si' || consumedPsychot === 'si' || depressed === 'si') {
+
 				alert(
 					'Siguiendo las normativas de la Comisión Nacional de Regulación de Transporte, USTED NO PUEDE CONTINUAR'
 				)
 				postAffidavit({ drunk, consumedPsychot, depressed })
 				updateUser()
 				await dataLogout()
-				router.push('/')
+				await router.push('/')
 			} else {
 				postAffidavit({ drunk, consumedPsychot, depressed })
 				router.push('/home-swd')
@@ -53,19 +49,19 @@ const Affidavit = () => {
 			alert('Por favor seleccione todas las opciones.')
 		}
 	}
-	
+
 	const handleClickAlcohol = (e: string) => {
 		setDrunk(e)
 	}
-	
+
 	const handleClickPiscotrop = (e: string) => {
 		setConsumedPsychot(e)
 	}
-	
+
 	const handleClickDepression = (e: string) => {
 		setDepressed(e)
 	}
-	
+
 	return (
 		<div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] mt-[25px] mb-[60px] bg-[#C7FFB1] relative">
 			<div className="w-full h-[50px] pl-0 flex items-center font-bold rounded-t-xl bg-[#C7FFB1]">
