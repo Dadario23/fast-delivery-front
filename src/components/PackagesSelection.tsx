@@ -44,11 +44,16 @@ const PackagesSelection: React.FC = () => {
 			await Promise.all(
 				selectedPackages.map((packageId) => assignPackageToUser(packageId))
 			)
+			localStorage.setItem('selectedPackages', JSON.stringify(selectedPackages))
 			router.push('/affidavit')
 		} catch (error) {
 			console.error('Error al iniciar la jornada:', error)
 		}
 	}
+	// const handleStartJourney = () => {
+	//   localStorage.setItem('selectedPackages', JSON.stringify(selectedPackages)) // Almacena los paquetes seleccionados en el almacenamiento local
+	//   router.push('/affidavit')
+	// }
 
 	return (
 		<div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] bg-[#C7FFB1] mt-[20px] h-[74px] relative ">
