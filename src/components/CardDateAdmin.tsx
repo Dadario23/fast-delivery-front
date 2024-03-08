@@ -1,6 +1,6 @@
 "use client";
-import Image from "next/image";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import arrowLeftIcon from "../assets/arrow-left-icon.svg";
 import arrowRightIcon from "../assets/arrow-right-icon.svg";
 
@@ -8,6 +8,13 @@ interface Day {
   date: Date;
   disabled: boolean;
   selected: boolean;
+}
+
+interface Props {
+  currentDate: Date;
+  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
+  selectedDate: Date;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 const daysOfWeek = [
@@ -20,18 +27,22 @@ const daysOfWeek = [
   "SÁBADO",
 ];
 
-const Calendar: React.FC = () => {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+const Calendar: React.FC<Props> = ({
+  currentDate,
+  setCurrentDate,
+  selectedDate,
+  setSelectedDate,
+}) => {
   const [days, setDays] = useState<Day[]>([]);
 
   useEffect(() => {
-    const initialDays = getDaysInMonth(currentDate);
-    const today = new Date().getDate();
-    initialDays.forEach((day) => {
-      day.selected = day.date.getDate() === today;
-    });
-    setDays(initialDays);
+    setSelectedDate(new Date()); // Establecer selectedDate al inicio
+    setDays(
+      getDaysInMonth(currentDate).map((day) => ({
+        ...day,
+        selected: day.date.getDate() === new Date().getDate(), // Establecer selected a true para el día actual
+      }))
+    );
   }, [currentDate]);
 
   const getDaysInMonth = (startDay: Date): Day[] => {
@@ -127,11 +138,7 @@ const Calendar: React.FC = () => {
     });
   };
 
-  console.log(selectedDate);
-
   const currentMonth = currentDate.toLocaleString("es-ES", { month: "long" });
-
-  // Verificar si el día actual es el primero del mes
   const isFirstDayOfMonth = currentDate.getDate() === 1;
 
   return (
@@ -148,18 +155,13 @@ const Calendar: React.FC = () => {
       <div className="absolute calendar flex flex-col items-center top-[201px] left-[45px] z-40">
         <div className="controls flex">
           <button onClick={handlePrevDay} style={{ marginTop: "25px" }}>
-            {" "}
-            {/* Mover hacia abajo */}
             <Image src={arrowLeftIcon} alt="" />
           </button>
           <div className="days flex flex-wrap">{renderDays()}</div>
           <button onClick={handleNextDay} style={{ marginTop: "25px" }}>
-            {" "}
-            {/* Mover hacia abajo */}
             <Image src={arrowRightIcon} alt="" />
           </button>
         </div>
-        {/* {renderSelectedDate()} */}
       </div>
     </>
   );
