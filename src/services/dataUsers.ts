@@ -31,3 +31,17 @@ export const updateUser = async () => {
 		throw error
 	}
 }
+
+export const getUserProfileImage = async () => {
+  try {
+    const response: AxiosResponse = await axios.get(
+      // `${API_URL}/api/packages/userPackages/${id}`
+      `http://localhost:3001/api/users/profile-image`
+      // { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
+    throw error;
+  }
+};

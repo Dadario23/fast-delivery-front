@@ -16,7 +16,7 @@ interface FormData {
 
 const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
   useEffect(() => {
-    if (logged) router.push("/home-swd");
+    if (logged) router.push("/home");
   });
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
@@ -40,7 +40,7 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
     try {
       const response = await loginUser(formData.email, formData.password);
       console.log(response);
-      router.push("/home-swd");
+      router.push("/home");
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
     }
@@ -109,7 +109,7 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
         >
           Crear cuenta
         </button>
-        <p className="absolute w-[137px] top-[498px] left-[111px] font-light text-xs whitespace-nowrap">
+        <p className="absolute w-[137px] top-[498px] left-[111px] font-light text-xs whitespace-nowrap" onClick={() => router.push("/forgot-password")}>
           OLVIDÉ MI CONTRASEÑA
         </p>
       </form>

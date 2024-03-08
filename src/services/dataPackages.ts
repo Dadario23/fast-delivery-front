@@ -77,3 +77,41 @@ export const updatePackageStatusToOngoing = async (packageId: number) => {
 		throw error
 	}
 }
+
+export const deletePackage = async (packageId: number) => {
+  try {
+    const response = await axios.delete(`${API_URL}/api/packages/${packageId}`, {withCredentials: true});
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPackageById = async (packageId: number) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/packages/${packageId}`, {withCredentials: true});
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePackageStatusToDelivered = async (packageId: number) => {
+	try {
+		const response: AxiosResponse = await axios.put(`${API_URL}/api/packages/updateToDelivered/${packageId}`, null, {withCredentials: true})
+		return response.data 
+	} catch (error) {
+		console.error('Error al actualizar el estado del paquete:', error)
+		throw error
+	}
+}
+
+export const updatePackageStatusToCancelled = async (packageId: number) => {
+	try {
+		const response: AxiosResponse = await axios.put(`${API_URL}/api/packages/updateToCancelled/${packageId}`, null, {withCredentials: true})
+		return response.data 
+	} catch (error) {
+		console.error('Error al actualizar el estado del paquete:', error)
+		throw error
+	}
+}
