@@ -67,16 +67,25 @@ export const dataLogout = async (): Promise<void> => {
   }
 };
 
-export const getUserProfileImage = async () => {
+
+export const mailForgotPassword = async (email: string) => {
   try {
-    const response: AxiosResponse = await axios.get(
-      // `${API_URL}/api/packages/userPackages/${id}`
-      `http://localhost:3001/api/users/profile-image`
-      // { withCredentials: true }
-    );
+    const response: AxiosResponse = await axios.post(`${API_URL}/api/users/forgot-password`, { email });
     return response.data;
   } catch (error) {
-    console.error("Error al obtener los datos:", error);
+    console.error(error)
+    throw error
+  }
+}
+
+export const mailResetPassword = async (token: string, newPassword: string) => {
+  try {
+    const response: AxiosResponse = await axios.post(`${API_URL}/api/users/reset-password`, {
+      token,
+      newPassword,
+    });
+    return response.data; 
+  } catch (error) {
     throw error;
   }
 };
