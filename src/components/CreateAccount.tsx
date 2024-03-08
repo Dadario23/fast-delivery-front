@@ -53,7 +53,7 @@
 // 				email:data.email,
 // 				password:data.contraseña,
 // 				isAdmin:false
-// 			}, 
+// 			},
 // 			{
 // 				withCredentials:true,
 // 			})
@@ -63,7 +63,7 @@
 // 			.then(()=>router.push('/'))
 // 			.catch((err)=>console.error(err))
 // 		}
-		
+
 // 	}
 // 	return (
 // 		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[25px] mb-[60px] bg-[#C7FFB1] relative ">
@@ -208,23 +208,23 @@ const CreateAccountForm: React.FC = () => {
 		})
 	}
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (Object.values(data).some((value) => value === '')) {
-      alert('Todos los campos son obligatorios');
-      return;
-    }
-    if (data.contraseña !== data.confirmarContraseña) {
-      alert('Las contraseñas no coinciden');
-      return;
-    }
-    try {
-      await registerUser(data);
-      alert('Usuario registrado exitosamente');
-			router.push("/")
-    } catch (error) {
-      console.error('Error during registration:', error);
-    }
-  };
+		e.preventDefault()
+		if (Object.values(data).some((value) => value === '')) {
+			alert('Todos los campos son obligatorios')
+			return
+		}
+		if (data.contraseña !== data.confirmarContraseña) {
+			alert('Las contraseñas no coinciden')
+			return
+		}
+		try {
+			await registerUser(data)
+			alert('Usuario registrado exitosamente')
+			router.push('/')
+		} catch (error) {
+			console.error('Error during registration:', error)
+		}
+	}
 	return (
 		<div className="flex items-center justify-center flex-wrap  rounded-xl mx-[30px] mt-[25px] mb-[60px] bg-[#C7FFB1] relative ">
 			<div className="w-full h-[50px] pl-0 flex items-center font-bold rounded-t-xl bg-[#C7FFB1] z-10 ">
@@ -247,7 +247,9 @@ const CreateAccountForm: React.FC = () => {
 						name="nombre"
 						type="text"
 						placeholder="Nombre"
-						className={'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] placeholder-shown:border-gray-500  focus:outline-none '}
+						className={
+							'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] placeholder-shown:border-gray-500  focus:outline-none '
+						}
 						value={data.nombre}
 						pattern="([A-Za-z\s])+"
 						onChange={handleChanges}
@@ -257,7 +259,9 @@ const CreateAccountForm: React.FC = () => {
 						name="apellido"
 						type="text"
 						placeholder="Apellido"
-						className={'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] focus:outline-none '}
+						className={
+							'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] focus:outline-none '
+						}
 						value={data.apellido}
 						onChange={handleChanges}
 						pattern="([A-Za-z\s])+"
@@ -267,7 +271,9 @@ const CreateAccountForm: React.FC = () => {
 						name="email"
 						type="email"
 						placeholder="Email@contraseña"
-						className={'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] focus:outline-none '}
+						className={
+							'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] focus:outline-none '
+						}
 						value={data.email}
 						onChange={handleChanges}
 						// required
@@ -276,7 +282,9 @@ const CreateAccountForm: React.FC = () => {
 						<input
 							name="contraseña"
 							placeholder="Contraseña"
-							className={'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] focus:outline-none '}
+							className={
+								'w-[270px] mb-2 p-2 pl-4 border border-[#654ede] invalid:border-red-500 rounded-xl placeholder-[#3d1df3] focus:outline-none '
+							}
 							value={data.contraseña}
 							onChange={handleChanges}
 							type={visible ? 'text' : 'password'}
