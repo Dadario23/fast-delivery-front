@@ -128,26 +128,37 @@ const DeliveriesAndHistory: React.FC = () => {
 		setShowRepsHistory(!showRepsHistory)
 	}
 
-	const onClickButton1 = async (
+	const onClickButtonStart = async (
 		repId: number,
-		status: string,
 		e: React.MouseEvent<HTMLDivElement>
 	) => {
 		try {
 			e.preventDefault()
 			e.stopPropagation()
-			const resp =
-        status === 'EN CURSO'
-        	? await updatePackageStatusToOngoing(repId)
-        	: await removeUserFromPackage(repId)
+			const resp = await updatePackageStatusToOngoing(repId)
 			console.log(resp)
-			const repsAux: Reparto[] =
-        status === 'EN CURSO'
-        	? repsAll.map((r) => (r.id === repId ? { ...r, status: status } : r))
-        	: repsAll.filter((rep) => rep.id != repId)
+			const repsAux: Reparto[] = repsAll.map((r) =>
+				r.id === repId ? { ...r, status: 'EN CURSO' } : r
+			)
 			setRepsAll(repsAux)
 		} catch (err) {
-			console.error('Error al eliminar el usuario del paquete:', err)
+			console.error('Error al iniciar del paquete:', err)
+		}
+	}
+
+	const onClickButtonRemove = async (
+		repId: number,
+		e: React.MouseEvent<HTMLDivElement>
+	) => {
+		try {
+			e.preventDefault()
+			e.stopPropagation()
+			const resp = await removeUserFromPackage(repId)
+			console.log(resp)
+			const repsAux: Reparto[] = repsAll.filter((rep) => rep.id != repId)
+			setRepsAll(repsAux)
+		} catch (err) {
+			console.error('Error al remover el paquete asignado:', err)
 		}
 	}
 
@@ -249,9 +260,9 @@ const DeliveriesAndHistory: React.FC = () => {
             	>
             		<div className="flex items-center h-full w-15 justify-center">
             			<PackageIcon />
-            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-1"></div>
+            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-2"></div>
             		</div>
-            		<div className="flex w-6/12 flex-col justify-center h-full text-xs">
+            		<div className="flex flex-col items-left justify-center h-full text-xs">
             			<h3 className="mb-1">
             				<b>{rep.trackId}</b>
             			</h3>
@@ -260,7 +271,7 @@ const DeliveriesAndHistory: React.FC = () => {
             			</div>
             		</div>
             		<div
-            			className="flex items-end flex-col  w-35  h-full "
+            			className="flex items-end flex-col  w-[35%]  h-full "
             			style={{
             				justifyContent: `${!user.isAdmin ? 'space-around' : ''}`,
             				paddingTop: `${!user.isAdmin ? '5px' : '12px'}`,
@@ -280,23 +291,26 @@ const DeliveriesAndHistory: React.FC = () => {
             					<b>{rep.status.toUpperCase()}</b>
             				</h4>
             			</div>
-            			{rep.status === 'EN CURSO' && !user.isAdmin && (
-            				<div
-            					className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500"
-            					onClick={(e) => onClickButton1(rep.id, 'CANCELADO', e)}
-            				>
-            					<TrashIcon />
-            				</div>
-            			)}
-            			{rep.status === 'PENDIENTE' && !user.isAdmin && (
-            				<div
-            					className="flex items-center justify-center  p-1 w-16 text-indigo-700 rounded-2xl mr-2 transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500"
-            					style={{ backgroundColor: '#00ea77' }}
-            					onClick={(e) => onClickButton1(rep.id, 'EN CURSO', e)}
-            				>
-            					<h4 style={{ fontSize: '12px' }}>Iniciar</h4>
-            				</div>
-            			)}
+
+            			<div className="flex ">
+            				{rep.status === 'PENDIENTE' && !user.isAdmin && (
+            					<div
+            						className="flex items-center justify-center  p-1 w-16 text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500"
+            						style={{ backgroundColor: '#00ea77' }}
+            						onClick={(e) => onClickButtonStart(rep.id, e)}
+            					>
+            						<h4 style={{ fontSize: '12px' }}>Iniciar</h4>
+            					</div>
+            				)}
+            				{!user.isAdmin && (
+            					<div
+            						className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-1 active:bg-gray-500"
+            						onClick={(e) => onClickButtonRemove(rep.id, e)}
+            					>
+            						<TrashIcon />
+            					</div>
+            				)}
+            			</div>
             		</div>
             	</div>
             ))}
@@ -369,7 +383,7 @@ const DeliveriesAndHistory: React.FC = () => {
             	>
             		<div className="flex items-center h-full w-15 justify-center">
             			<PackageIcon />
-            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-1"></div>
+            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-2"></div>
             		</div>
             		<div className="flex w-6/12 flex-col justify-center h-full text-xs">
             			<h3 className="mb-1">
