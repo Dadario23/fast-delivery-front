@@ -19,13 +19,18 @@ const DriverProfile: React.FC = () => {
 	const params = useParams<{ id: string }>()
 	const id = parseInt(params.id, 10) //id del repartidor
 	const [showModal, setShowModal] = useState<boolean>(false)
+	const [user, setUser] = useState<UserState>()
 	const users: UserState[] = useSelector<RootState, UserState[]>(
 		(state) => state.allUsers
 	) //lista de todos los usuarios
-	const user: UserState = users.filter((user) => user.id == id)[0] //usuario especifico
+	// const user: UserState = users.filter((user) => user.id == id)[0]; //usuario especifico
 	useEffect(() => {
-		if (user == undefined) routerNav.push('/delivery-drivers') //driver id invalido
-	}, [])
+		if (users.length > 0) {
+			const temp = users.find((u) => u.id === id)
+			if (temp == undefined) routerNav.push('/delivery-drivers')
+			setUser(temp)
+		}
+	}, [users, id])
 
 	const [switchValue, setSwitchValue] = useState<boolean>(true)
 
@@ -33,7 +38,6 @@ const DriverProfile: React.FC = () => {
 		if (user) setSwitchValue(!user.isDisabled)
 	}, [user?.isDisabled])
 
-	console.log(user)
 	const dispatch = useDispatch()
 	const [imagenSeleccionada, setImagenSeleccionada] = useState<File | null>(
 		null

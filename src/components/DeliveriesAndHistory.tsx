@@ -9,11 +9,12 @@ import { RootState } from 'state/store'
 import { useParams } from 'next/navigation'
 import { UserState } from 'types/userTypes'
 import { Reparto } from 'types/packageTypes'
+import { useRouter } from 'next/navigation'
 import {
 	deletePackage,
 	getUserPackages,
 	getUserPackagesByid,
-	updatePackageStatusToCancelled,
+	removeUserFromPackage,
 	updatePackageStatusToOngoing,
 } from 'services/dataPackages'
 
@@ -25,6 +26,7 @@ const DeliveriesAndHistory: React.FC = () => {
 		(state) => state.user
 	) //user en redux
 	//====
+	const router = useRouter()
 	const [showReps, setShowReps] = useState<boolean>(true)
 	const [showRepsHistory, setShowRepsHistory] = useState<boolean>(true)
 	const [repsAll, setRepsAll] = useState<Reparto[]>([])
@@ -88,7 +90,6 @@ const DeliveriesAndHistory: React.FC = () => {
 	])
 
 	useEffect(() => {
-		console.log('this works?????????????????')
 		if (user) {
 			const getP = async () => {
 				try {
@@ -117,36 +118,46 @@ const DeliveriesAndHistory: React.FC = () => {
 		)
 	}, [repsAll])
 
-	const onClickExpand = (e: any) => {
+	const onClickExpand = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.preventDefault()
 		setShowReps(!showReps)
 	}
 
-	const onClickExpandHistory = (e: any) => {
+	const onClickExpandHistory = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.preventDefault()
 		setShowRepsHistory(!showRepsHistory)
 	}
 
-	const onClickButton1 = async (repId: number, status: string, e: any) => {
+	const onClickButton1 = async (
+		repId: number,
+		status: string,
+		e: React.MouseEvent<HTMLDivElement>
+	) => {
 		try {
 			e.preventDefault()
+			e.stopPropagation()
 			const resp =
         status === 'EN CURSO'
         	? await updatePackageStatusToOngoing(repId)
-        	: await updatePackageStatusToCancelled(repId)
+        	: await removeUserFromPackage(repId)
 			console.log(resp)
-			const repsAux: Reparto[] = repsAll.map((r) =>
-				r.id === repId ? { ...r, status: status } : r
-			)
+			const repsAux: Reparto[] =
+        status === 'EN CURSO'
+        	? repsAll.map((r) => (r.id === repId ? { ...r, status: status } : r))
+        	: repsAll.filter((rep) => rep.id != repId)
 			setRepsAll(repsAux)
 		} catch (err) {
 			console.error('Error al eliminar el usuario del paquete:', err)
 		}
 	}
 
-	const onClickButtonDelete = async (repId: number, e: any) => {
+	const onClickButtonDelete = async (
+		repId: number,
+		e: React.MouseEvent<HTMLDivElement>
+	) => {
 		try {
 			e.preventDefault()
+			e.stopPropagation()
 			const response = deletePackage(repId)
 			console.log(response)
 			const repsAux: Reparto[] = repsAll.filter((r) => r.id != repId)
@@ -183,6 +194,14 @@ const DeliveriesAndHistory: React.FC = () => {
 				}))
 			}
 		}
+	}
+
+	const handleClickPackage = (
+		e: React.MouseEvent<HTMLDivElement>,
+		repId: number
+	) => {
+		e.preventDefault()
+		if (!user.isAdmin) router.push(`/packages-selection/${repId}`)
 	}
 
 	return (
@@ -226,6 +245,7 @@ const DeliveriesAndHistory: React.FC = () => {
             	<div
             		className="mt-3 mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
             		key={rep.id}
+            		onClick={(e) => handleClickPackage(e, rep.id)}
             	>
             		<div className="flex items-center h-full w-15 justify-center">
             			<PackageIcon />
@@ -340,54 +360,52 @@ const DeliveriesAndHistory: React.FC = () => {
 					{repsHistory.length !== 0 &&
             showRepsHistory &&
             repsHistory.map((rep) => (
-            	<>
-            		<div
-            			className=" mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
-            			key={rep.id}
-            			style={{
-            				marginTop: `${rep == repsHistory[0] ? '' : '12px'}`,
-            			}}
-            		>
-            			<div className="flex items-center h-full w-15 justify-center">
-            				<PackageIcon />
-            				<div className="w-px bg-indigo-400 h-14 ml-1 mr-1"></div>
-            			</div>
-            			<div className="flex w-6/12 flex-col justify-center h-full text-xs">
-            				<h3 className="mb-1">
-            					<b>{rep.trackId}</b>
-            				</h3>
-            				<div className="w-[70%]">
-            					<p>{rep.address}</p>
-            				</div>
-            			</div>
-            			<div className="flex items-end flex-col  w-35 justify-between h-full">
-            				<div
-            					style={{
-            						fontSize: '11px',
-            						backgroundColor: `${
-            							rep.status === 'ENTREGADO' ? '#c7ffb1' : '#FFA1A1'
-            						}`,
-            					}}
-            					className={
-            						'flex justify-center w-max items-center pl-2 pr-3 mt-3 rounded-l-xl rounded-tr'
-            					}
-            				>
-            					<h4>
-            						<b>{rep.status.toUpperCase()}</b>
-            					</h4>
-            				</div>
-            				{user.isAdmin && (
-            					<div
-            						className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500"
-            						onClick={(e) => onClickButtonDelete(rep.id, e)}
-            						style={{ marginBottom: '5px' }}
-            					>
-            						<TrashIcon />
-            					</div>
-            				)}
+            	<div
+            		className=" mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
+            		key={rep.id}
+            		style={{
+            			marginTop: `${rep == repsHistory[0] ? '' : '12px'}`,
+            		}}
+            	>
+            		<div className="flex items-center h-full w-15 justify-center">
+            			<PackageIcon />
+            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-1"></div>
+            		</div>
+            		<div className="flex w-6/12 flex-col justify-center h-full text-xs">
+            			<h3 className="mb-1">
+            				<b>{rep.trackId}</b>
+            			</h3>
+            			<div className="w-[70%]">
+            				<p>{rep.address}</p>
             			</div>
             		</div>
-            	</>
+            		<div className="flex items-end flex-col  w-35 justify-between h-full">
+            			<div
+            				style={{
+            					fontSize: '11px',
+            					backgroundColor: `${
+            						rep.status === 'ENTREGADO' ? '#c7ffb1' : '#FFA1A1'
+            					}`,
+            				}}
+            				className={
+            					'flex justify-center w-max items-center pl-2 pr-3 mt-3 rounded-l-xl rounded-tr'
+            				}
+            			>
+            				<h4>
+            					<b>{rep.status.toUpperCase()}</b>
+            				</h4>
+            			</div>
+            			{user.isAdmin && (
+            				<div
+            					className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500"
+            					onClick={(e) => onClickButtonDelete(rep.id, e)}
+            					style={{ marginBottom: '5px' }}
+            				>
+            					<TrashIcon />
+            				</div>
+            			)}
+            		</div>
+            	</div>
             ))}
 				</div>
 				<div className="flex h-[0px]">
