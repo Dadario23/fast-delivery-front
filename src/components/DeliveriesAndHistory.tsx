@@ -4,21 +4,27 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
 import PackageIcon from 'assets/Package/package'
 import TrashIcon from 'assets/TrashIcon/trashIcon'
+import { useSelector } from 'react-redux'
+import { RootState } from 'state/store'
+import { useParams } from 'next/navigation'
+import { UserState } from 'types/userTypes'
+import { Reparto } from 'types/packageTypes'
+import {
+	deletePackage,
+	getUserPackages,
+	getUserPackagesByid,
+	updatePackageStatusToCancelled,
+	updatePackageStatusToOngoing,
+} from 'services/dataPackages'
 
-interface Reparto {
-	id: number;
-	code: string;
-	mainAddress: string;
-	subAddress: string;
-	status: string;
-}
-
-const DeliveriesAndHistory: React.FC<{
-	
-	repartos: object[];
-	historial: object[];
-}> = ({ repartos, historial }) => {
-	console.log(repartos, historial)
+const DeliveriesAndHistory: React.FC = () => {
+	//=====
+	const params = useParams<{ id: string }>()
+	const idParams = parseInt(params.id, 10) //id del repartidor
+	const user: UserState = useSelector<RootState, UserState>(
+		(state) => state.user
+	) //user en redux
+	//====
 	const [showReps, setShowReps] = useState<boolean>(true)
 	const [showRepsHistory, setShowRepsHistory] = useState<boolean>(true)
 	const [repsAll, setRepsAll] = useState<Reparto[]>([])
@@ -82,56 +88,31 @@ const DeliveriesAndHistory: React.FC<{
 	])
 
 	useEffect(() => {
-		const repartosInfo: Reparto[] = [
-			//fakedata
-			{
-				id: 1,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'pending',
-			},
-			{
-				id: 2,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'ongoing',
-			},
-			{
-				id: 3,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'delivered',
-			},
-			{
-				id: 4,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'delivered',
-			},
-			{
-				id: 5,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'cancelled',
-			},
-		]
-		setRepsAll(repartosInfo)
-	}, [])
+		console.log('this works?????????????????')
+		if (user) {
+			const getP = async () => {
+				try {
+					const packages = user.isAdmin
+						? await getUserPackagesByid(idParams)
+						: await getUserPackages()
+					setRepsAll(packages)
+				} catch (err) {
+					console.error('Error al obtener paquetes del usuario:', err)
+				}
+			}
+			getP()
+		}
+	}, [user?.id])
 
 	useEffect(() => {
 		setReps(
 			repsAll.filter(
-				(rep) => rep.status !== 'delivered' && rep.status !== 'cancelled'
+				(rep) => rep.status !== 'ENTREGADO' && rep.status !== 'CANCELADO'
 			)
 		)
 		setRepsHistory(
 			repsAll.filter(
-				(rep) => rep.status === 'delivered' || rep.status === 'cancelled'
+				(rep) => rep.status === 'ENTREGADO' || rep.status === 'CANCELADO'
 			)
 		)
 	}, [repsAll])
@@ -146,12 +127,33 @@ const DeliveriesAndHistory: React.FC<{
 		setShowRepsHistory(!showRepsHistory)
 	}
 
-	const onClickButton1 = (id: number, status: string, e: any) => {
-		e.preventDefault()
-		const repsAux: Reparto[] = repsAll.map((r) =>
-			r.id === id ? { ...r, status: status } : r
-		)
-		setRepsAll(repsAux)
+	const onClickButton1 = async (repId: number, status: string, e: any) => {
+		try {
+			e.preventDefault()
+			const resp =
+        status === 'EN CURSO'
+        	? await updatePackageStatusToOngoing(repId)
+        	: await updatePackageStatusToCancelled(repId)
+			console.log(resp)
+			const repsAux: Reparto[] = repsAll.map((r) =>
+				r.id === repId ? { ...r, status: status } : r
+			)
+			setRepsAll(repsAux)
+		} catch (err) {
+			console.error('Error al eliminar el usuario del paquete:', err)
+		}
+	}
+
+	const onClickButtonDelete = async (repId: number, e: any) => {
+		try {
+			e.preventDefault()
+			const response = deletePackage(repId)
+			console.log(response)
+			const repsAux: Reparto[] = repsAll.filter((r) => r.id != repId)
+			setRepsAll(repsAux)
+		} catch (err) {
+			console.error('Error al eliminar el usuario del paquete:', err)
+		}
 	}
 
 	const handleScroll = (c: string) => {
@@ -217,10 +219,12 @@ const DeliveriesAndHistory: React.FC<{
 					{!scrollPos.rt && reps.length > 0 && showReps && (
 						<div className="flex w-[78%] h-[20px]  absolute bg-gradient-to-b from-white via-rgba(255, 255, 255, 0.5) to-transparent"></div>
 					)}
-					{reps.length !== 0 && showReps && 
-          reps.map((rep) => (
-          	// eslint-disable-next-line no-mixed-spaces-and-tabs
-          	<div className="mt-3 mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
+					{reps.length !== 0 &&
+            showReps &&
+            reps.map((rep) => (
+            	// eslint-disable-next-line no-mixed-spaces-and-tabs
+            	<div
+            		className="mt-3 mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
             		key={rep.id}
             	>
             		<div className="flex items-center h-full w-15 justify-center">
@@ -229,47 +233,53 @@ const DeliveriesAndHistory: React.FC<{
             		</div>
             		<div className="flex w-6/12 flex-col justify-center h-full text-xs">
             			<h3 className="mb-1">
-            				<b>{rep.code}</b>
+            				<b>{rep.trackId}</b>
             			</h3>
-            			<p>
-            				{rep.mainAddress},
-            				<br />
-            				{rep.subAddress}
-            			</p>
+            			<div className="w-[70%]">
+            				<p>{rep.address}</p>
+            			</div>
             		</div>
-            		<div className="flex items-end flex-col  w-35 justify-around between h-full ">
+            		<div
+            			className="flex items-end flex-col  w-35  h-full "
+            			style={{
+            				justifyContent: `${!user.isAdmin ? 'space-around' : ''}`,
+            				paddingTop: `${!user.isAdmin ? '5px' : '12px'}`,
+            			}}
+            		>
             			<div
             				style={{
             					backgroundColor: `${
-            						rep.status === 'pending' ? '#aa9cfa' : '#f8e169'
+            						rep.status === 'PENDIENTE' ? '#aa9cfa' : '#f8e169'
             					}`,
             				}}
-            				className={'flex justify-center w-max items-center pl-2 pr-3 rounded-l-xl rounded-tr'}
+            				className={
+            					'flex justify-center w-max items-center pl-2 pr-3 rounded-l-xl rounded-tr'
+            				}
             			>
             				<h4 style={{ fontSize: '11px' }}>
             					<b>{rep.status.toUpperCase()}</b>
             				</h4>
             			</div>
-            			{rep.status === 'ongoing' && (
+            			{rep.status === 'EN CURSO' && !user.isAdmin && (
             				<div
             					className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500"
-            					onClick={(e) => onClickButton1(rep.id, 'cancelled', e)}
+            					onClick={(e) => onClickButton1(rep.id, 'CANCELADO', e)}
             				>
             					<TrashIcon />
             				</div>
             			)}
-            			{rep.status === 'pending' && (
+            			{rep.status === 'PENDIENTE' && !user.isAdmin && (
             				<div
             					className="flex items-center justify-center  p-1 w-16 text-indigo-700 rounded-2xl mr-2 transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500"
             					style={{ backgroundColor: '#00ea77' }}
-            					onClick={(e) => onClickButton1(rep.id, 'ongoing', e)}
+            					onClick={(e) => onClickButton1(rep.id, 'EN CURSO', e)}
             				>
             					<h4 style={{ fontSize: '12px' }}>Iniciar</h4>
             				</div>
             			)}
             		</div>
             	</div>
-          ))}
+            ))}
 				</div>
 				<div className="flex h-[0px]">
 					{!scrollPos.rb && reps.length > 0 && showReps && (
@@ -309,11 +319,11 @@ const DeliveriesAndHistory: React.FC<{
 				{showRepsHistory && repsHistory.length !== 0 && (
 					<div className="pl-2" style={{ fontSize: '13px' }}>
 						<p>
-							{repsHistory.filter((rep) => rep.status === 'delivered').length}{' '}
+							{repsHistory.filter((rep) => rep.status === 'ENTREGADO').length}{' '}
               pedidos entregados
 						</p>
 						<p>
-							{repsHistory.filter((rep) => rep.status === 'cancelled').length}{' '}
+							{repsHistory.filter((rep) => rep.status === 'CANCELADO').length}{' '}
               pedidos cancelados
 						</p>
 					</div>
@@ -344,28 +354,37 @@ const DeliveriesAndHistory: React.FC<{
             			</div>
             			<div className="flex w-6/12 flex-col justify-center h-full text-xs">
             				<h3 className="mb-1">
-            					<b>{rep.code}</b>
+            					<b>{rep.trackId}</b>
             				</h3>
-            				<p>
-            					{rep.mainAddress},
-            					<br />
-            					{rep.subAddress}
-            				</p>
+            				<div className="w-[70%]">
+            					<p>{rep.address}</p>
+            				</div>
             			</div>
             			<div className="flex items-end flex-col  w-35 justify-between h-full">
             				<div
             					style={{
             						fontSize: '11px',
             						backgroundColor: `${
-            							rep.status === 'delivered' ? '#c7ffb1' : '#FFA1A1'
+            							rep.status === 'ENTREGADO' ? '#c7ffb1' : '#FFA1A1'
             						}`,
             					}}
-            					className={'flex justify-center w-max items-center pl-2 pr-3 mt-3 rounded-l-xl rounded-tr'}
+            					className={
+            						'flex justify-center w-max items-center pl-2 pr-3 mt-3 rounded-l-xl rounded-tr'
+            					}
             				>
             					<h4>
             						<b>{rep.status.toUpperCase()}</b>
             					</h4>
             				</div>
+            				{user.isAdmin && (
+            					<div
+            						className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500"
+            						onClick={(e) => onClickButtonDelete(rep.id, e)}
+            						style={{ marginBottom: '5px' }}
+            					>
+            						<TrashIcon />
+            					</div>
+            				)}
             			</div>
             		</div>
             	</>
@@ -384,6 +403,3 @@ const DeliveriesAndHistory: React.FC<{
 	)
 }
 export default DeliveriesAndHistory
-
-
-

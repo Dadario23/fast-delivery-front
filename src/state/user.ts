@@ -1,14 +1,6 @@
 import { createAction, createReducer } from '@reduxjs/toolkit'
 
-interface UserState {
-	id: number;
-	email: string;
-	isAdmin: boolean;
-	name: string;
-	surname: string;
-	isDisabled: boolean;
-	profileImage: string;
-}
+import { UserState } from 'types/userTypes'
 
 // Definir la acción
 export const set = createAction<UserState>('SET')

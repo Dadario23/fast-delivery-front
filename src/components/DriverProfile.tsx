@@ -11,28 +11,22 @@ import { RootState } from '../state/store'
 import 'react-image-crop/dist/ReactCrop.css'
 import { setProfileImageFromAdmin, updateDriverState } from 'state/allUsers'
 import { useParams } from 'next/navigation'
-
-interface UserState {
-	id: number;
-	email: string;
-	isAdmin: boolean;
-	name: string;
-	surname: string;
-	profileImage: string;
-	isDisabled: boolean;
-}
+import { UserState } from 'types/userTypes'
 
 const DriverProfile: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const routerNav = useRouter()
 	const params = useParams<{ id: string }>()
-	const id = parseInt(params.id, 10)
+	const id = parseInt(params.id, 10) //id del repartidor
 	const [showModal, setShowModal] = useState<boolean>(false)
-
 	const users: UserState[] = useSelector<RootState, UserState[]>(
 		(state) => state.allUsers
 	) //lista de todos los usuarios
 	const user: UserState = users.filter((user) => user.id == id)[0] //usuario especifico
+	useEffect(() => {
+		if (user == undefined) routerNav.push('/delivery-drivers') //driver id invalido
+	}, [])
+
 	const [switchValue, setSwitchValue] = useState<boolean>(true)
 
 	useEffect(() => {
@@ -163,7 +157,7 @@ const DriverProfile: React.FC = () => {
 		setImagenSeleccionada(null)
 	}
 
-	if (!user)
+	if (!user) {
 		return (
 			<div className="flex w-full h-full items-center justify-center">
 				<div className="flex flex-row rounded-2xl p-4 text-white">
@@ -174,7 +168,7 @@ const DriverProfile: React.FC = () => {
 				</div>
 			</div>
 		)
-
+	}
 	return (
 		<div className="flex flex-col h-[92%] w-full mb-1 p-6 pt-2 pb-0 items-center bg-customBlue text-customBlue">
 			{' '}
@@ -314,7 +308,7 @@ const DriverProfile: React.FC = () => {
 				</div>
 			</div>
 			<div className=" w-full h-[70%] pt-0">
-				<DeliveriesAndHistory repartos={[]} historial={[]} />
+				<DeliveriesAndHistory />
 			</div>
 		</div>
 	)
