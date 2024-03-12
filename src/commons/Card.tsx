@@ -2,11 +2,10 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-// import { UserData } from "../types/userTypes";
-// import { getPackagesByUserId } from "../services/dataPackages";
+
 // import { PackageData, PackageStatus } from "types/packageTypes";
 import { percentageCalculator } from 'utils/utils'
-
+import { FaCircleUser } from 'react-icons/fa6'
 export interface Package {
 	id: number;
 	trackId?: string;
@@ -28,6 +27,7 @@ export interface Package {
 		name: string | undefined | null;
 		email: string;
 		isDisabled: boolean;
+		profileImage: string;
 	};
 	userId: number;
 	percentage: number;
@@ -46,7 +46,7 @@ const Card = ({ profile }: { profile: Package }) => {
 	return (
 		<div
 			className=" flex space-x-1 mr-2 relative"
-			onClick={() => router.push('/driver-profile')}
+			onClick={() => router.push(`/driver-profile/${profile.user.id}`)}
 		>
 			<div className="mb-2 text-[#3d1df3] font-[16px] font-semibold">
 				<div
@@ -73,41 +73,8 @@ const Card = ({ profile }: { profile: Package }) => {
 			<div className="flex flex-col pl-4 mt-3 mb-0 ">
 				<div style={{ fontSize: '14px' }} className="ml-6 mb-1 font-bold">
 					{profile.user.name ? profile.user.name : ''}
-					{/* {packages.length > 1 &&
-            packages.map((paquete, index) => (
-              <div
-                style={{
-                  backgroundColor: "#F8E169",
-                  fontWeight: "600",
-                  fontSize: "10px",
-                }}
-                key={index}
-                className="bg-[#F8E169] text-xs px-4 flex justify-center items-center pl-3 pr-3 rounded-xl"
-              >
-                {paquete.status}
-              </div>
-            ))} */}
 				</div>
-				{/* <div
-          style={{
-            backgroundColor: "#F8E169",
-            fontWeight: "600",
-            fontSize: "10px",
-          }}
-          className="bg-[#F8E169] text-xs px-4 flex justify-center items-center pl-3 pr-3 rounded-xl"
-        >
-          {profile.status}
-        </div> */}
-				{/* <div
-          style={{
-            backgroundColor: "#F8E169",
-            fontWeight: "600",
-            fontSize: "10px",
-          }}
-          className="bg-[#F8E169] text-xs px-4 flex justify-center items-center pl-3 pr-3 rounded-xl"
-        >
-     
-        </div> */}
+
 				{profile.status === 'EN CURSO' && !profile.user.isDisabled && (
 					<div
 						style={{
@@ -155,13 +122,19 @@ const Card = ({ profile }: { profile: Package }) => {
 					</div>
 				)}
 			</div>
-
-			<img
-				// src={profile.image}
-				alt="foto"
-				style={{ height: '40px', width: '40px' }}
-				className="w-[40px] h-[40px] mt-5 rounded-full absolute right-0 flex items-center "
-			/>
+			{profile.user.profileImage ? (
+				<img
+					src={profile.user.profileImage}
+					alt="foto"
+					style={{ height: '40px', width: '40px' }}
+					className="w-[40px] h-[40px] mt-5 rounded-full absolute right-0 flex items-center "
+				/>
+			) : (
+				<FaCircleUser
+					style={{ height: '40px', width: '40px' }}
+					className="w-[40px] h-[40px] mt-5 rounded-full absolute right-0 flex items-center "
+				/>
+			)}
 		</div>
 	)
 }

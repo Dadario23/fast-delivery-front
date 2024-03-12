@@ -43,7 +43,7 @@ const Affidavit = () => {
 				await router.push('/')
 			} else {
 				postAffidavit({ drunk, consumedPsychot, depressed })
-				router.push('home')
+				router.push('/home')
 			}
 		} else {
 			alert('Por favor seleccione todas las opciones.')

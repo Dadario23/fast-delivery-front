@@ -7,11 +7,13 @@ import ArrowDown from 'assets/ArrowDown/arrowDown'
 import 'tailwindcss/tailwind.css'
 import { useRouter } from 'next/navigation'
 import { getAllPackages } from 'services/dataPackages'
+import { deletePackage } from 'services/dataPackages'
 
 interface Package {
 	id: number;
 	trackId: number;
 	address: string;
+	status: string
 }
 
 const PackagesOffice: React.FC = () => {
@@ -23,13 +25,29 @@ const PackagesOffice: React.FC = () => {
 		const fetchPackages = async () => {
 			try {
 				const data = await getAllPackages()
-				setPackages(data)
+				const filteredPackages = data.filter(
+					(packageItem) => packageItem.status === 'CANCELADO'
+				) //DA ESTE ERROR PERO FUNCIONA IGUAL
+				setPackages(filteredPackages)
 			} catch (error) {
 				console.error('Error al obtener los paquetes:', error)
-			} 
+			}
 		}
 		fetchPackages()
 	}, [])
+
+	const handleDeletePackage = async (packageId: number) => {
+		try {
+			await deletePackage(packageId)
+			const updatedPackages = packages.filter((packageItem) => packageItem.id !== packageId)
+			setPackages(updatedPackages)
+		} catch (error) {
+			console.error('Error al eliminar el paquete:', error)
+		}
+	}
+
+
+
 
 	const handleClickNext = () => {
 		if (firstPackageIndex + 4 < packages.length) {
@@ -68,7 +86,7 @@ const PackagesOffice: React.FC = () => {
 							<div className="absolute ml-[-1px] mt-[20px]">
 								<PackageIcon />
 							</div>
-							<div className="absolute ml-[15rem] mt-[32px]">
+							<div className="absolute ml-[15rem] mt-[32px]"  onClick={() => handleDeletePackage(packageItem.id)}>
 								<TrashIcon />
 							</div>
 							<div className="absolute text-[#3d1df3] text-[12px] font-semibold ml-[50px] mt-[15px]">
