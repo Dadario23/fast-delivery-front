@@ -211,4 +211,4 @@ const RepartoEnCurso: React.FC = () => {
   
 };
 
-export default RepartoEnCurso;
+export default RepartoEnCurso

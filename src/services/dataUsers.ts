@@ -3,12 +3,15 @@ import axios, { AxiosResponse } from 'axios'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
+const authAxios = axios.create({
+	//
+	baseURL: API_URL,
+	withCredentials: true,
+})
+
 export const getUser = async () => {
 	try {
-		const response: AxiosResponse = await axios.get(`${API_URL}/api/users/`, {
-			withCredentials: true,
-		})
-
+		const response: AxiosResponse = await authAxios.get('/api/users/')
 		return response.data
 	} catch (error) {
 		console.error('Error al obtener los usuarios:', error)
@@ -18,11 +21,9 @@ export const getUser = async () => {
 
 export const updateUser = async () => {
 	try {
-		const response: AxiosResponse = await axios.put(
-			`${API_URL}/api/users/update`,
-			{
-				withCredentials: true,
-			}
+		const response: AxiosResponse = await authAxios.put(
+			'/api/users/update',
+			null
 		)
 		console.log('updateUsers---->', response)
 		return response.data
