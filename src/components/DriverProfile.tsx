@@ -183,13 +183,6 @@ const DriverProfile: React.FC = () => {
 	}
 	return (
 		<div className="flex flex-col h-[92%] w-full mb-1 p-6 pt-2 pb-0 items-center bg-customBlue text-customBlue">
-			{/* {" "}
-      {showModal && (
-        <div
-          className="flex  absolute w-[100%] h-[100%] z-10 "
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-        />
-      )} */}
 			<div
 				className="flex relative flex-col w-full  items-center text-indigo-700 m-2 rounded-2xl"
 				style={{ backgroundColor: '#c7ffb1' }}
@@ -348,7 +341,7 @@ const DriverProfile: React.FC = () => {
 					</div>
 				</div>
 			</div>
-			<div className=" w-full h-[70%] pt-0">
+			<div className=" w-full h-[70%] pt-0 pb-4">
 				<DeliveriesAndHistory />
 			</div>
 		</div>

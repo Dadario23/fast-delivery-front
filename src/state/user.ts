@@ -9,6 +9,8 @@ export const setProfileImage = createAction<{
 	profileImage: string;
 }>('SET-PROFILE-IMAGE')
 
+export const clear = createAction<null>('CLEAR')
+
 // Definir el estado inicial
 
 const initialState: UserState = {
@@ -28,6 +30,9 @@ const userReducer = createReducer(initialState, (builder) => {
 	})
 	builder.addCase(setProfileImage, (state, action) => {
 		return { ...state, ...action.payload }
+	})
+	builder.addCase(clear, () => {
+		return { ...initialState }
 	})
 })
 
