@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse, AxiosError } from 'axios'
 import { UserLogin, UserRegister } from 'types/userTypes'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -88,17 +88,25 @@ export const mailForgotPassword = async (email: string) => {
 }
 
 export const mailResetPassword = async (token: string, newPassword: string) => {
-	try {
-		const response: AxiosResponse = await axios.post(
-			`${API_URL}/api/users/reset-password`,
-			{
-				token,
-				newPassword,
-			}
-		)
-		return response.data
-	} catch (error) {
-		console.error(error)
-		throw error
-	}
-}
+  try {
+    const response: AxiosResponse = await axios.post(`${API_URL}/api/users/reset-password`, {
+      token,
+      newPassword,
+    });
+    return response.data; 
+  } catch (error) {
+		if (axios.isAxiosError(error as AxiosError)) { 
+      const axiosError = error as AxiosError; 
+      if (axiosError.response) {
+        throw new Error(`Error ${axiosError.response.status}: ${axiosError.response.data}`);
+      } else if (axiosError.request) {
+        throw new Error('No se recibió respuesta del servidor. Por favor, verifica tu conexión.');
+      } else {
+        throw new Error('Hubo un error al realizar la solicitud.');
+      }
+    } else {
+      console.error(error)
+      throw error;
+    }
+  }
+};

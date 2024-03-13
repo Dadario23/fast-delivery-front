@@ -1,16 +1,85 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import iconPlus from "../assets/plus-icon.svg";
 import avatarIcon from "../assets/avatar-icon.svg";
 import avatarIcon2 from "../assets/avatar-icon2.svg";
 import avatarBlueIcon from "../assets/avatar-blue-icon.svg";
-import progressCircle from "../assets/progress-circle.svg";
-import progressCircle2 from "../assets/progress-circle-2.svg";
 import { BiCaretDown } from "react-icons/bi";
 import { useRouter } from "next/navigation";
-const CardDetailsCourier = () => {
+import { getUsers } from "services/dataUsers";
+import { getAllPackages } from "services/dataPackages";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
+interface Props {
+  selectedDate: Date;
+}
+
+interface User {
+  isDisabled: boolean;
+}
+
+interface Package {
+  status: string;
+}
+
+const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
+  const [enabledDriversCount, setEnabledDriversCount] = useState(0);
+  const [totalDriversCount, setTotalDriversCount] = useState(0);
+  const [deliveredPackagesCount, setDeliveredPackagesCount] = useState(0);
+  const [totalPackagesCount, setTotalPackagesCount] = useState(0);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allUsers: User[] = await getUsers();
+        const enabledDrivers = allUsers.filter((user) => !user.isDisabled);
+        setEnabledDriversCount(enabledDrivers.length);
+        setTotalDriversCount(allUsers.length);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allPackages: Package[] = await getAllPackages();
+        const deliveredPackages = allPackages.filter(
+          (pkg) => pkg.status === "delivered"
+        );
+        setDeliveredPackagesCount(deliveredPackages.length);
+        setTotalPackagesCount(allPackages.length);
+      } catch (error) {
+        console.error("Error fetching packages:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const formatDate = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  // Calcular el porcentaje de conductores habilitados
+  const driversPercentage =
+    totalDriversCount > 0 ? (enabledDriversCount / totalDriversCount) * 100 : 0;
+
+  // Calcular el porcentaje de paquetes entregados
+  const packagesPercentage =
+    totalPackagesCount > 0
+      ? (deliveredPackagesCount / totalPackagesCount) * 100
+      : 0;
+
   return (
     <>
       <div className="absolute w-[270px] h-[240px] top-[306px] left-[45px] rounded-[10px] border-[0.5px] border-solid border-[#3D1DF3] z-40"></div>
@@ -18,34 +87,47 @@ const CardDetailsCourier = () => {
         Detalles
       </span>
       <span
-        className="absolute w-[60px] h-[15px] top-[316px] left-[227px] text-[14px] leading-[15px] font-normal text-[#3D1DF3] z-40"
+        className="absolute w-[60px] h-[15px] top-[316px] left-[209px] text-[14px] leading-[15px] font-normal text-[#3D1DF3] z-40"
         onClick={() => router.push("/packages-office")}
       >
-        03/01/23
+        {formatDate(selectedDate)}
       </span>
       <BiCaretDown className="absolute w-[18px] h-[18px] top-[314px] left-[290px] text-[#3D1DF3] z-40" />
       <hr className="absolute w-[250px] h-[0.5px] top-[336px] left-[55px] border-t border-gray-400  opacity-50 z-40" />
-      <Image
-        src={progressCircle}
-        alt=""
-        className="absolute w-[71px] h-[71px] top-[351px] left-[55px] rounded-[71px] z-40"
-      />
-      <span className="absolute w-[33px] top-[375px] left-[75px] font-semibold text-[16px] text-[#3D1DF3] z-40">
-        20%
-      </span>
-      <Image
-        src={progressCircle2}
-        alt=""
-        className="absolute w-[71px] h-[71px] top-[456px] left-[55px] rounded-[71px] z-40"
-      />
-      <span className="absolute w-[33px] top-[480px] left-[75px] font-semibold text-[16px] text-[#3D1DF3] z-40">
-        80%
-      </span>
+      <div className="absolute w-[270px] h-[240px] top-[306px] left-[45px] rounded-[10px] border-[0.5px] border-solid border-[#3D1DF3] z-40"></div>
+
+      <div className="absolute w-[71px] h-[71px] top-[351px] left-[55px] z-40">
+        <CircularProgressbar
+          value={driversPercentage}
+          text={`${Math.round(driversPercentage)}%`}
+          className="rounded-full"
+          styles={{
+            path: {
+              // Especifica el color de la barra de progreso
+              stroke: "rgba(0, 234, 119, 1)",
+            },
+          }}
+        />
+      </div>
+
+      <div className="absolute w-[71px] h-[71px] top-[456px] left-[55px] z-40">
+        <CircularProgressbar
+          value={packagesPercentage}
+          text={`${Math.round(packagesPercentage)}%`}
+          className="rounded-full"
+          styles={{
+            path: {
+              // Especifica el color de la barra de progreso
+              stroke: "rgba(0, 234, 119, 1)",
+            },
+          }}
+        />
+      </div>
       <span className="absolute w-[94px] h-[15px] top-[351px] left-[141px] font-bold leading-[15px] text-[14px] text-[#3D1DF3] z-40">
         Repartidores
       </span>
       <span className="absolute w-[96px] h-[15px] top-[371px] left-[141px] font-normal leading-[15px] text-[12px] text-[#3D1DF3] z-40">
-        2/10 Habilitados
+        {enabledDriversCount}/{totalDriversCount} Habilitados
       </span>
 
       <Image
@@ -67,7 +149,7 @@ const CardDetailsCourier = () => {
         Ver
       </span>
       <span className="absolute w-[100px] h-[15px] top-[476px] left-[141px] font-normal leading-[15px] text-[12px] text-[#3D1DF3] z-40 whitespace-nowrap">
-        16/20 Repartidores
+        {deliveredPackagesCount}/{totalPackagesCount} Entregados
       </span>
       <Image
         className="absolute w-[25px] h-[25px] top-[501px] left-[141px] z-40"

@@ -4,7 +4,7 @@ import Image from "next/image";
 const CardAdmin = () => {
   return (
     <>
-      <div className="absolute w-[300px] h-[495px] top-[120px] left-[30px] border rounded-[10px] bg-[#FFFFFF] z-20"></div>
+      <div className="absolute w-[300px] h-[495px] top-[120px] left-[30px] border rounded-[10px] bg-[#FFFFFF] z-0"></div>
       <div className="absolute top-[135px] left-[45px] z-20">
         <Image
           className="w-[57px] h-[57px] inline-block rounded-full ring-2 ring-white"
