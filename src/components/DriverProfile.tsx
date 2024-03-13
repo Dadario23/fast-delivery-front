@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FaCircleUser } from 'react-icons/fa6'
 import { Spin, Switch } from 'antd'
 import BackIcon from 'assets/BackIcon/back-icon'
+import { IoIosCloseCircle } from 'react-icons/io'
 import DeliveriesAndHistory from './DeliveriesAndHistory'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -11,35 +12,34 @@ import { RootState } from '../state/store'
 import 'react-image-crop/dist/ReactCrop.css'
 import { setProfileImageFromAdmin, updateDriverState } from 'state/allUsers'
 import { useParams } from 'next/navigation'
-
-interface UserState {
-	id: number;
-	email: string;
-	isAdmin: boolean;
-	name: string;
-	surname: string;
-	profileImage: string;
-	isDisabled: boolean;
-}
+import { UserState } from 'types/userTypes'
+import compressImage from 'utils/compressImage'
 
 const DriverProfile: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const routerNav = useRouter()
 	const params = useParams<{ id: string }>()
-	const id = parseInt(params.id, 10)
+	const id = parseInt(params.id, 10) //id del repartidor
 	const [showModal, setShowModal] = useState<boolean>(false)
-
+	const [user, setUser] = useState<UserState>()
 	const users: UserState[] = useSelector<RootState, UserState[]>(
 		(state) => state.allUsers
 	) //lista de todos los usuarios
-	const user: UserState = users.filter((user) => user.id == id)[0] //usuario especifico
+	// const user: UserState = users.filter((user) => user.id == id)[0]; //usuario especifico
+	useEffect(() => {
+		if (users.length > 0) {
+			const temp = users.find((u) => u.id === id)
+			if (temp == undefined) routerNav.push('/delivery-drivers')
+			setUser(temp)
+		}
+	}, [users, id])
+
 	const [switchValue, setSwitchValue] = useState<boolean>(true)
 
 	useEffect(() => {
 		if (user) setSwitchValue(!user.isDisabled)
 	}, [user?.isDisabled])
 
-	console.log(user)
 	const dispatch = useDispatch()
 	const [imagenSeleccionada, setImagenSeleccionada] = useState<File | null>(
 		null
@@ -47,37 +47,43 @@ const DriverProfile: React.FC = () => {
 	const inputElement = useRef<HTMLInputElement>(null)
 	const [base64Imagen, setBase64Imagen] = useState<string>('')
 	const [error, setError] = useState<string | null>(null)
-	const manejarSeleccionDeImagen = (event: any) => {
+
+	const manejarSeleccionDeImagen = async (event: any) => {
 		setError(null)
 
 		if (event.target.files && event.target.files.length > 0) {
-			const imagenSeleccionada = event.target.files[0]
+			const imagenSeleccionada2 = event.target.files[0]
 
-			const tiposDeImagenPermitidos = [
-				'image/jpeg',
-				'image/jpg',
-				'image/png',
-				'image/gif',
-			]
+			console.log('imagen original: ', imagenSeleccionada2)
+			const tiposDeImagenPermitidos = ['image/jpeg', 'image/jpg', 'image/png']
 
-			if (!tiposDeImagenPermitidos.includes(imagenSeleccionada.type)) {
+			if (!tiposDeImagenPermitidos.includes(imagenSeleccionada2.type)) {
 				setError(
-					'Formato de imagen no válido. Por favor, selecciona una imagen en formato JPEG, PNG o GIF.'
+					'Formato de imagen no válido. Por favor, selecciona una imagen en formato JPG, JPEG, PNG'
 				)
 			} else {
-				const limiteDeTamañoEnBytes = 40 * 1024 // 1 MB
-				if (imagenSeleccionada.size > limiteDeTamañoEnBytes) {
+				const limiteDeTamañoEnBytes = 1 * 1024 * 1024 // 1 MB
+				if (imagenSeleccionada2.size > limiteDeTamañoEnBytes) {
 					setError(
-						'La imagen seleccionada supera el límite de tamaño permitido(máx 40KB).'
+						'La imagen seleccionada supera el límite de peso permitido(máx 1mb).'
 					)
 				} else {
-					setImagenSeleccionada(imagenSeleccionada)
-
-					const reader = new FileReader()
-					reader.onloadend = () => {
-						setBase64Imagen(reader.result as string)
+					try {
+						const ci = await compressImage(imagenSeleccionada2, {})
+						console.log('Imagen comprimida: ', ci)
+						console.log('Imagen Original: ', imagenSeleccionada2)
+						setImagenSeleccionada(ci)
+						const reader = new FileReader()
+						reader.onloadend = () => {
+							setBase64Imagen(reader.result as string)
+						}
+						reader.readAsDataURL(ci)
+					} catch (error) {
+						setError('Ocurrió un error...')
+						console.error(error)
 					}
-					reader.readAsDataURL(imagenSeleccionada)
+
+					//
 				}
 			}
 		}
@@ -163,7 +169,7 @@ const DriverProfile: React.FC = () => {
 		setImagenSeleccionada(null)
 	}
 
-	if (!user)
+	if (!user) {
 		return (
 			<div className="flex w-full h-full items-center justify-center">
 				<div className="flex flex-row rounded-2xl p-4 text-white">
@@ -174,16 +180,16 @@ const DriverProfile: React.FC = () => {
 				</div>
 			</div>
 		)
-
+	}
 	return (
 		<div className="flex flex-col h-[92%] w-full mb-1 p-6 pt-2 pb-0 items-center bg-customBlue text-customBlue">
-			{' '}
-			{showModal && (
-				<div
-					className="flex  absolute w-[100%] h-[100%] z-10 "
-					style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-				/>
-			)}
+			{/* {" "}
+      {showModal && (
+        <div
+          className="flex  absolute w-[100%] h-[100%] z-10 "
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        />
+      )} */}
 			<div
 				className="flex relative flex-col w-full  items-center text-indigo-700 m-2 rounded-2xl"
 				style={{ backgroundColor: '#c7ffb1' }}
@@ -204,31 +210,46 @@ const DriverProfile: React.FC = () => {
 					<div className="flex flex-row w-full items-center justify-start">
 						{showModal && (
 							<div
-								className="flex flex-col absolute z-20 flex-col w-[89%] top-4 rounded-2xl"
-								style={{ backgroundColor: 'white' }}
+								className="flex flex-col absolute z-20 flex-col w-[89%] top-4 rounded-2xl "
+								style={{
+									backgroundColor: 'white',
+									boxShadow: '0 0px 30px 30px rgba(0, 0, 0, 0.3)',
+								}}
 							>
-								<div className="relative flex w-full items-center justify-center ">
+								<div className="relative flex w-full items-center justify-center p-4">
 									{user.profileImage != '' && !imagenSeleccionada ? (
 										<img
 											src={user.profileImage}
-											style={{ maxHeight: '490px' }}
+											style={{ maxHeight: '490px', borderRadius: '10px' }}
 										/>
 									) : imagenSeleccionada != null ? (
 										<img
 											src={URL.createObjectURL(imagenSeleccionada)}
 											alt="Vista previa de la imagen seleccionada"
-											style={{ maxHeight: '490px', padding: '5px' }}
+											style={{
+												maxHeight: '490px',
+												padding: '5px',
+												borderRadius: '10px',
+											}}
 										/>
 									) : (
-										<FaCircleUser style={{ fontSize: '300px' }} />
+										<FaCircleUser style={{ fontSize: '200px' }} />
 									)}
 
 									<div className="flex w-[100%] h-[100%] flex-row absolute items-start justify-end p-2">
-										<div onClick={handleClickClosePhoto}>❌</div>
+										<div onClick={handleClickClosePhoto}>
+											<IoIosCloseCircle
+												style={{
+													color: 'red',
+													fontSize: '30px',
+													opacity: '0.7',
+												}}
+											/>
+										</div>
 									</div>
 								</div>
-								<div className="flex flex-row w-[100%]">
-									<div className="flex items-center justify-center w-[50%]">
+								<div className="flex flex-row w-[100%] justify-between">
+									<div className="flex items-center justify-center w-[100%]">
 										<input
 											type="file"
 											accept="image/*"
@@ -236,25 +257,34 @@ const DriverProfile: React.FC = () => {
 											style={{ display: 'none' }}
 											ref={inputElement}
 										/>
-										{!imagenSeleccionada ? (
-											<button
-												onClick={
-													() =>
-														inputElement.current && inputElement.current.click() //esto hace la magia :v
-												}
-											>
-                        Cargar
-											</button>
-										) : (
-											<button onClick={handleClickSaveImage}>Guardar</button>
-										)}
+										<div
+											className="flex items-center  w-[80px] justify-center  p-1 text-indigo-700 rounded-2xl  transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500 m-3"
+											style={{ backgroundColor: '#00ea77' }}
+										>
+											{!imagenSeleccionada ? (
+												<button
+													onClick={
+														() =>
+															inputElement.current &&
+                              inputElement.current.click() //esto hace la magia :v
+													}
+												>
+                          Cargar
+												</button>
+											) : (
+												<button onClick={handleClickSaveImage}>Guardar</button>
+											)}
+										</div>
 									</div>
 									{user.profileImage != '' && (
-										<div
-											className="flex items-center justify-center w-[50%]"
-											onClick={removeImage}
-										>
-                      remover
+										<div className="flex w-[100%]">
+											<div
+												className="flex items-center w-[90px] justify-center  p-1 text-indigo-700 rounded-2xl  transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500 m-3"
+												style={{ backgroundColor: '#ffa1a1' }}
+												onClick={removeImage}
+											>
+                        remover
+											</div>
 										</div>
 									)}
 								</div>
@@ -268,7 +298,12 @@ const DriverProfile: React.FC = () => {
 						<div
 							onClick={handleClickOpenPhoto}
 							className="w-[60px] h-[60px] overflow-hidden flex items-center  justify-center"
-							style={{ borderRadius: '50px' }}
+							style={{
+								borderRadius: '50px',
+								backgroundColor: `${
+									user && user.profileImage != '' ? '#bbbbbb' : ''
+								}`,
+							}}
 						>
 							{user && user.profileImage != '' ? (
 								<img
@@ -284,7 +319,7 @@ const DriverProfile: React.FC = () => {
 						</div>
 						<div className="flex flex-col ml-4" style={{ fontSize: '14px' }}>
 							<h2>
-								<b>{user && user.name}</b>
+								<b>{user && `${user.name} ${user.surname}`}</b>
 							</h2>
 							<div
 								style={{
@@ -314,7 +349,7 @@ const DriverProfile: React.FC = () => {
 				</div>
 			</div>
 			<div className=" w-full h-[70%] pt-0">
-				<DeliveriesAndHistory repartos={[]} historial={[]} />
+				<DeliveriesAndHistory />
 			</div>
 		</div>
 	)
