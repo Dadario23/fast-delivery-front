@@ -26,3 +26,17 @@ export interface PackageData {
 	};
 	userId: number;
 }
+
+export interface Reparto {
+	id: number;
+	code: string;
+	address: string;
+	client: string;
+	createdAt: string;
+	date: string;
+	trackId: string;
+	updatedAt: string;
+	userId: number;
+	weight: number;
+	status: string;
+}

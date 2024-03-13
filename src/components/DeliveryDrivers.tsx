@@ -5,9 +5,6 @@ import DateSquare from "assets/DateSquare/DateSquare";
 import Card from "commons/Card";
 import MoreArrow from "assets/moreArrow";
 import { useRouter } from "next/navigation";
-// import { getUser } from "../services/dataUsers";
-// import { UserData } from "../types/userTypes";
-// import { PackageData } from "types/packageTypes";
 import { getAllPackages } from "services/dataPackages";
 
 export interface Package {
@@ -31,6 +28,7 @@ export interface Package {
     name: string;
     email: string;
     isDisabled: boolean;
+    profileImage: string;
   };
   userId: number;
   percentage: number;
@@ -41,6 +39,7 @@ interface LastPackagesByUser {
   [userId: number]: Package;
 }
 type PackagesByUser = { [user: string]: number };
+
 const DeliveryDrivers = () => {
   const [firstUserIndex, setFirstUserIndex] = useState<number>(0);
   const [ongoingPackage, setOngoingPackage] = useState<Package[]>([]);
@@ -104,8 +103,6 @@ const DeliveryDrivers = () => {
           );
           const lastPackagesArray = Object.values(lastPackages);
 
-          console.log("Últimos paquetes para cada usuario:", lastPackagesArray);
-
           setOngoingPackage(lastPackagesArray);
         } else {
           setOngoingPackage(data);
@@ -116,8 +113,9 @@ const DeliveryDrivers = () => {
     };
     fetchPackages();
   }, []);
+
   const handleClickNext = () => {
-    if (firstUserIndex + 4 < ongoingPackage.length) {
+    if (firstUserIndex + 4 <= ongoingPackage.length) {
       setFirstUserIndex((prevIndex) => prevIndex + 4);
     } else {
       setFirstUserIndex(0);
@@ -125,10 +123,10 @@ const DeliveryDrivers = () => {
   };
 
   const visibleUsers = ongoingPackage.slice(firstUserIndex, firstUserIndex + 4);
-  console.log("ASI QUEDA ONGOINPAGA", ongoingPackage);
+
   const router = useRouter();
   return (
-    <div className="flex items-center justify-center flex-wrap text-[#3d1df3] rounded-xl mx-[30px] mt-[20px] mb-[60px] bg-[#C7FFB1] relative ">
+    <div className="flex items-center justify-center flex-wrap text-[#3d1df3] rounded-xl mx-[30px] mt-[10px] mt-[20px] mb-[60px] bg-[#C7FFB1] relative ">
       <div className="w-full h-[50px] pl-0 flex items-center font-bold rounded-t-xl ">
         <div className="ml-3" onClick={() => router.back()}>
           <BackIcon />

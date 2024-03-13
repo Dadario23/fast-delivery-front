@@ -4,21 +4,29 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
 import PackageIcon from 'assets/Package/package'
 import TrashIcon from 'assets/TrashIcon/trashIcon'
+import { useSelector } from 'react-redux'
+import { RootState } from 'state/store'
+import { useParams } from 'next/navigation'
+import { UserState } from 'types/userTypes'
+import { Reparto } from 'types/packageTypes'
+import { useRouter } from 'next/navigation'
+import {
+	deletePackage,
+	getUserPackages,
+	getUserPackagesByid,
+	removeUserFromPackage,
+	updatePackageStatusToOngoing,
+} from 'services/dataPackages'
 
-interface Reparto {
-	id: number;
-	code: string;
-	mainAddress: string;
-	subAddress: string;
-	status: string;
-}
-
-const DeliveriesAndHistory: React.FC<{
-	
-	repartos: object[];
-	historial: object[];
-}> = ({ repartos, historial }) => {
-	console.log(repartos, historial)
+const DeliveriesAndHistory: React.FC = () => {
+	//=====
+	const params = useParams<{ id: string }>()
+	const idParams = parseInt(params.id, 10) //id del repartidor
+	const user: UserState = useSelector<RootState, UserState>(
+		(state) => state.user
+	) //user en redux
+	//====
+	const router = useRouter()
 	const [showReps, setShowReps] = useState<boolean>(true)
 	const [showRepsHistory, setShowRepsHistory] = useState<boolean>(true)
 	const [repsAll, setRepsAll] = useState<Reparto[]>([])
@@ -82,76 +90,92 @@ const DeliveriesAndHistory: React.FC<{
 	])
 
 	useEffect(() => {
-		const repartosInfo: Reparto[] = [
-			//fakedata
-			{
-				id: 1,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'pending',
-			},
-			{
-				id: 2,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'ongoing',
-			},
-			{
-				id: 3,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'delivered',
-			},
-			{
-				id: 4,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'delivered',
-			},
-			{
-				id: 5,
-				code: '#023D',
-				mainAddress: 'Amenabar 2100',
-				subAddress: 'CABA',
-				status: 'cancelled',
-			},
-		]
-		setRepsAll(repartosInfo)
-	}, [])
+		if (user) {
+			const getP = async () => {
+				try {
+					const packages = user.isAdmin
+						? await getUserPackagesByid(idParams)
+						: await getUserPackages()
+					setRepsAll(packages)
+				} catch (err) {
+					console.error('Error al obtener paquetes del usuario:', err)
+				}
+			}
+			getP()
+		}
+	}, [user?.id])
 
 	useEffect(() => {
 		setReps(
 			repsAll.filter(
-				(rep) => rep.status !== 'delivered' && rep.status !== 'cancelled'
+				(rep) => rep.status !== 'ENTREGADO' && rep.status !== 'CANCELADO'
 			)
 		)
 		setRepsHistory(
 			repsAll.filter(
-				(rep) => rep.status === 'delivered' || rep.status === 'cancelled'
+				(rep) => rep.status === 'ENTREGADO' || rep.status === 'CANCELADO'
 			)
 		)
 	}, [repsAll])
 
-	const onClickExpand = (e: any) => {
+	const onClickExpand = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.preventDefault()
 		setShowReps(!showReps)
 	}
 
-	const onClickExpandHistory = (e: any) => {
+	const onClickExpandHistory = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.preventDefault()
 		setShowRepsHistory(!showRepsHistory)
 	}
 
-	const onClickButton1 = (id: number, status: string, e: any) => {
-		e.preventDefault()
-		const repsAux: Reparto[] = repsAll.map((r) =>
-			r.id === id ? { ...r, status: status } : r
-		)
-		setRepsAll(repsAux)
+	const onClickButtonStart = async (
+		repId: number,
+		e: React.MouseEvent<HTMLDivElement>
+	) => {
+		try {
+			e.preventDefault()
+			e.stopPropagation()
+			const resp = await updatePackageStatusToOngoing(repId)
+			console.log(resp)
+			const repsAux: Reparto[] = repsAll.map((r) =>
+				r.id === repId ? { ...r, status: 'EN CURSO' } : r
+			)
+			setRepsAll(repsAux)
+		} catch (err) {
+			console.error('Error al iniciar del paquete:', err)
+		}
+	}
+
+	const onClickButtonRemove = async (
+		repId: number,
+		e: React.MouseEvent<HTMLDivElement>
+	) => {
+		try {
+			e.preventDefault()
+			e.stopPropagation()
+			const resp = await removeUserFromPackage(repId)
+			console.log(resp)
+			const repsAux: Reparto[] = repsAll.filter((rep) => rep.id != repId)
+			setRepsAll(repsAux)
+		} catch (err) {
+			console.error('Error al remover el paquete asignado:', err)
+		}
+	}
+
+	const onClickButtonDelete = async (
+		repId: number,
+		e: React.MouseEvent<HTMLDivElement>
+	) => {
+		try {
+			e.preventDefault()
+			e.stopPropagation()
+			const response = deletePackage(repId)
+			console.log(response)
+			const repsAux: Reparto[] = repsAll.filter((r) => r.id != repId)
+			setRepsAll(repsAux)
+		} catch (err) {
+			console.error('Error al eliminar el usuario del paquete:', err)
+		}
 	}
 
 	const handleScroll = (c: string) => {
@@ -181,6 +205,14 @@ const DeliveriesAndHistory: React.FC<{
 				}))
 			}
 		}
+	}
+
+	const handleClickPackage = (
+		e: React.MouseEvent<HTMLDivElement>,
+		repId: number
+	) => {
+		e.preventDefault()
+		if (!user.isAdmin) router.push(`/packages-selection/${repId}`)
 	}
 
 	return (
@@ -217,59 +249,71 @@ const DeliveriesAndHistory: React.FC<{
 					{!scrollPos.rt && reps.length > 0 && showReps && (
 						<div className="flex w-[78%] h-[20px]  absolute bg-gradient-to-b from-white via-rgba(255, 255, 255, 0.5) to-transparent"></div>
 					)}
-					{reps.length !== 0 && showReps && 
-          reps.map((rep) => (
-          	// eslint-disable-next-line no-mixed-spaces-and-tabs
-          	<div className="mt-3 mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
+					{reps.length !== 0 &&
+            showReps &&
+            reps.map((rep) => (
+            	// eslint-disable-next-line no-mixed-spaces-and-tabs
+            	<div
+            		className="mt-3 mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
             		key={rep.id}
+            		onClick={(e) => handleClickPackage(e, rep.id)}
             	>
             		<div className="flex items-center h-full w-15 justify-center">
             			<PackageIcon />
-            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-1"></div>
+            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-2"></div>
             		</div>
-            		<div className="flex w-6/12 flex-col justify-center h-full text-xs">
+            		<div className="flex flex-col items-left justify-center h-full text-xs">
             			<h3 className="mb-1">
-            				<b>{rep.code}</b>
+            				<b>{rep.trackId}</b>
             			</h3>
-            			<p>
-            				{rep.mainAddress},
-            				<br />
-            				{rep.subAddress}
-            			</p>
+            			<div className="w-[70%]">
+            				<p>{rep.address}</p>
+            			</div>
             		</div>
-            		<div className="flex items-end flex-col  w-35 justify-around between h-full ">
+            		<div
+            			className="flex items-end flex-col  w-[35%]  h-full "
+            			style={{
+            				justifyContent: `${!user.isAdmin ? 'space-around' : ''}`,
+            				paddingTop: `${!user.isAdmin ? '5px' : '12px'}`,
+            			}}
+            		>
             			<div
             				style={{
             					backgroundColor: `${
-            						rep.status === 'pending' ? '#aa9cfa' : '#f8e169'
+            						rep.status === 'PENDIENTE' ? '#aa9cfa' : '#f8e169'
             					}`,
             				}}
-            				className={'flex justify-center w-max items-center pl-2 pr-3 rounded-l-xl rounded-tr'}
+            				className={
+            					'flex justify-center w-max items-center pl-2 pr-3 rounded-l-xl rounded-tr'
+            				}
             			>
             				<h4 style={{ fontSize: '11px' }}>
             					<b>{rep.status.toUpperCase()}</b>
             				</h4>
             			</div>
-            			{rep.status === 'ongoing' && (
-            				<div
-            					className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500"
-            					onClick={(e) => onClickButton1(rep.id, 'cancelled', e)}
-            				>
-            					<TrashIcon />
-            				</div>
-            			)}
-            			{rep.status === 'pending' && (
-            				<div
-            					className="flex items-center justify-center  p-1 w-16 text-indigo-700 rounded-2xl mr-2 transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500"
-            					style={{ backgroundColor: '#00ea77' }}
-            					onClick={(e) => onClickButton1(rep.id, 'ongoing', e)}
-            				>
-            					<h4 style={{ fontSize: '12px' }}>Iniciar</h4>
-            				</div>
-            			)}
+
+            			<div className="flex ">
+            				{rep.status === 'PENDIENTE' && !user.isAdmin && (
+            					<div
+            						className="flex items-center justify-center  p-1 w-16 text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 active:bg-gray-500"
+            						style={{ backgroundColor: '#00ea77' }}
+            						onClick={(e) => onClickButtonStart(rep.id, e)}
+            					>
+            						<h4 style={{ fontSize: '12px' }}>Iniciar</h4>
+            					</div>
+            				)}
+            				{!user.isAdmin && (
+            					<div
+            						className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-1 active:bg-gray-500"
+            						onClick={(e) => onClickButtonRemove(rep.id, e)}
+            					>
+            						<TrashIcon />
+            					</div>
+            				)}
+            			</div>
             		</div>
             	</div>
-          ))}
+            ))}
 				</div>
 				<div className="flex h-[0px]">
 					{!scrollPos.rb && reps.length > 0 && showReps && (
@@ -309,11 +353,11 @@ const DeliveriesAndHistory: React.FC<{
 				{showRepsHistory && repsHistory.length !== 0 && (
 					<div className="pl-2" style={{ fontSize: '13px' }}>
 						<p>
-							{repsHistory.filter((rep) => rep.status === 'delivered').length}{' '}
+							{repsHistory.filter((rep) => rep.status === 'ENTREGADO').length}{' '}
               pedidos entregados
 						</p>
 						<p>
-							{repsHistory.filter((rep) => rep.status === 'cancelled').length}{' '}
+							{repsHistory.filter((rep) => rep.status === 'CANCELADO').length}{' '}
               pedidos cancelados
 						</p>
 					</div>
@@ -330,45 +374,52 @@ const DeliveriesAndHistory: React.FC<{
 					{repsHistory.length !== 0 &&
             showRepsHistory &&
             repsHistory.map((rep) => (
-            	<>
-            		<div
-            			className=" mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
-            			key={rep.id}
-            			style={{
-            				marginTop: `${rep == repsHistory[0] ? '' : '12px'}`,
-            			}}
-            		>
-            			<div className="flex items-center h-full w-15 justify-center">
-            				<PackageIcon />
-            				<div className="w-px bg-indigo-400 h-14 ml-1 mr-1"></div>
-            			</div>
-            			<div className="flex w-6/12 flex-col justify-center h-full text-xs">
-            				<h3 className="mb-1">
-            					<b>{rep.code}</b>
-            				</h3>
-            				<p>
-            					{rep.mainAddress},
-            					<br />
-            					{rep.subAddress}
-            				</p>
-            			</div>
-            			<div className="flex items-end flex-col  w-35 justify-between h-full">
-            				<div
-            					style={{
-            						fontSize: '11px',
-            						backgroundColor: `${
-            							rep.status === 'delivered' ? '#c7ffb1' : '#FFA1A1'
-            						}`,
-            					}}
-            					className={'flex justify-center w-max items-center pl-2 pr-3 mt-3 rounded-l-xl rounded-tr'}
-            				>
-            					<h4>
-            						<b>{rep.status.toUpperCase()}</b>
-            					</h4>
-            				</div>
+            	<div
+            		className=" mr-0 flex p-[0.5px] pr-0 w-full h-[80px] rounded-[10px] border border-indigo-400 justify-between"
+            		key={rep.id}
+            		style={{
+            			marginTop: `${rep == repsHistory[0] ? '' : '12px'}`,
+            		}}
+            	>
+            		<div className="flex items-center h-full w-15 justify-center">
+            			<PackageIcon />
+            			<div className="w-px bg-indigo-400 h-14 ml-1 mr-2"></div>
+            		</div>
+            		<div className="flex w-6/12 flex-col justify-center h-full text-xs">
+            			<h3 className="mb-1">
+            				<b>{rep.trackId}</b>
+            			</h3>
+            			<div className="w-[70%]">
+            				<p>{rep.address}</p>
             			</div>
             		</div>
-            	</>
+            		<div className="flex items-end flex-col  w-35 justify-between h-full">
+            			<div
+            				style={{
+            					fontSize: '11px',
+            					backgroundColor: `${
+            						rep.status === 'ENTREGADO' ? '#c7ffb1' : '#FFA1A1'
+            					}`,
+            				}}
+            				className={
+            					'flex justify-center w-max items-center pl-2 pr-3 mt-3 rounded-l-xl rounded-tr'
+            				}
+            			>
+            				<h4>
+            					<b>{rep.status.toUpperCase()}</b>
+            				</h4>
+            			</div>
+            			{user.isAdmin && (
+            				<div
+            					className="flex items-center justify-center p-2 bg-white text-indigo-700 rounded-2xl transition duration-200 ease-in-out hover:bg-gray-400 mr-3 active:bg-gray-500"
+            					onClick={(e) => onClickButtonDelete(rep.id, e)}
+            					style={{ marginBottom: '5px' }}
+            				>
+            					<TrashIcon />
+            				</div>
+            			)}
+            		</div>
+            	</div>
             ))}
 				</div>
 				<div className="flex h-[0px]">
@@ -384,6 +435,3 @@ const DeliveriesAndHistory: React.FC<{
 	)
 }
 export default DeliveriesAndHistory
-
-
-

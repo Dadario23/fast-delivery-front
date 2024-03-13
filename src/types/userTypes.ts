@@ -12,11 +12,12 @@ export interface UserLogin {
 	password: string;
 }
 
-export interface UserData {
+export interface UserState {
 	id: number;
+	email: string;
+	isAdmin: boolean;
 	name: string;
 	surname: string;
-	email: string;
-	isAdmin?: boolean;
-	isDisabled?: boolean;
+	isDisabled: boolean;
+	profileImage: string;
 }
