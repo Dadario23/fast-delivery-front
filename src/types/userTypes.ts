@@ -8,8 +8,8 @@ export interface UserRegister {
 }
 
 export interface UserLogin {
-	email: string;
-	password: string;
+	message: string;
+	isAdmin: boolean;
 }
 
 export interface UserState {
