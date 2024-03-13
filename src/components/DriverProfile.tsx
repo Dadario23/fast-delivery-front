@@ -13,7 +13,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import { setProfileImageFromAdmin, updateDriverState } from 'state/allUsers'
 import { useParams } from 'next/navigation'
 import { UserState } from 'types/userTypes'
-import imageCompression from 'browser-image-compression'
+import compressImage from 'utils/compressImage'
 
 const DriverProfile: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(false)
@@ -47,36 +47,6 @@ const DriverProfile: React.FC = () => {
 	const inputElement = useRef<HTMLInputElement>(null)
 	const [base64Imagen, setBase64Imagen] = useState<string>('')
 	const [error, setError] = useState<string | null>(null)
-
-	const compressImage = async (image: File, opts = {}) => {
-		// gif图片不压缩
-		// if (image.type == "image/gif") {
-		// 	return image;
-		// }
-		const options = {
-			maxSizeMB: 0.039,
-			maxWidthOrHeight: 300,
-			useWebWorker: true,
-			maxIteration: 5,
-			quality: 0.6,
-			...opts,
-		}
-		try {
-			const compressedFile = await imageCompression(image, options)
-			console.log(
-				'compressedFile instanceof Blob',
-				compressedFile instanceof Blob
-			) // true
-			console.log(
-				`compressedFile size ${compressedFile.size / 1024 / 1024} MB`
-			) // smaller than maxSizeMB
-			return compressedFile
-			// await uploadToServer(compressedFile); // write your own logic
-		} catch (error) {
-			console.log(error)
-			return image
-		}
-	}
 
 	const manejarSeleccionDeImagen = async (event: any) => {
 		setError(null)
@@ -213,13 +183,13 @@ const DriverProfile: React.FC = () => {
 	}
 	return (
 		<div className="flex flex-col h-[92%] w-full mb-1 p-6 pt-2 pb-0 items-center bg-customBlue text-customBlue">
-			{' '}
-			{showModal && (
-				<div
-					className="flex  absolute w-[100%] h-[100%] z-10 "
-					style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-				/>
-			)}
+			{/* {" "}
+      {showModal && (
+        <div
+          className="flex  absolute w-[100%] h-[100%] z-10 "
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        />
+      )} */}
 			<div
 				className="flex relative flex-col w-full  items-center text-indigo-700 m-2 rounded-2xl"
 				style={{ backgroundColor: '#c7ffb1' }}
@@ -241,7 +211,10 @@ const DriverProfile: React.FC = () => {
 						{showModal && (
 							<div
 								className="flex flex-col absolute z-20 flex-col w-[89%] top-4 rounded-2xl "
-								style={{ backgroundColor: 'white' }}
+								style={{
+									backgroundColor: 'white',
+									boxShadow: '0 0px 30px 30px rgba(0, 0, 0, 0.3)',
+								}}
 							>
 								<div className="relative flex w-full items-center justify-center p-4">
 									{user.profileImage != '' && !imagenSeleccionada ? (
