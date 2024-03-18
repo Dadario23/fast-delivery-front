@@ -1,8 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import axios, { AxiosResponse } from "axios";
 import arrowLeftIcon from "../assets/arrow-left-icon.svg";
 import arrowRightIcon from "../assets/arrow-right-icon.svg";
+import { getDataDeliverys } from "services/dataUsers";
 
 interface Day {
   date: Date;
@@ -30,19 +32,13 @@ const daysOfWeek = [
 const Calendar: React.FC<Props> = ({
   currentDate,
   setCurrentDate,
-  selectedDate,
   setSelectedDate,
 }) => {
   const [days, setDays] = useState<Day[]>([]);
 
   useEffect(() => {
-    setSelectedDate(new Date()); // Establecer selectedDate al inicio
-    setDays(
-      getDaysInMonth(currentDate).map((day) => ({
-        ...day,
-        selected: day.date.getDate() === new Date().getDate(), // Establecer selected a true para el día actual
-      }))
-    );
+    setSelectedDate(new Date()); // Establecer selectedDate al día actual
+    setDays(getDaysInMonth(currentDate).map((day) => ({ ...day })));
   }, [currentDate]);
 
   const getDaysInMonth = (startDay: Date): Day[] => {
@@ -58,25 +54,28 @@ const Calendar: React.FC<Props> = ({
     return days;
   };
 
-  const handlePrevDay = (): void => {
-    const newDate = new Date(currentDate);
-    newDate.setDate(newDate.getDate() - 1);
-    setCurrentDate(newDate);
-  };
+  const handleDayClick = async (date: Date): Promise<void> => {
+    const formattedDate = date.toISOString().split("T")[0];
 
-  const handleNextDay = (): void => {
-    const newDate = new Date(currentDate);
-    newDate.setDate(newDate.getDate() + 1);
-    setCurrentDate(newDate);
-  };
+    //console.log("FECHA FORMATEADA", formattedDate);
 
-  const handleDayClick = (date: Date): void => {
-    const updatedDays = days.map((day) => {
-      if (day.date.getTime() === date.getTime()) {
-        return { ...day, selected: !day.selected };
-      }
-      return { ...day, selected: false };
-    });
+    if (formattedDate === "Invalid Date") {
+      console.error("Error al formatear la fecha");
+      return;
+    }
+
+    try {
+      // Realizamos la solicitud a la función importada getDataDeliverys
+      const data = await getDataDeliverys(formattedDate);
+      console.log("Datos de los deliverys de la fecha seleccionada:", data);
+    } catch (error) {
+      console.error("Error al obtener los datos de los deliverys:", error);
+    }
+
+    const updatedDays = days.map((day) => ({
+      ...day,
+      selected: day.date.getTime() === date.getTime(),
+    }));
     setDays(updatedDays);
     setSelectedDate(date);
   };
@@ -144,7 +143,7 @@ const Calendar: React.FC<Props> = ({
   return (
     <>
       <div className="absolute w-[270px] h-[95px] top-[201px] left-[45px] rounded-[10px] border-[0.5px] border-solid border-[#3D1DF3] z-40">
-        h
+        {/* Aquí puedes mostrar cualquier contenido adicional */}
       </div>
       <span className="absolute w-[41px] h-[15px] top-[210px] left-[55px] text-[14px] leading-[15px] text-[#3d1df3] font-bold z-40">
         {isFirstDayOfMonth
@@ -154,11 +153,25 @@ const Calendar: React.FC<Props> = ({
 
       <div className="absolute calendar flex flex-col items-center top-[201px] left-[45px] z-40">
         <div className="controls flex">
-          <button onClick={handlePrevDay} style={{ marginTop: "25px" }}>
+          <button
+            onClick={() =>
+              setCurrentDate(
+                new Date(currentDate.getTime() - 24 * 60 * 60 * 1000)
+              )
+            }
+            style={{ marginTop: "25px" }}
+          >
             <Image src={arrowLeftIcon} alt="" />
           </button>
           <div className="days flex flex-wrap">{renderDays()}</div>
-          <button onClick={handleNextDay} style={{ marginTop: "25px" }}>
+          <button
+            onClick={() =>
+              setCurrentDate(
+                new Date(currentDate.getTime() + 24 * 60 * 60 * 1000)
+              )
+            }
+            style={{ marginTop: "25px" }}
+          >
             <Image src={arrowRightIcon} alt="" />
           </button>
         </div>

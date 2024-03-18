@@ -31,6 +31,11 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
   const [totalPackagesCount, setTotalPackagesCount] = useState(0);
   const router = useRouter();
 
+  const formattedDate = `${selectedDate.getDate()}-${
+    selectedDate.getMonth() + 1
+  }-${selectedDate.getFullYear()}`;
+  //console.log("DIA SELECCIONADO", formattedDate);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -144,7 +149,7 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
       <button className="absolute w-[51px] h-[25px] top-[396px] left-[249px] rounded-[12.5px] bg-[#00EA77] z-40"></button>
       <span
         className="absolute w-[21px] h-[20px] top-[395px] left-[264px] font-normal text-[#3D1DF3] leading-[25px] text-[12px] z-50"
-        onClick={() => router.push("/delivery-drivers")}
+        onClick={() => router.push(`/delivery-drivers?date=${formattedDate}`)}
       >
         Ver
       </span>
@@ -186,7 +191,7 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
       ></button>
       <span
         className="absolute w-[93px] h-[15px] top-[574px] left-[125px] font-normal text-[#3D1DF3] text-[12px] leading-[15px] whitespace-nowrap z-40"
-        onClick={() => router.push("/add-package")}
+        onClick={() => router.push(`/add-package`)}
       >
         Nuevo paquete
       </span>
