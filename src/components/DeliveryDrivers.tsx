@@ -4,7 +4,7 @@ import BackIcon from "assets/BackIcon/back-icon";
 import DateSquare from "assets/DateSquare/DateSquare";
 import Card from "commons/Card";
 import MoreArrow from "assets/moreArrow";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getAllPackages } from "services/dataPackages";
 
 export interface Package {
@@ -41,18 +41,26 @@ interface LastPackagesByUser {
 type PackagesByUser = { [user: string]: number };
 
 const DeliveryDrivers = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [firstUserIndex, setFirstUserIndex] = useState<number>(0);
   const [ongoingPackage, setOngoingPackage] = useState<Package[]>([]);
+
+  const params = `${searchParams}`;
+  const paramsDate: string = params.substring(5);
+  const parts: string[] = paramsDate.split("-");
+  const reversedDate: string = `${parts[2]}-${parts[1].padStart(2, "0")}-${
+    parts[0]
+  }`; //cambio el orden de la fecha mandada por parámetro y agrego ceros donde corresponda para igualar el formato ISOS
 
   useEffect(() => {
     const fetchPackages = async () => {
       try {
         const data = await getAllPackages();
         if (data.length > 1) {
-          const today = new Date().toISOString().slice(0, 10);
-
           const assignedPackages = data.filter(
-            (paq: any) => paq.date.slice(0, 10) === today && paq.user !== null
+            (paq: any) =>
+              paq.date.slice(0, 10) === reversedDate && paq.user !== null
           );
 
           const total: PackagesByUser = {};
@@ -124,7 +132,6 @@ const DeliveryDrivers = () => {
 
   const visibleUsers = ongoingPackage.slice(firstUserIndex, firstUserIndex + 4);
 
-  const router = useRouter();
   return (
     <div className="flex items-center justify-center flex-wrap text-[#3d1df3] rounded-xl mx-[30px] mt-[10px] mt-[20px] mb-[60px] bg-[#C7FFB1] relative ">
       <div className="w-full h-[50px] pl-0 flex items-center font-bold rounded-t-xl ">
