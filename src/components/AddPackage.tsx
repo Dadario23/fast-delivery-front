@@ -93,13 +93,13 @@
 // export default AddPackage;
 
 "use client";
+
 import React, { ChangeEvent, useState } from "react";
 import BackIcon from "assets/BackIcon/back-icon";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useRouter } from "next/navigation";
 import DatePicker from "react-datepicker";
 import { createPackage } from "services/dataPackages";
-
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -111,9 +111,10 @@ const AddPackage = () => {
     direccion: "",
     nombreDeQuienRecibe: "",
     pesoDelPaquete: 0,
-    fecha: null
+    fecha: null,
   });
-    const handleChanges = (e: ChangeEvent<HTMLInputElement>) => {
+
+  const handleChanges = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData((prevState) => ({
       ...prevState,
@@ -121,7 +122,6 @@ const AddPackage = () => {
     }));
   };
 
-  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!startDate) {
@@ -129,20 +129,30 @@ const AddPackage = () => {
       return;
     }
     try {
-      await createPackage({...data, fecha: startDate }); 
-      alert("Paquete agregado con éxito"); 
+      const packageData = {
+        address: data.direccion,
+        nombre: data.nombreDeQuienRecibe,
+        peso: data.pesoDelPaquete,
+        fecha: startDate,
+        // Agrega las otras propiedades necesarias de PackageData aquí
+      };
+      await createPackage(packageData);
+      alert("Paquete agregado con éxito");
     } catch (error) {
       console.error("Error al agregar el paquete:", error);
-      alert("Error al agregar el paquete"); 
+      alert("Error al agregar el paquete");
     }
-  }
+  };
+
   return (
     <div className="flex items-center justify-center flex-wrap rounded-xl mx-[30px] mt-[25px] mb-[60px] bg-[#C7FFB1] relative">
       <div className="w-full h-[50px] pl-0 flex items-center font-bold rounded-t-xl bg-[#C7FFB1]">
         <div className="ml-3" onClick={() => router.back()}>
           <BackIcon />
         </div>
-        <h2 className="text-[#3d1df3] mr-10 flex-grow text-center">Agregar paquetes</h2>
+        <h2 className="text-[#3d1df3] mr-10 flex-grow text-center">
+          Agregar paquetes
+        </h2>
       </div>
       <div className="bg-white rounded-xl z-20 text-[85%] w-[19rem] pt-[7rem]">
         <form className="text-[#3d1df3] pl-4" onSubmit={handleSubmit}>
@@ -191,8 +201,6 @@ const AddPackage = () => {
       </div>
     </div>
   );
-}
-
+};
 
 export default AddPackage;
-
