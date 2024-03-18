@@ -33,3 +33,30 @@ export const getDataDeliverys = async (date: string) => {
     throw error;
   }
 };
+
+export const updateUser = async () => {
+  try {
+    const response: AxiosResponse = await axios.put("/api/users/update", null);
+    console.log("updateUsers---->", response);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los usuarios:", error);
+    throw error;
+  }
+};
+
+export const getUserProfileImage = async () => {
+  try {
+    const response: AxiosResponse = await axios.get(
+      // `${API_URL}/api/packages/userPackages/${id}`
+      `http://localhost:3001/api/users/profile-image`
+      // { withCredentials: true }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
+    //console.error("Error al obtener los usuarios:", error);
+    throw error;
+  }
+};
