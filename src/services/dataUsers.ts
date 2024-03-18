@@ -15,3 +15,21 @@ export const getUsers = async () => {
     throw error;
   }
 };
+
+export const getDataDeliverys = async (date: string) => {
+  try {
+    const response: AxiosResponse = await axios.post(
+      `${API_URL}/api/users/stats/delivery`,
+      { date }, // Envía los datos en el cuerpo de la solicitud
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
