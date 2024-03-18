@@ -27,6 +27,7 @@ export const registerUser = async (userData: UserRegister) => {
 			email: userData.email,
 			password: userData.contraseña,
 			isAdmin: false,
+			profileImage: userData.foto,
 		})
 		return true
 	} catch (error) {
@@ -74,13 +75,16 @@ export const getUserProfileImage = async () => {
 }
 
 export const mailForgotPassword = async (email: string) => {
-  try {
-    const response: AxiosResponse = await axios.post(`${API_URL}/api/users/forgot-password`, { email });
-    return response.data;
-  } catch (error) {
-    console.error(error)
-    throw error
-  }
+	try {
+		const response: AxiosResponse = await axios.post(
+			`${API_URL}/api/users/forgot-password`,
+			{ email }
+		)
+		return response.data
+	} catch (error) {
+		console.error(error)
+		throw error
+	}
 }
 
 export const mailResetPassword = async (token: string, newPassword: string) => {
@@ -101,7 +105,8 @@ export const mailResetPassword = async (token: string, newPassword: string) => {
         throw new Error('Hubo un error al realizar la solicitud.');
       }
     } else {
+      console.error(error)
       throw error;
     }
-}
+  }
 };

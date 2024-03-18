@@ -56,7 +56,7 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
       try {
         const allPackages: Package[] = await getAllPackages();
         const deliveredPackages = allPackages.filter(
-          (pkg) => pkg.status === "delivered"
+          (pkg) => pkg.status === "ENTREGADO"
         );
         setDeliveredPackagesCount(deliveredPackages.length);
         setTotalPackagesCount(allPackages.length);

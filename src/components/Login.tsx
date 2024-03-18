@@ -8,6 +8,9 @@ import eyeCrossedIcon from '../assets/eye-crossed-icon.svg'
 import { useRouter } from 'next/navigation'
 import eyeIcon from '../assets/eye-icon.svg'
 import { loginUser } from 'services/dataAuth'
+import { UserState } from 'types/userTypes'
+import { useSelector } from 'react-redux'
+import { RootState } from 'state/store'
 
 interface FormData {
 	email: string;
@@ -15,15 +18,22 @@ interface FormData {
 }
 
 const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
-
-  useEffect(() => {
-    if (logged) router.push("/home");
-  });
-  const router = useRouter();
-  const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
-  });
+	const user: UserState = useSelector<RootState, UserState>(
+		(state) => state.user
+	)
+	useEffect(() => {
+		if (logged) {
+			if (user) {
+				if (user.isAdmin) router.push('/manage-orders')
+				else router.push('/home')
+			}
+		}
+	}, [user])
+	const router = useRouter()
+	const [formData, setFormData] = useState<FormData>({
+		email: '',
+		password: '',
+	})
 
 	const [showPassword, setShowPassword] = useState(false)
 
@@ -37,14 +47,15 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-    try {
-      const response = await loginUser(formData.email, formData.password);
-      console.log(response);
-      router.push("/home");
-    } catch (error) {
-      console.error("Error en el inicio de sesión:", error);
-    }
-  };
+		try {
+			const response = await loginUser(formData.email, formData.password)
+			console.log(response.message)
+			if (response.isAdmin) router.push('/manage-orders')
+			else router.push('/home')
+		} catch (error) {
+			console.error('Error en el inicio de sesión:', error)
+		}
+	}
 
 	return (
 		<>
@@ -108,8 +119,11 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
 					onClick={() => router.push('/register')}
 				>
           Crear cuenta
-        </button>
-        <p className="absolute w-[137px] top-[498px] left-[111px] font-light text-xs whitespace-nowrap" onClick={() => router.push("/forgot-password")}>
+				</button>
+				<p
+					className="absolute w-[137px] top-[498px] left-[111px] font-light text-xs whitespace-nowrap"
+					onClick={() => router.push('/forgot-password')}
+				>
           OLVIDÉ MI CONTRASEÑA
 				</p>
 			</form>

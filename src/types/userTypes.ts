@@ -3,13 +3,13 @@ export interface UserRegister {
 	apellido: string;
 	email: string;
 	contraseña: string;
-	//photo: string;
+	foto: string;
 	isAdmin?: boolean;
 }
 
 export interface UserLogin {
-	email: string;
-	password: string;
+	message: string;
+	isAdmin: boolean;
 }
 
 export interface UserState {
