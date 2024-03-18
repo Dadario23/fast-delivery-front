@@ -12,8 +12,23 @@ import { getAllPackages } from "services/dataPackages";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
+// Define la interfaz para los datos de entrega
+interface DeliveryUser {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  createdAt: string;
+}
+interface DataDeliverys {
+  totalDeliveryUsersCount: number;
+  activeDeliveryUsersCount: number;
+  totalDeliveryUsers: DeliveryUser[];
+  activeDeliveryUsers: DeliveryUser[];
+}
 interface Props {
   selectedDate: Date;
+  dataDeliverys: DataDeliverys | undefined;
 }
 
 interface User {
@@ -24,7 +39,10 @@ interface Package {
   status: string;
 }
 
-const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
+const CardDetailsCourier: React.FC<Props> = ({
+  selectedDate,
+  dataDeliverys,
+}) => {
   const [enabledDriversCount, setEnabledDriversCount] = useState(0);
   const [totalDriversCount, setTotalDriversCount] = useState(0);
   const [deliveredPackagesCount, setDeliveredPackagesCount] = useState(0);
@@ -34,7 +52,6 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
   const formattedDate = `${selectedDate.getDate()}-${
     selectedDate.getMonth() + 1
   }-${selectedDate.getFullYear()}`;
-  //console.log("DIA SELECCIONADO", formattedDate);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,7 +149,8 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
         Repartidores
       </span>
       <span className="absolute w-[96px] h-[15px] top-[371px] left-[141px] font-normal leading-[15px] text-[12px] text-[#3D1DF3] z-40">
-        {enabledDriversCount}/{totalDriversCount} Habilitados
+        {dataDeliverys?.activeDeliveryUsersCount}/
+        {dataDeliverys?.totalDeliveryUsersCount} Habilitados
       </span>
 
       <Image
