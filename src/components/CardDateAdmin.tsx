@@ -4,6 +4,7 @@ import Image from "next/image";
 import arrowLeftIcon from "../assets/arrow-left-icon.svg";
 import arrowRightIcon from "../assets/arrow-right-icon.svg";
 import { getDataDeliverys } from "services/dataUsers";
+import { getDataPackages } from "services/dataPackages";
 
 interface Day {
   date: Date;
@@ -27,6 +28,19 @@ interface DataDeliverys {
   activeDeliveryUsers: DeliveryUser[];
 }
 
+interface DataPackages {
+  id: number;
+  trackId: string;
+  address: string;
+  status: string;
+  client: string;
+  weight: number;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number | null;
+}
+
 interface Props {
   currentDate: Date;
   setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
@@ -34,7 +48,10 @@ interface Props {
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
   setDataDeliverys: React.Dispatch<
     React.SetStateAction<DataDeliverys | undefined>
-  >; // Ajusta el tipo según tus datos
+  >;
+  setDataPackages: React.Dispatch<
+    React.SetStateAction<DataPackages | undefined>
+  >;
 }
 
 const daysOfWeek = [
@@ -52,6 +69,7 @@ const Calendar: React.FC<Props> = ({
   setCurrentDate,
   setSelectedDate,
   setDataDeliverys,
+  setDataPackages,
   selectedDate,
 }) => {
   const [days, setDays] = useState<Day[]>([]);
@@ -70,6 +88,8 @@ const Calendar: React.FC<Props> = ({
           selectedDate.toISOString().split("T")[0]
         );
         setDataDeliverys(data);
+        console.log("DATA RECIBIDA DEL SERVIDOR", data);
+
         console.log("Datos de los deliverys de la fecha seleccionada:", data);
       } catch (error) {
         console.error("Error al obtener los datos de los deliverys:", error);
@@ -79,6 +99,26 @@ const Calendar: React.FC<Props> = ({
     // Llamamos a la función para cargar los datos de entrega al cargar el componente
     fetchDataDeliverys();
   }, [selectedDate]); // Ejecuta el efecto cuando selectedDate cambie
+
+  useEffect(() => {
+    // Función para cargar los datos de entrega al cargar el componente
+    const fetchDataPackages = async () => {
+      try {
+        // Realizamos la solicitud a la función importada getDataDeliverys
+        const data = await getDataPackages(
+          selectedDate.toISOString().split("T")[0]
+        );
+        setDataPackages(data);
+        console.log("DATA RECIBIDA DEL SERVIDOR", data);
+        console.log("Datos de los paquetes de la fecha seleccionada:", data);
+      } catch (error) {
+        console.error("Error al obtener los datos de los paquetes:", error);
+      }
+    };
+
+    // Llamamos a la función para cargar los datos de entrega al cargar el componente
+    fetchDataPackages();
+  }, [selectedDate]);
 
   const getDaysInMonth = (startDay: Date): Day[] => {
     const days: Day[] = [];
