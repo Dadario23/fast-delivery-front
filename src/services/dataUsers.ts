@@ -40,7 +40,7 @@ export const updateUser = async () => {
     console.log("updateUsers---->", response);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener los usuarios:", error);
+    // console.error("Error al obtener los usuarios:", error);
     throw error;
   }
 };
