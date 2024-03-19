@@ -12,8 +12,38 @@ import { getAllPackages } from "services/dataPackages";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
+// Define la interfaz para los datos de entrega
+interface DeliveryUser {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  createdAt: string;
+}
+interface DataDeliverys {
+  totalDeliveryUsersCount: number;
+  activeDeliveryUsersCount: number;
+  totalDeliveryUsers: DeliveryUser[];
+  activeDeliveryUsers: DeliveryUser[];
+}
+
+interface DataPackages {
+  id: number;
+  trackId: string;
+  address: string;
+  status: string;
+  client: string;
+  weight: number;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number | null;
+  length?: number; // Agregamos una propiedad length opcional
+}
 interface Props {
   selectedDate: Date;
+  dataDeliverys: DataDeliverys | undefined;
+  dataPackages: DataPackages | undefined;
 }
 
 interface User {
@@ -24,7 +54,11 @@ interface Package {
   status: string;
 }
 
-const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
+const CardDetailsCourier: React.FC<Props> = ({
+  selectedDate,
+  dataDeliverys,
+  dataPackages,
+}) => {
   const [enabledDriversCount, setEnabledDriversCount] = useState(0);
   const [totalDriversCount, setTotalDriversCount] = useState(0);
   const [deliveredPackagesCount, setDeliveredPackagesCount] = useState(0);
@@ -34,7 +68,27 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
   const formattedDate = `${selectedDate.getDate()}-${
     selectedDate.getMonth() + 1
   }-${selectedDate.getFullYear()}`;
-  //console.log("DIA SELECCIONADO", formattedDate);
+
+  useEffect(() => {
+    if (dataPackages && Array.isArray(dataPackages)) {
+      let totalPackages = 0;
+      let deliveredPackages = 0;
+
+      dataPackages.forEach((pkg) => {
+        totalPackages++;
+        if (pkg.status === "ENTREGADO") {
+          deliveredPackages++;
+        }
+      });
+
+      setDeliveredPackagesCount(deliveredPackages);
+      setTotalPackagesCount(totalPackages);
+    } else {
+      // No hay paquetes, establecer ambos contadores en 0
+      setDeliveredPackagesCount(0);
+      setTotalPackagesCount(0);
+    }
+  }, [dataPackages]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,8 +185,9 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
       <span className="absolute w-[94px] h-[15px] top-[351px] left-[141px] font-bold leading-[15px] text-[14px] text-[#3D1DF3] z-40">
         Repartidores
       </span>
-      <span className="absolute w-[96px] h-[15px] top-[371px] left-[141px] font-normal leading-[15px] text-[12px] text-[#3D1DF3] z-40">
-        {enabledDriversCount}/{totalDriversCount} Habilitados
+      <span className="absolute w-[96px] h-[15px] top-[371px] left-[141px] font-normal leading-[15px] text-[12px] text-[#3D1DF3] z-40 whitespace-nowrap">
+        {dataDeliverys?.activeDeliveryUsersCount}/
+        {dataDeliverys?.totalDeliveryUsersCount} Habilitados
       </span>
 
       <Image
@@ -177,7 +232,7 @@ const CardDetailsCourier: React.FC<Props> = ({ selectedDate }) => {
       <button className="absolute w-[51px] h-[25px] top-[500px] left-[249px] rounded-[12.5px] bg-[#00EA77] z-40"></button>
       <span
         className="absolute w-[21px] h-[20px] top-[500px] left-[264px] font-normal text-[#3D1DF3] leading-[25px] text-[12px] z-50"
-        onClick={() => router.push("/packages-office")}
+        onClick={() => router.push(`/packages-office?date=${formattedDate}`)}
       >
         Ver
       </span>
