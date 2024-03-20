@@ -129,13 +129,16 @@ const AddPackage = () => {
       return;
     }
     try {
+      console.log("Fecha de entrega seleccionada:", startDate);
+
       const packageData = {
         address: data.direccion,
-        nombre: data.nombreDeQuienRecibe,
-        peso: data.pesoDelPaquete,
-        fecha: startDate,
-        // Agrega las otras propiedades necesarias de PackageData aquí
+        client: data.nombreDeQuienRecibe,
+        weight: data.pesoDelPaquete,
+        date: startDate || new Date(),
       };
+      console.log("Datos del paquete a enviar:", packageData);
+
       await createPackage(packageData);
       alert("Paquete agregado con éxito");
     } catch (error) {

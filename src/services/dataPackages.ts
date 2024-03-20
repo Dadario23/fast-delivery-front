@@ -1,5 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { PackageData } from "types/packageTypes";
+/* import { PackageData } from "types/packageTypes"; */
+
+interface PackageData {
+  address: string;
+  client: string;
+  weight: number;
+  date: Date;
+}
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
