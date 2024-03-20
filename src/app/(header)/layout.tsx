@@ -1,10 +1,12 @@
 'use client'
 import axios from 'axios'
 import Navbar from 'components/Navbar'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setAllUsers } from 'state/allUsers'
 import { set } from 'state/user'
+import { usePathname, useRouter } from 'next/navigation'
+import authenticateRoute from 'utils/routeAuthenticator'
 
 export default function HeaderLayout({
 	children,
@@ -12,6 +14,12 @@ export default function HeaderLayout({
 	children: React.ReactNode;
 }) {
 	const dispatch = useDispatch()
+	const router = useRouter()
+	//autenticar rutas
+	const route = authenticateRoute(usePathname())
+	//
+	const [loading, setLoading] = useState<boolean>(true)
+
 	useEffect(() => {
 		axios
 			.get('http://localhost:3001/api/users/me', { withCredentials: true })
@@ -19,7 +27,7 @@ export default function HeaderLayout({
 				if (res.data.id) {
 					dispatch(set(res.data))
 					if (res.data.isAdmin === true) {
-						return axios
+						axios
 							.get('http://localhost:3001/api/users/', {
 								withCredentials: true,
 							})
@@ -27,8 +35,15 @@ export default function HeaderLayout({
 								if (Array.isArray(res2.data)) {
 									dispatch(setAllUsers(res2.data))
 								}
+								if (route.isDriverRoute) {
+									console.log('Forbidden route')
+									router.push('/')
+								} else setLoading(false)
 							})
-					}
+					} else if (route.isAdminRoute) {
+						console.log('Forbidden route')
+						router.push('/')
+					} else setLoading(false)
 				}
 			})
 			.catch((err) => {
@@ -36,7 +51,18 @@ export default function HeaderLayout({
 			})
 	}, [])
 
-  
+	if (loading)
+		return (
+			<div className="flex w-full h-full items-center justify-center">
+				<div className="flex flex-row rounded-2xl p-4 text-white">
+					<div
+						className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+						role="status"
+					></div>
+				</div>
+			</div>
+		)
+
 	return (
 		<>
 			<Navbar />
