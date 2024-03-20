@@ -18,16 +18,16 @@ interface FormData {
 }
 
 const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
+	console.log(logged)
+	const [loading, setLoading] = useState<boolean>(true)
 	const user: UserState = useSelector<RootState, UserState>(
 		(state) => state.user
 	)
 	useEffect(() => {
-		if (logged) {
-			if (user) {
-				if (user.isAdmin) router.push('/manage-orders')
-				else router.push('/home')
-			}
-		}
+		if (user && user.id != -1) {
+			if (user.isAdmin) router.push('/manage-orders')
+			else router.push('/home')
+		} else setLoading(false)
 	}, [user])
 	const router = useRouter()
 	const [formData, setFormData] = useState<FormData>({
@@ -56,6 +56,18 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
 			console.error('Error en el inicio de sesión:', error)
 		}
 	}
+
+	if (loading)
+		return (
+			<div className="flex w-[100%] h-[100vh] items-center justify-center">
+				<div className="flex flex-row rounded-2xl p-4 text-white">
+					<div
+						className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+						role="status"
+					></div>
+				</div>
+			</div>
+		)
 
 	return (
 		<>
