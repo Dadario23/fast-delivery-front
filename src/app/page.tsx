@@ -35,6 +35,7 @@ export default function Home() {
 			})
 			.catch((err) => {
 				console.error('Something was wrong...', err)
+				setLoading(false)
 			})
 			.finally(() => {
 				setLoading(false)

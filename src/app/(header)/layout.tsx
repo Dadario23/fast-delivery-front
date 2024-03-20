@@ -16,39 +16,42 @@ export default function HeaderLayout({
 	const dispatch = useDispatch()
 	const router = useRouter()
 	//autenticar rutas
-	const route = authenticateRoute(usePathname())
+	const url = usePathname()
+	const route = authenticateRoute(url)
 	//
 	const [loading, setLoading] = useState<boolean>(true)
 
 	useEffect(() => {
-		axios
-			.get('http://localhost:3001/api/users/me', { withCredentials: true })
-			.then((res) => {
-				if (res.data.id) {
-					dispatch(set(res.data))
-					if (res.data.isAdmin === true) {
-						axios
-							.get('http://localhost:3001/api/users/', {
-								withCredentials: true,
-							})
-							.then((res2) => {
-								if (Array.isArray(res2.data)) {
-									dispatch(setAllUsers(res2.data))
-								}
-								if (route.isDriverRoute) {
-									console.log('Forbidden route')
-									router.push('/')
-								} else setLoading(false)
-							})
-					} else if (route.isAdminRoute) {
-						console.log('Forbidden route')
-						router.push('/')
-					} else setLoading(false)
-				}
-			})
-			.catch((err) => {
-				console.error('Something was wrong...', err)
-			})
+		if (!url.includes('/register')) {
+			axios
+				.get('http://localhost:3001/api/users/me', { withCredentials: true })
+				.then((res) => {
+					if (res.data.id) {
+						dispatch(set(res.data))
+						if (res.data.isAdmin === true) {
+							axios
+								.get('http://localhost:3001/api/users/', {
+									withCredentials: true,
+								})
+								.then((res2) => {
+									if (Array.isArray(res2.data)) {
+										dispatch(setAllUsers(res2.data))
+									}
+									if (route.isDriverRoute) {
+										console.log('Forbidden route')
+										router.push('/')
+									} else setLoading(false)
+								})
+						} else if (route.isAdminRoute) {
+							console.log('Forbidden route')
+							router.push('/')
+						} else setLoading(false)
+					}
+				})
+				.catch((err) => {
+					console.error('Something was wrong...', err)
+				})
+		} else setLoading(false)
 	}, [])
 
 	if (loading)
