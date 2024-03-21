@@ -239,7 +239,7 @@ const Calendar: React.FC<Props> = ({
                 new Date(currentDate.getTime() - 24 * 60 * 60 * 1000)
               )
             }
-            style={{ marginTop: "25px" }}
+            style={{ marginTop: "25px", marginLeft: "2.5px" }}
           >
             <Image src={arrowLeftIcon} alt="" />
           </button>
