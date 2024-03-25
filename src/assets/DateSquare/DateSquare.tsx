@@ -1,6 +1,7 @@
 type Props = { day: string; date: number };
 
 const DateSquare = ({ day, date }: Props) => {
+
 	const fullDate = `${date}`.padStart(2, '0')
 
 	return (
