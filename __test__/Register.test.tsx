@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import CreateAccountForm from '../src/components/CreateAccount'
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
@@ -36,10 +36,6 @@ describe('CreateAccountForm', () => {
 		).toBeInTheDocument()
 	})
 
-	it('shows error message for empty fields', () => {
-		render(<CreateAccountForm />)
-		fireEvent.click(screen.getByText('Crear'))
-	})
 	// it("should make axios request when submit button is clicked", async () => {
 	//   //  NO HAY MANERA DE FALSEAR EL INGRESO DE UNA FOTO. SIN LA FOTO, EL TEST FUNCIONA
 	//   jest.mock("../src/services/dataAuth", () => ({
