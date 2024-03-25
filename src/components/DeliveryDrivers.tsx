@@ -6,7 +6,7 @@ import Card from 'commons/Card'
 import MoreArrow from 'assets/moreArrow'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getAllPackages } from 'services/dataPackages'
-
+import { getDataDeliverys } from '../services/dataUsers'
 export interface Package {
 	id: number;
 	trackId?: string;
@@ -35,6 +35,15 @@ export interface Package {
 	total: number;
 	delivered: number;
 }
+export interface UserState {
+	id: number;
+	email: string;
+	isAdmin: boolean;
+	name: string;
+	surname: string;
+	isDisabled: boolean;
+	profileImage: string;
+}
 interface LastPackagesByUser {
 	[userId: number]: Package;
 }
@@ -52,20 +61,46 @@ const DeliveryDrivers = () => {
 	const reversedDate: string = `${parts[2]}-${parts[1].padStart(2, '0')}-${
 		parts[0]
 	}` //cambio el orden de la fecha mandada por parámetro y agrego ceros donde corresponda para igualar el formato ISOS
+	const daysOfWeek = ['dom', 'lun', 'mar', 'mie', 'jue', 'vie', 'sab']
+	const dateObj = new Date(reversedDate)
+	let dayOfWeekIndex = dateObj.getDay() + 1
+	if (dayOfWeekIndex === 7) dayOfWeekIndex = 0
+	const dayOfWeek = daysOfWeek[dayOfWeekIndex]
+	const dayOfMonth = dateObj.getDate() + 1
+	const months = [
+		'Enero',
+		'Febrero',
+		'Marzo',
+		'Abril',
+		'Mayo',
+		'Junio',
+		'Julio',
+		'Agosto',
+		'Septiembre',
+		'Octubre',
+		'Noviembre',
+		'Diciembre',
+	]
+	const month = months[dateObj.getMonth()]
 
 	useEffect(() => {
 		const fetchPackages = async () => {
 			try {
+				const dataUsers: any = await getDataDeliverys(reversedDate)
+				console.log('dataUsers', dataUsers)
+				if (dataUsers.totalDeliveryUsers.length < 1) {
+					alert('NO SE ENCONTRARON REPARTIDORES EN ESTA FECHA')
+				}
+				const usersByDateAll = dataUsers.totalDeliveryUsers
+
 				const data = await getAllPackages()
 
 				if (data.length > 1) {
 					const assignedPackages = data.filter(
 						(paq: any) =>
-							paq.date.slice(0, 10) === reversedDate && paq.user !== null
+							paq.date.slice(0, 10) === reversedDate && paq.userId !== null
 					)
-					if (assignedPackages.length < 1) {
-						alert('NO HAY PAQUETES CON ESTA FECHA')
-					}
+
 					const total: PackagesByUser = {}
 					const delivered: PackagesByUser = {}
 
@@ -112,11 +147,17 @@ const DeliveryDrivers = () => {
 						},
 						{}
 					)
-					const lastPackagesArray = Object.values(lastPackages)
 
-					setOngoingPackage(lastPackagesArray)
+					const lastPackagesArray = Object.values(lastPackages)
+					const usersAndassignedUsers = usersByDateAll.filter(
+						(user: UserState) => {
+							return !lastPackagesArray.some((pak) => pak.userId === user.id)
+						}
+					)
+
+					setOngoingPackage(lastPackagesArray.concat(usersAndassignedUsers))
 				} else {
-					setOngoingPackage(data)
+					setOngoingPackage(usersByDateAll)
 				}
 			} catch (error) {
 				console.error('Error al obtener los paquetes:', error)
@@ -133,7 +174,10 @@ const DeliveryDrivers = () => {
 		}
 	}
 
-	const visibleUsers = ongoingPackage.slice(firstUserIndex, firstUserIndex + 4)
+	const visibleUsersWithPackages = ongoingPackage.slice(
+		firstUserIndex,
+		firstUserIndex + 4
+	)
 
 	return (
 		<div className="flex items-center justify-center flex-wrap text-[#3d1df3] rounded-xl mx-[30px] mt-[10px] mt-[20px] mb-[60px] bg-[#C7FFB1] relative ">
@@ -147,10 +191,12 @@ const DeliveryDrivers = () => {
 			</div>
 
 			<div className="h-[495px] w-[300px] bg-white rounded-xl ">
-				<h1 className="text-[#3d1df3] font-bold mt-3 mb-[1px] ml-4  ">Enero</h1>
+				<h1 className="text-[#3d1df3] font-bold mt-3 mb-[1px] ml-4  ">
+					{month}
+				</h1>
 				<div className="border-t border-dotted border-[#3d1df3] text-[#3d1df3] border-w-270 mt-[2px] mx-4 mr-14 relative z-[1]"></div>
-				{visibleUsers.length > 1 ? (
-					visibleUsers.map((profile, index) => {
+				{visibleUsersWithPackages.length > 1 ? (
+					visibleUsersWithPackages.map((profile, index) => {
 						return (
 							<div
 								key={index}
@@ -167,7 +213,7 @@ const DeliveryDrivers = () => {
 				)}
 			</div>
 			<div className="absolute right-4 top-[60px] z-40 text-[12px] shadow-md rounded-[10px] ">
-				<DateSquare day="mie" date={0o3} />{' '}
+				<DateSquare day={dayOfWeek} date={dayOfMonth} />{' '}
 			</div>
 			<div className="absolute bottom-3" onClick={handleClickNext}>
 				<MoreArrow />{' '}
