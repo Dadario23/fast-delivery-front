@@ -41,6 +41,8 @@ const RepartoEnCurso: React.FC = () => {
 			setPackageInfo((prevPackageInfo) =>
 				prevPackageInfo ? { ...prevPackageInfo, status: 'EN CURSO' } : null
 			)
+			localStorage.setItem('currentPackageId', packageId.toString());
+			router.push('/affidavit');
 		} catch (error) {
 			console.error('Error al iniciar el paquete:', error)
 		}
