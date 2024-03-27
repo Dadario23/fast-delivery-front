@@ -18,7 +18,6 @@ interface FormData {
 }
 
 const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
-	console.log(logged)
 	const [loading, setLoading] = useState<boolean>(true)
 	const user: UserState = useSelector<RootState, UserState>(
 		(state) => state.user
@@ -49,7 +48,6 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
 		e.preventDefault()
 		try {
 			const response = await loginUser(formData.email, formData.password)
-			console.log(response.message)
 			if (response.isAdmin) router.push('/manage-orders')
 			else router.push('/home')
 		} catch (error) {

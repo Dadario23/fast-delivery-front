@@ -1,9 +1,3 @@
-// export interface PackageData{
-//   direccion: string,
-//   nombreDeQuienRecibe: string,
-//   pesoDelPaquete: number,
-//   fecha: Date | null
-// }
 export enum PackageStatus {
 	DELIVERED = 'ENTREGADO',
 	CANCELLED = 'CANCELADO',

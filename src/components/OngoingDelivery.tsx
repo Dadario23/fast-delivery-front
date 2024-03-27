@@ -51,9 +51,6 @@ const RepartoEnCurso: React.FC = () => {
 	const handleCompleteDelivery = async (packageId: number) => {
 		try {
 			await updatePackageStatusToDelivered(packageId)
-			console.log(
-				'El estado del paquete ha sido actualizado correctamente a "ENTREGADO"'
-			)
 			setPackageInfo((prevPackageInfo) =>
 				prevPackageInfo ? { ...prevPackageInfo, status: 'ENTREGADO' } : null
 			)
@@ -67,9 +64,6 @@ const RepartoEnCurso: React.FC = () => {
 	const handleCancelDelivery = async (packageId: number) => {
 		try {
 			await updatePackageStatusToCancelled(packageId)
-			console.log(
-				'El estado del paquete ha sido actualizado correctamente a "CANCELADO"'
-			)
 			setPackageInfo((prevPackageInfo) =>
 				prevPackageInfo ? { ...prevPackageInfo, status: 'CANCELADO' } : null
 			)

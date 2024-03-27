@@ -6,7 +6,6 @@ import userIcon from "../assets/user-icon.svg";
 import { useRouter } from "next/navigation";
 import { mailForgotPassword } from "services/dataAuth";
 
-
 interface FormData {
   email: string;
 }

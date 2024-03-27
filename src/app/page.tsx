@@ -13,10 +13,8 @@ export default function Home() {
 		axios
 			.get('http://localhost:3001/api/users/me', { withCredentials: true })
 			.then((res) => {
-				console.log(res.data)
 				if (res.data.id) {
 					dispatch(set(res.data))
-					console.log('usuario seteado en redux :)')
 					setLogged(true)
 					if (res.data.isAdmin === true) {
 						axios

@@ -20,7 +20,6 @@ interface DeliveryUser {
   createdAt: string;
 }
 
-// Define la interfaz para los datos de entrega completa
 interface DataDeliverys {
   totalDeliveryUsersCount: number;
   activeDeliveryUsersCount: number;
@@ -75,48 +74,35 @@ const Calendar: React.FC<Props> = ({
   const [days, setDays] = useState<Day[]>([]);
 
   useEffect(() => {
-    setSelectedDate(new Date()); // Establecer selectedDate al día actual
+    setSelectedDate(new Date());
     setDays(getDaysInMonth(currentDate).map((day) => ({ ...day })));
   }, [currentDate]);
 
   useEffect(() => {
-    // Función para cargar los datos de entrega al cargar el componente
     const fetchDataDeliverys = async () => {
       try {
-        // Realizamos la solicitud a la función importada getDataDeliverys
         const data = await getDataDeliverys(
           selectedDate.toISOString().split("T")[0]
         );
         setDataDeliverys(data);
-        console.log("DATA RECIBIDA DEL SERVIDOR", data);
-
-        console.log("Datos de los deliverys de la fecha seleccionada:", data);
       } catch (error) {
         console.error("Error al obtener los datos de los deliverys:", error);
       }
     };
-
-    // Llamamos a la función para cargar los datos de entrega al cargar el componente
     fetchDataDeliverys();
-  }, [selectedDate]); // Ejecuta el efecto cuando selectedDate cambie
+  }, [selectedDate]); 
 
   useEffect(() => {
-    // Función para cargar los datos de entrega al cargar el componente
     const fetchDataPackages = async () => {
       try {
-        // Realizamos la solicitud a la función importada getDataDeliverys
         const data = await getDataPackages(
           selectedDate.toISOString().split("T")[0]
         );
         setDataPackages(data);
-        console.log("DATA RECIBIDA DEL SERVIDOR", data);
-        console.log("Datos de los paquetes de la fecha seleccionada:", data);
       } catch (error) {
         console.error("Error al obtener los datos de los paquetes:", error);
       }
     };
-
-    // Llamamos a la función para cargar los datos de entrega al cargar el componente
     fetchDataPackages();
   }, [selectedDate]);
 
@@ -136,18 +122,14 @@ const Calendar: React.FC<Props> = ({
   const handleDayClick = async (date: Date): Promise<void> => {
     const formattedDate = date.toISOString().split("T")[0];
 
-    //console.log("FECHA FORMATEADA", formattedDate);
-
     if (formattedDate === "Invalid Date") {
       console.error("Error al formatear la fecha");
       return;
     }
 
     try {
-      // Realizamos la solicitud a la función importada getDataDeliverys
       const data = await getDataDeliverys(formattedDate);
       setDataDeliverys(data);
-      console.log("Datos de los deliverys de la fecha seleccionada:", data);
     } catch (error) {
       console.error("Error al obtener los datos de los deliverys:", error);
     }
@@ -223,7 +205,6 @@ const Calendar: React.FC<Props> = ({
   return (
     <>
       <div className="absolute w-[270px] h-[95px] top-[201px] left-[45px] rounded-[10px] border-[0.5px] border-solid border-[#3D1DF3] z-40">
-        {/* Aquí puedes mostrar cualquier contenido adicional */}
       </div>
       <span className="absolute w-[41px] h-[15px] top-[210px] left-[55px] text-[14px] leading-[15px] text-[#3d1df3] font-bold z-40">
         {isFirstDayOfMonth

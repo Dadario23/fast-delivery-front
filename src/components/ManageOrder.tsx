@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-
 import CardDateAdmin from "./CardDateAdmin";
 import CardAdmin from "./CardAdmin";
 import CardGreenAdmin from "./CardGreenAdmin";
@@ -14,14 +13,14 @@ interface DataDeliverys {
     name: string;
     surname: string;
     email: string;
-    createdAt: string; // Se podría considerar usar un tipo Date si se parsea adecuadamente
+    createdAt: string; 
   }[];
   activeDeliveryUsers: {
     id: number;
     name: string;
     surname: string;
     email: string;
-    createdAt: string; // Se podría considerar usar un tipo Date si se parsea adecuadamente
+    createdAt: string;
   }[];
 }
 
@@ -32,9 +31,9 @@ interface DataPackages {
   status: string;
   client: string;
   weight: number;
-  date: string; // Se podría considerar usar un tipo Date si se parsea adecuadamente
-  createdAt: string; // Se podría considerar usar un tipo Date si se parsea adecuadamente
-  updatedAt: string; // Se podría considerar usar un tipo Date si se parsea adecuadamente
+  date: string; 
+  createdAt: string; 
+  updatedAt: string; 
   userId: number | null;
 }
 

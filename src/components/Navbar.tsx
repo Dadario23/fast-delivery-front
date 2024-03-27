@@ -8,8 +8,6 @@ import { dataLogout } from 'services/dataAuth'
 import { useDispatch } from 'react-redux'
 import { clear } from 'state/user'
 
-//hacer que no se renderize el icono de logout en vista register
-//hacer que con el icono de la app vaya a home solo si esta logeado
 
 const Navbar = () => {
 	const router = useRouter()

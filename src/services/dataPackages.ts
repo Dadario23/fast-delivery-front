@@ -4,7 +4,6 @@ import { PackageData } from "types/packageTypes";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const authAxios = axios.create({
-  //
   baseURL: API_URL,
   withCredentials: true,
 });
@@ -110,14 +109,6 @@ export const updatePackageStatusToCancelled = async (packageId: number) => {
   }
 };
 
-// export const deletePackage = async (packageId: number) => {
-//   try {
-//     const response = await axios.delete(`${API_URL}/api/packages/${packageId}`, {withCredentials: true});
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 export const getPackageById = async (packageId: number) => {
   try {
@@ -161,7 +152,7 @@ export const getDataPackages = async (date: string) => {
   try {
     const response: AxiosResponse = await axios.post(
       `${API_URL}/api/packages/stats`,
-      { date }, // Envía los datos en el cuerpo de la solicitud
+      { date }, 
       {
         headers: {
           "Content-Type": "application/json",

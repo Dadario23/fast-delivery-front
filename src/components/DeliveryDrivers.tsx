@@ -21,8 +21,6 @@ export interface Package {
 	client: string;
 	weight: number;
 	date: Date;
-	// createdAt: Date;
-	// updatedAt: Date;
 	user: {
 		id: number;
 		name: string;
@@ -60,7 +58,7 @@ const DeliveryDrivers = () => {
 	const parts: string[] = paramsDate.split('-')
 	const reversedDate: string = `${parts[2]}-${parts[1].padStart(2, '0')}-${
 		parts[0]
-	}` //cambio el orden de la fecha mandada por parámetro y agrego ceros donde corresponda para igualar el formato ISOS
+	}` 
 	const daysOfWeek = ['dom', 'lun', 'mar', 'mie', 'jue', 'vie', 'sab']
 	const dateObj = new Date(reversedDate)
 	let dayOfWeekIndex = dateObj.getDay() + 1
@@ -87,7 +85,6 @@ const DeliveryDrivers = () => {
 		const fetchPackages = async () => {
 			try {
 				const dataUsers: any = await getDataDeliverys(reversedDate)
-				console.log('dataUsers', dataUsers)
 				if (dataUsers.totalDeliveryUsers.length < 1) {
 					alert('NO SE ENCONTRARON REPARTIDORES EN ESTA FECHA')
 				}

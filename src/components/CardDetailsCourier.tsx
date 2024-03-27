@@ -12,7 +12,6 @@ import { getAllPackages } from "services/dataPackages";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-// Define la interfaz para los datos de entrega
 interface DeliveryUser {
   id: number;
   name: string;
@@ -38,7 +37,7 @@ interface DataPackages {
   createdAt: string;
   updatedAt: string;
   userId: number | null;
-  length?: number; // Agregamos una propiedad length opcional
+  length?: number; 
 }
 interface Props {
   selectedDate: Date;
@@ -84,7 +83,6 @@ const CardDetailsCourier: React.FC<Props> = ({
       setDeliveredPackagesCount(deliveredPackages);
       setTotalPackagesCount(totalPackages);
     } else {
-      // No hay paquetes, establecer ambos contadores en 0
       setDeliveredPackagesCount(0);
       setTotalPackagesCount(0);
     }
@@ -129,11 +127,9 @@ const CardDetailsCourier: React.FC<Props> = ({
     return `${day}/${month}/${year}`;
   };
 
-  // Calcular el porcentaje de conductores habilitados
   const driversPercentage =
     totalDriversCount > 0 ? (enabledDriversCount / totalDriversCount) * 100 : 0;
 
-  // Calcular el porcentaje de paquetes entregados
   const packagesPercentage =
     totalPackagesCount > 0
       ? (deliveredPackagesCount / totalPackagesCount) * 100
@@ -162,7 +158,6 @@ const CardDetailsCourier: React.FC<Props> = ({
           className="rounded-full"
           styles={{
             path: {
-              // Especifica el color de la barra de progreso
               stroke: "rgba(0, 234, 119, 1)",
             },
           }}
@@ -176,7 +171,6 @@ const CardDetailsCourier: React.FC<Props> = ({
           className="rounded-full"
           styles={{
             path: {
-              // Especifica el color de la barra de progreso
               stroke: "rgba(0, 234, 119, 1)",
             },
           }}

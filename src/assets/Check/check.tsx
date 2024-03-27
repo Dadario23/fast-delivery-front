@@ -21,8 +21,8 @@ export default function Check() {
       <path
         d="M3.42853 8.68572L6.04077 11.4286L12.5714 4.57143"
         stroke="#3D1DF3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
