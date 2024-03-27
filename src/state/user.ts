@@ -2,7 +2,6 @@ import { createAction, createReducer } from '@reduxjs/toolkit'
 
 import { UserState } from 'types/userTypes'
 
-// Definir la acción
 export const set = createAction<UserState>('SET')
 
 export const setProfileImage = createAction<{
@@ -10,8 +9,6 @@ export const setProfileImage = createAction<{
 }>('SET-PROFILE-IMAGE')
 
 export const clear = createAction<null>('CLEAR')
-
-// Definir el estado inicial
 
 const initialState: UserState = {
 	id: -1,
@@ -23,7 +20,6 @@ const initialState: UserState = {
 	profileImage: '',
 }
 
-// Crear el reducer
 const userReducer = createReducer(initialState, (builder) => {
 	builder.addCase(set, (state, action) => {
 		return { ...state, ...action.payload }

@@ -4,7 +4,6 @@ import { UserLogin, UserRegister } from 'types/userTypes'
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const authAxios = axios.create({
-	//
 	baseURL: API_URL,
 	withCredentials: true,
 })
@@ -18,6 +17,7 @@ export const checkAuth = async (): Promise<any> => {
 		console.error('Error al verificar la autenticación:', error)
 	}
 }
+
 
 export const registerUser = async (userData: UserRegister) => {
 	try {

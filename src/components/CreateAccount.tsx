@@ -15,8 +15,6 @@ const CreateAccountForm: React.FC = () => {
 	const [visible, setVisible] = useState<boolean>(false)
 	const [visible2, setVisible2] = useState<boolean>(false)
 
-	//modalConf
-
 	const [imagenSeleccionada, setImagenSeleccionada] = useState<File | null>(
 		null
 	)
@@ -30,8 +28,6 @@ const CreateAccountForm: React.FC = () => {
 
 		if (event.target.files && event.target.files.length > 0) {
 			const imagenSeleccionada2 = event.target.files[0]
-
-			console.log('imagen original: ', imagenSeleccionada2)
 			const tiposDeImagenPermitidos = ['image/jpeg', 'image/jpg', 'image/png']
 
 			if (!tiposDeImagenPermitidos.includes(imagenSeleccionada2.type)) {
@@ -39,7 +35,7 @@ const CreateAccountForm: React.FC = () => {
 					'Formato de imagen no válido. Por favor, selecciona una imagen en formato JPG, JPEG, PNG'
 				)
 			} else {
-				const limiteDeTamañoEnBytes = 1 * 1024 * 1024 // 1 MB
+				const limiteDeTamañoEnBytes = 1 * 1024 * 1024 
 				if (imagenSeleccionada2.size > limiteDeTamañoEnBytes) {
 					setError(
 						'La imagen seleccionada supera el límite de peso permitido(máx 1mb).'
@@ -47,8 +43,6 @@ const CreateAccountForm: React.FC = () => {
 				} else {
 					try {
 						const ci = await compressImage(imagenSeleccionada2, {})
-						console.log('Imagen comprimida: ', ci)
-						console.log('Imagen Original: ', imagenSeleccionada2)
 						setImagenSeleccionada(ci)
 						const reader = new FileReader()
 						reader.onloadend = () => {

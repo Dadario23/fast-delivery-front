@@ -22,6 +22,7 @@ export default function HeaderLayout({
 	const [loading, setLoading] = useState<boolean>(true)
 
 	useEffect(() => {
+		console.log(url)
 		if (!url.includes('/register')) {
 			axios
 				.get('http://localhost:3001/api/users/me', { withCredentials: true })
@@ -38,12 +39,10 @@ export default function HeaderLayout({
 										dispatch(setAllUsers(res2.data))
 									}
 									if (route.isDriverRoute) {
-										console.log('Forbidden route')
 										router.push('/')
 									} else setLoading(false)
 								})
 						} else if (route.isAdminRoute) {
-							console.log('Forbidden route')
 							router.push('/')
 						} else setLoading(false)
 					}

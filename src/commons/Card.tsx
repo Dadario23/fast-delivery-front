@@ -2,8 +2,6 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-
-// import { PackageData, PackageStatus } from "types/packageTypes";
 import { percentageCalculator } from 'utils/utils'
 import { FaCircleUser } from 'react-icons/fa6'
 export interface Package {
@@ -20,8 +18,6 @@ export interface Package {
 	client: string;
 	weight: number;
 	date: Date;
-	// createdAt: Date;
-	// updatedAt: Date;
 	user: {
 		id: number;
 		name: string | undefined | null;
