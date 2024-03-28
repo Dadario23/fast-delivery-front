@@ -119,14 +119,45 @@ const CreateAccountForm: React.FC = () => {
 	}
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		if (Object.values(data).some((value) => value === '')) {
-			alert('Todos los campos son obligatorios')
-			return
-		}
-		if (data.contraseña !== data.confirmarContraseña) {
-			alert('Las contraseñas no coinciden')
-			return
-		}
+		const missingFields = [];
+
+    if (!data.nombre) {
+        missingFields.push('nombre');
+    }
+    if (!data.apellido) {
+        missingFields.push('apellido');
+    }
+    if (!data.email) {
+        missingFields.push('email');
+    }
+    if (!data.contraseña) {
+        missingFields.push('contraseña');
+    }
+    if (!data.confirmarContraseña) {
+        missingFields.push('confirmar contraseña');
+    }
+    if (!imagenSeleccionada) {
+        missingFields.push('foto');
+    }
+
+    if (missingFields.length > 0) {
+        const missingFieldsAlert = missingFields.join(', ');
+        alert(`Falta completar los siguientes campos: ${missingFieldsAlert}`);
+        return;
+    }
+
+    if (data.contraseña !== data.confirmarContraseña) {
+        alert('Las contraseñas no coinciden');
+        return;
+    }
+		// if (Object.values(data).some((value) => value === '')) {
+		// 	alert('Todos los campos son obligatorios')
+		// 	return
+		// }
+		// if (data.contraseña !== data.confirmarContraseña) {
+		// 	alert('Las contraseñas no coinciden')
+		// 	return
+		// }
 		try {
 			await registerUser(data)
 			alert('Usuario registrado exitosamente')
