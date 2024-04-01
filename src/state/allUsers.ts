@@ -1,5 +1,3 @@
-//estado para admin
-
 import { createAction, createReducer } from '@reduxjs/toolkit'
 
 interface UserState {
@@ -12,7 +10,6 @@ interface UserState {
 	isDisabled: boolean;
 }
 
-// Definir la acción
 export const setAllUsers = createAction<UserState[]>('SET-ALL-USERS')
 
 export const setProfileImageFromAdmin = createAction<{
@@ -25,11 +22,8 @@ export const updateDriverState = createAction<{
 	isDisabled: boolean;
 }>('UPDATE-DRIVER-STATE')
 
-// Definir el estado inicial
-
 const initialState: UserState[] = []
 
-// Crear el reducer
 const allUsersReducer = createReducer(initialState, (builder) => {
 	builder.addCase(setAllUsers, (state, action) => {
 		return [...state, ...action.payload]

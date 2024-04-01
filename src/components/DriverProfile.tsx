@@ -19,13 +19,12 @@ const DriverProfile: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const routerNav = useRouter()
 	const params = useParams<{ id: string }>()
-	const id = parseInt(params.id, 10) //id del repartidor
+	const id = parseInt(params.id, 10) 
 	const [showModal, setShowModal] = useState<boolean>(false)
 	const [user, setUser] = useState<UserState>()
 	const users: UserState[] = useSelector<RootState, UserState[]>(
 		(state) => state.allUsers
-	) //lista de todos los usuarios
-	// const user: UserState = users.filter((user) => user.id == id)[0]; //usuario especifico
+	) 
 	useEffect(() => {
 		if (users.length > 0) {
 			const temp = users.find((u) => u.id === id)
@@ -53,8 +52,6 @@ const DriverProfile: React.FC = () => {
 
 		if (event.target.files && event.target.files.length > 0) {
 			const imagenSeleccionada2 = event.target.files[0]
-
-			console.log('imagen original: ', imagenSeleccionada2)
 			const tiposDeImagenPermitidos = ['image/jpeg', 'image/jpg', 'image/png']
 
 			if (!tiposDeImagenPermitidos.includes(imagenSeleccionada2.type)) {
@@ -70,8 +67,6 @@ const DriverProfile: React.FC = () => {
 				} else {
 					try {
 						const ci = await compressImage(imagenSeleccionada2, {})
-						console.log('Imagen comprimida: ', ci)
-						console.log('Imagen Original: ', imagenSeleccionada2)
 						setImagenSeleccionada(ci)
 						const reader = new FileReader()
 						reader.onloadend = () => {
@@ -99,7 +94,6 @@ const DriverProfile: React.FC = () => {
 				{ withCredentials: true }
 			)
 			.then((res) => {
-				console.log(res.data)
 				setLoading(false)
 			})
 			.catch((err) => {
@@ -118,7 +112,6 @@ const DriverProfile: React.FC = () => {
 				{ withCredentials: true }
 			)
 			.then((res) => {
-				console.log(res.data)
 				setLoading(false)
 			})
 			.catch((err) => {
@@ -129,7 +122,6 @@ const DriverProfile: React.FC = () => {
 
 	const onClickSwitch = (checked: boolean, e: any) => {
 		e.preventDefault()
-		//setSwitchValue(checked);
 		dispatch(updateDriverState({ id: id, isDisabled: !checked }))
 		setLoading(true)
 		return axios
@@ -142,7 +134,6 @@ const DriverProfile: React.FC = () => {
 				{ withCredentials: true }
 			)
 			.then((res) => {
-				console.log(res.data)
 				setLoading(false)
 			})
 			.catch((err) => {
@@ -259,7 +250,7 @@ const DriverProfile: React.FC = () => {
 													onClick={
 														() =>
 															inputElement.current &&
-                              inputElement.current.click() //esto hace la magia :v
+                              inputElement.current.click()
 													}
 												>
                           Cargar

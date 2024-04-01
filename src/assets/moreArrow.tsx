@@ -12,8 +12,8 @@ const MoreArrow: React.FC = () => {
         d="M2 2L12 10L22 2"
         stroke="#3D1DF3"
         strokeWidth="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

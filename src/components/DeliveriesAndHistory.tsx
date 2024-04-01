@@ -19,13 +19,11 @@ import {
 } from 'services/dataPackages'
 
 const DeliveriesAndHistory: React.FC = () => {
-	//=====
 	const params = useParams<{ id: string }>()
 	const idParams = parseInt(params.id, 10) //id del repartidor
 	const user: UserState = useSelector<RootState, UserState>(
 		(state) => state.user
-	) //user en redux
-	//====
+	) 
 	const router = useRouter()
 	const [showReps, setShowReps] = useState<boolean>(true)
 	const [showRepsHistory, setShowRepsHistory] = useState<boolean>(true)
@@ -136,7 +134,6 @@ const DeliveriesAndHistory: React.FC = () => {
 			e.preventDefault()
 			e.stopPropagation()
 			const resp = await updatePackageStatusToOngoing(repId)
-			console.log(resp)
 			const repsAux: Reparto[] = repsAll.map((r) =>
 				r.id === repId ? { ...r, status: 'EN CURSO' } : r
 			)
@@ -154,7 +151,6 @@ const DeliveriesAndHistory: React.FC = () => {
 			e.preventDefault()
 			e.stopPropagation()
 			const resp = await removeUserFromPackage(repId)
-			console.log(resp)
 			const repsAux: Reparto[] = repsAll.filter((rep) => rep.id != repId)
 			setRepsAll(repsAux)
 		} catch (err) {
@@ -170,7 +166,6 @@ const DeliveriesAndHistory: React.FC = () => {
 			e.preventDefault()
 			e.stopPropagation()
 			const response = deletePackage(repId)
-			console.log(response)
 			const repsAux: Reparto[] = repsAll.filter((r) => r.id != repId)
 			setRepsAll(repsAux)
 		} catch (err) {
@@ -217,7 +212,18 @@ const DeliveriesAndHistory: React.FC = () => {
 
 	return (
 		<div className="flex flex-col w-full h-full items-center bg-customBlue text-customBlue">
-			<div
+			    <div
+        className="flex bg-white text-indigo-700 w-full m-1 mb-0 p-4 flex-col rounded-2xl overflow-hidden"
+        style={{
+          maxHeight: showReps
+            ? reps.length > 1
+              ? '47%'
+              : '64%'
+            : '80%',
+        }}
+        ref={divRepsP}
+      >
+			{/* <div
 				className="flex bg-white text-indigo-700 w-full m-1 mb-0 p-4 flex-col rounded-2xl"
 				style={{
 					maxHeight: `${
@@ -229,7 +235,7 @@ const DeliveriesAndHistory: React.FC = () => {
 					}`,
 				}}
 				ref={divRepsP}
-			>
+			> */}
 				<div className="flex items-center justify-between pl-1 pr-1">
 					<h2 className="font-bold">Repartos Pendientes ({reps.length})</h2>
 					{reps.length > 0 && (
@@ -325,6 +331,13 @@ const DeliveriesAndHistory: React.FC = () => {
 				</div>
 			</div>
 			<div
+        className="flex bg-white text-indigo-700 w-full m-4 mb-1 p-4 flex-col rounded-2xl overflow-hidden"
+        style={{
+          maxHeight: showRepsHistory && repsHistory.length > 0 ? '47%' : '81%',
+        }}
+        ref={divHistoryP}
+      >
+			{/* <div
 				className="flex bg-white text-indigo-700 w-full m-4 mb-1 p-4  flex-col rounded-2xl"
 				style={{
 					maxHeight: `${
@@ -336,7 +349,7 @@ const DeliveriesAndHistory: React.FC = () => {
 					}`,
 				}}
 				ref={divHistoryP}
-			>
+			> */}
 				<div className="flex items-center justify-between pl-1 pr-1">
 					<h2 className="font-bold">
             Historial de repartos ({repsHistory.length})

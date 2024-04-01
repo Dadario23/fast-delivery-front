@@ -5,8 +5,8 @@ import logo from "../assets/logo.svg";
 import userIcon from "../assets/user-icon.svg";
 import { useRouter } from "next/navigation";
 import { mailForgotPassword } from "services/dataAuth";
-
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface FormData {
   email: string;
 }
@@ -24,14 +24,17 @@ const ForgotPassword: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.email) {
-      alert("Por favor, completa todos los campos.");
+      toast("Por favor, completa todos los campos.");
       return;
     }
     try {
       await mailForgotPassword(formData.email);
-      alert("El correo electrónico ha sido enviado correctamente. Por favor, verifica tu bandeja de entrada.")
+      toast.success(
+        "El correo electrónico ha sido enviado correctamente. Por favor, verifica tu bandeja de entrada."
+      );
     } catch (error) {
       console.error("Error al enviar el correo electrónico:", error);
+      toast.error("Error al enviar el correo electronico, intente nuevamente");
     }
   };
 
@@ -67,9 +70,14 @@ const ForgotPassword: React.FC = () => {
         >
           Enviar
         </button>
-        <p className=" absolute text-[12px] top-[350px]">Ingresá el email con el que estas registrado.</p>
-        <p className=" absolute text-[12px] top-[370px]">Te enviaremos un correo para restablecer la contraseña.</p>
+        <p className=" absolute text-[12px] top-[350px]">
+          Ingresá el email con el que estas registrado.
+        </p>
+        <p className=" absolute text-[12px] top-[370px]">
+          Te enviaremos un correo para restablecer la contraseña.
+        </p>
       </form>
+      <ToastContainer />
     </>
   );
 };
