@@ -10,6 +10,7 @@ import compressImage from "utils/compressImage";
 import { FaCircleUser } from "react-icons/fa6";
 import { IoIosCloseCircle } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateAccountForm: React.FC = () => {
   const router = useRouter();

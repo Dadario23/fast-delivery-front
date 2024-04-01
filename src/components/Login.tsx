@@ -49,9 +49,12 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
     e.preventDefault();
     try {
       const response = await loginUser(formData.email, formData.password);
-      if (response.isAdmin) router.push("/manage-orders");
-      else router.push("/home");
-      toast.success("Iniciando sesión");
+      if (!response.isAdmin) {
+        router.push("/home");
+      } else {
+        router.push("/manage-orders");
+      }
+      toast.success("Inicio de sesión exitoso!");
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
       toast.error("Email o contraseña incorrectos");

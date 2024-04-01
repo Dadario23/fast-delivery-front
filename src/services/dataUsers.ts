@@ -1,4 +1,6 @@
 import axios, { AxiosResponse } from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -44,18 +46,20 @@ export const getDataDeliverys = async (date: string) => {
 export const updateUser = async () => {
   try {
     const response: AxiosResponse = await axios.put(
-      `${API_URL}/api/users/update`, null,
+      `${API_URL}/api/users/update`,
+      null,
       {
         withCredentials: true,
       }
     );
     return response.data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    toast("Intente nuevamente en 12hs");
+
     throw error;
   }
 };
-
 
 export const getUserProfileImage = async () => {
   try {

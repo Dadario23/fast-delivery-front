@@ -10,7 +10,7 @@ import { removeUserFromPackage } from "services/dataPackages";
 import { clear } from "state/user";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 const Affidavit = () => {
   const router = useRouter();
   const [drunk, setDrunk] = useState<string | null>(null);
@@ -34,6 +34,7 @@ const Affidavit = () => {
               await removeUserFromPackage(packageId);
             } catch (error) {
               console.error("Error al eliminar al usuario del paquete:", error);
+              toast.error("Error al eliminar al usuario del paquete");
             }
           });
           localStorage.removeItem("selectedPackages");
@@ -43,6 +44,7 @@ const Affidavit = () => {
             await removeUserFromPackage(parseInt(selectedPackageInOnGoing));
           } catch (error) {
             console.error("Error al eliminar al usuario del paquete:", error);
+            toast.error("Error al eliminar al usuario del paquete");
           }
           localStorage.removeItem("currentPackageId");
         }
