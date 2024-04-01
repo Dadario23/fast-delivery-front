@@ -22,8 +22,6 @@ const PackagesSelection: React.FC = () => {
 	const user: UserState = useSelector<RootState, UserState>(
 		(state) => state.user
 	)
-  console.log(user)
-
 
 	const router = useRouter()
 	const [selectedPackages, setSelectedPackages] = useState<number[]>([])

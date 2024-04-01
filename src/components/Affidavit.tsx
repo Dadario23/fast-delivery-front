@@ -7,12 +7,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import { updateUser } from "services/dataUsers";
 import { dataLogout } from "services/dataAuth";
 import { removeUserFromPackage } from "services/dataPackages";
+import { clear } from 'state/user'
+import { useDispatch } from 'react-redux'
 
 const Affidavit = () => {
   const router = useRouter();
   const [drunk, setDrunk] = useState<string | null>(null);
   const [consumedPsychot, setConsumedPsychot] = useState<string | null>(null);
   const [depressed, setDepressed] = useState<string | null>(null);
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -49,6 +52,7 @@ const Affidavit = () => {
         postAffidavit({ drunk, consumedPsychot, depressed });
         updateUser();
         await dataLogout();
+        dispatch(clear(null))
         await router.push("/");
       } else {
         postAffidavit({ drunk, consumedPsychot, depressed });
