@@ -52,6 +52,7 @@ const Login: React.FC<{ logged: boolean }> = ({ logged }) => {
 			else router.push('/home')
 		} catch (error) {
 			console.error('Error en el inicio de sesión:', error)
+			alert('Email o contraseña incorrectos'); 
 		}
 	}
 
