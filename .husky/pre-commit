@@ -1,11 +1,9 @@
 #!/usr/bin/env sh
-
-# Verifica si estamos en un entorno de Docker
+# Verifica si estamos en un entorno de Docker 
 if [ -n "$DOCKER_BUILD" ]; then
   echo "Estamos en un entorno de Docker, omitiendo el linting."
   exit 0
 fi
-
 # Ejecutar script de linting solo si no estamos en un entorno de Docker
 . "$(dirname -- "$0")/_/husky.sh"
 npx lint-staged
