@@ -17,11 +17,12 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #3d1df3;
+  width: 360px;
+  height: 640px;
+  color: #ffffff;
+}
+
+input:focus {
+  border-color: #00ea77;
 }

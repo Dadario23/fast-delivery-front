@@ -1,23 +1,28 @@
-# Usa la imagen oficial de Node.js como base
+# Establecer la imagen base
 FROM node:20
 
-# Establece el directorio de trabajo en la carpeta de la aplicación
+# Establecer el directorio de trabajo
 WORKDIR /usr/src/app
 
-# Copia el archivo package.json y package-lock.json (si existe)
+# Copiar los archivos de la aplicación
 COPY package*.json ./
 
-# Instala las dependencias del proyecto
-RUN npm install
+# Instalar dependencias (solo las de producción)
+RUN npm install --production --omit=dev
 
-# Copia los archivos de la aplicación al contenedor
+# Establecer la variable de entorno DOCKER_BUILD
+ENV DOCKER_BUILD=true
+
+# Copiar el resto de los archivos de la aplicación
 COPY . .
 
-# Compila la aplicación para producción
+# Ejecutar el comando de construcción
 RUN npm run build
 
-# Expone el puerto 3000 para acceder a la aplicación
+# Exponer el puerto en el que la aplicación corre
 EXPOSE 3000
 
-# Define el comando por defecto para ejecutar la aplicación
+# Comando para ejecutar la aplicación
 CMD ["npm", "start"]
+
+
