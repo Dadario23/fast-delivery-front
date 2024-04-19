@@ -55,8 +55,6 @@ const CreateAccountForm: React.FC = () => {
             setError("Ocurrió un error...");
             console.error(error);
           }
-
-          //
         }
       }
     }
@@ -82,21 +80,17 @@ const CreateAccountForm: React.FC = () => {
     e.stopPropagation();
     e.preventDefault();
     setShowModal(false);
-    //setImagenSeleccionada(null);
   };
 
   const handleClickSaveImage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    //uploadImage();
     setShowModal(false);
     setData((prevState) => {
       return { ...prevState, foto: base64Imagen };
     });
-    //setImagenSeleccionada(null);
   };
 
-  //
   const [data, setData] = useState({
     nombre: "",
     apellido: "",
@@ -154,14 +148,6 @@ const CreateAccountForm: React.FC = () => {
       toast.error("Las contraseñas no coinciden");
       return;
     }
-    // if (Object.values(data).some((value) => value === '')) {
-    // 	alert('Todos los campos son obligatorios')
-    // 	return
-    // }
-    // if (data.contraseña !== data.confirmarContraseña) {
-    // 	alert('Las contraseñas no coinciden')
-    // 	return
-    // }
     try {
       await registerUser(data);
       toast.success("Usuario registrado exitosamente");
@@ -211,8 +197,6 @@ const CreateAccountForm: React.FC = () => {
                 />
               )}
             </div>
-
-            {/*modal*/}
             {showModal && (
               <div
                 className="flex absolute z-20 flex-col w-[89%] top-4 rounded-2xl "
@@ -296,7 +280,6 @@ const CreateAccountForm: React.FC = () => {
                 )}
               </div>
             )}
-            {/*modal*/}
           </div>
           <form className=" pl-4 text-[#3d1df3]" onSubmit={handleSubmit}>
             <input
@@ -309,7 +292,6 @@ const CreateAccountForm: React.FC = () => {
               value={data.nombre}
               pattern="([A-Za-z\s])+"
               onChange={handleChanges}
-              // required
             />
             <input
               name="apellido"
@@ -321,7 +303,6 @@ const CreateAccountForm: React.FC = () => {
               value={data.apellido}
               onChange={handleChanges}
               pattern="([A-Za-z\s])+"
-              // required
             />
             <input
               name="email"
@@ -332,7 +313,6 @@ const CreateAccountForm: React.FC = () => {
               }
               value={data.email}
               onChange={handleChanges}
-              // required
             />
             <div className=" relative items-center">
               <input
@@ -345,7 +325,6 @@ const CreateAccountForm: React.FC = () => {
                 onChange={handleChanges}
                 type={visible ? "text" : "password"}
                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
-                // required
               />
               <div
                 className="absolute right-7 top-2"
@@ -363,9 +342,7 @@ const CreateAccountForm: React.FC = () => {
               invalid:border-red-500 rounded-xl placeholder-[#3d1df3] focus:outline-none `}
                 value={data.confirmarContraseña}
                 onChange={handleChanges}
-                // required
                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
-                // pattern={data.contraseña}
               />
               <div
                 className="absolute right-7 top-2"
