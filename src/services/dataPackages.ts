@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-/* import { PackageData } from "types/packageTypes"; */
 
 interface PackageData {
   address: string;

@@ -20,7 +20,7 @@ import {
 
 const DeliveriesAndHistory: React.FC = () => {
 	const params = useParams<{ id: string }>()
-	const idParams = parseInt(params.id, 10) //id del repartidor
+	const idParams = parseInt(params.id, 10) 
 	const user: UserState = useSelector<RootState, UserState>(
 		(state) => state.user
 	) 
@@ -223,19 +223,6 @@ const DeliveriesAndHistory: React.FC = () => {
         }}
         ref={divRepsP}
       >
-			{/* <div
-				className="flex bg-white text-indigo-700 w-full m-1 mb-0 p-4 flex-col rounded-2xl"
-				style={{
-					maxHeight: `${
-						!showRepsHistory || repsHistory.length == 0
-							? '80%'
-							: showRepsHistory && showReps && repsHistory.length >= 2
-								? '47%'
-								: '64%'
-					}`,
-				}}
-				ref={divRepsP}
-			> */}
 				<div className="flex items-center justify-between pl-1 pr-1">
 					<h2 className="font-bold">Repartos Pendientes ({reps.length})</h2>
 					{reps.length > 0 && (
@@ -337,19 +324,6 @@ const DeliveriesAndHistory: React.FC = () => {
         }}
         ref={divHistoryP}
       >
-			{/* <div
-				className="flex bg-white text-indigo-700 w-full m-4 mb-1 p-4  flex-col rounded-2xl"
-				style={{
-					maxHeight: `${
-						!showReps || reps.length == 0
-							? '81%'
-							: showRepsHistory && showReps && reps.length >= 2
-								? '47%'
-								: '64%'
-					}`,
-				}}
-				ref={divHistoryP}
-			> */}
 				<div className="flex items-center justify-between pl-1 pr-1">
 					<h2 className="font-bold">
             Historial de repartos ({repsHistory.length})

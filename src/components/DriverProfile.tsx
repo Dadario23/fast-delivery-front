@@ -60,7 +60,7 @@ const DriverProfile: React.FC = () => {
           "Formato de imagen no válido. Por favor, selecciona una imagen en formato JPG, JPEG, PNG"
         );
       } else {
-        const limiteDeTamañoEnBytes = 1 * 1024 * 1024; // 1 MB
+        const limiteDeTamañoEnBytes = 1 * 1024 * 1024;
         if (imagenSeleccionada2.size > limiteDeTamañoEnBytes) {
           setError(
             "La imagen seleccionada supera el límite de peso permitido(máx 1mb)."
@@ -195,7 +195,7 @@ const DriverProfile: React.FC = () => {
           <div className="flex flex-row w-full items-center justify-start">
             {showModal && (
               <div
-                className="flex flex-col absolute z-20 flex-col w-[89%] top-4 rounded-2xl "
+                className="flex flex-col absolute z-20 w-[89%] top-4 rounded-2xl "
                 style={{
                   backgroundColor: "white",
                   boxShadow: "0 0px 30px 30px rgba(0, 0, 0, 0.3)",
