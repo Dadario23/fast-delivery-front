@@ -66,7 +66,7 @@ const PackagesOffice: React.FC = () => {
     const fetchPackages = async () => {
       try {
         const data = await getAllPackages();
-        const filteredPackages = data.filter((packageItem) => {
+        const filteredPackages = data.filter((packageItem: Package) => {
           const statusCondition =
             packageItem.status === "CANCELADO" ||
             packageItem.status === "ENTREGADO" ||
