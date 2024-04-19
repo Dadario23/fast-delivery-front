@@ -64,7 +64,7 @@ export const updateUser = async () => {
 export const getUserProfileImage = async () => {
   try {
     const response: AxiosResponse = await axios.get(
-      `http://localhost:3001/api/users/profile-image`
+      `${API_URL}/api/users/profile-image`
     );
 
     return response.data;

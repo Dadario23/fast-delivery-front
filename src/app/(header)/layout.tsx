@@ -13,6 +13,8 @@ export default function HeaderLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const dispatch = useDispatch();
   const router = useRouter();
   const url = usePathname();
@@ -21,13 +23,13 @@ export default function HeaderLayout({
   useEffect(() => {
     if (!url.includes("/register")) {
       axios
-        .get("http://localhost:3001/api/users/me", { withCredentials: true })
+        .get(`${API_URL}/api/users/me`, { withCredentials: true })
         .then((res) => {
           if (res.data.id) {
             dispatch(set(res.data));
             if (res.data.isAdmin === true) {
               axios
-                .get("http://localhost:3001/api/users/", {
+                .get(`${API_URL}/api/users/`, {
                   withCredentials: true,
                 })
                 .then((res2) => {
