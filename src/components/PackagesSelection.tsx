@@ -2,11 +2,9 @@
 import React, { useEffect, useState } from "react";
 import BackIcon from "assets/BackIcon/back-icon";
 import Check from "assets/Check/check";
-
 import { useSelector } from "react-redux";
 import { UserState } from "types/userTypes";
 import { RootState } from "state/store";
-
 import { useRouter } from "next/navigation";
 import { getAllPackages } from "services/dataPackages";
 import { assignPackageToUser } from "services/dataPackages";

@@ -34,7 +34,6 @@ const PackagesOffice: React.FC = () => {
   let dayOfWeekIndex = dateObj.getDay() + 1;
   if (dayOfWeekIndex === 7) dayOfWeekIndex = 0;
   const dayOfWeek = daysOfWeek[dayOfWeekIndex];
-  //const dayOfMonth = [dateObj.getDate() +1]
   const months = [
     "Enero",
     "Febrero",
@@ -49,8 +48,6 @@ const PackagesOffice: React.FC = () => {
     "Noviembre",
     "Diciembre",
   ];
-  //const month = months[dateObj.getMonth()]
-
   let dayOfMonth: string | number = dateObj.getDate();
   let monthIndex = dateObj.getMonth();
   let month = months[monthIndex];
@@ -60,8 +57,6 @@ const PackagesOffice: React.FC = () => {
     dayOfMonth = "01";
 		month = months[monthIndex];
   } else {
-    // dayOfMonth = dateObj.getDate() + 1;
-    // month = months[dateObj.getMonth()];
 		let nextDay = dateObj.getDate() + 1;
     dayOfMonth = nextDay < 10 ? `0${nextDay}` : nextDay;
     month = months[dateObj.getMonth()];
@@ -87,7 +82,6 @@ const PackagesOffice: React.FC = () => {
             .padStart(2, "0")}`;
           const dateCondition = packageFormattedDate === reversedDate;
           return statusCondition && dateCondition;
-          //return packageFormattedDate === reversedDate
         });
         setPackages(filteredPackages);
       } catch (error) {

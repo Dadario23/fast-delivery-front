@@ -59,7 +59,7 @@ const DriverProfile: React.FC = () => {
 					'Formato de imagen no válido. Por favor, selecciona una imagen en formato JPG, JPEG, PNG'
 				)
 			} else {
-				const limiteDeTamañoEnBytes = 1 * 1024 * 1024 // 1 MB
+				const limiteDeTamañoEnBytes = 1 * 1024 * 1024
 				if (imagenSeleccionada2.size > limiteDeTamañoEnBytes) {
 					setError(
 						'La imagen seleccionada supera el límite de peso permitido(máx 1mb).'
@@ -311,7 +311,6 @@ const DriverProfile: React.FC = () => {
 								}}
 								className="flex justify-center items-center pl-2 pr-2 rounded-3xl mt-1"
 							>
-								{/*title*/}
 								<h4 style={{ fontSize: '11px' }}>
 									<b>{switchValue ? 'HABILITADO' : 'DESHABILITADO'}</b>
 								</h4>
