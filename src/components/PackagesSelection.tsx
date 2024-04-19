@@ -14,6 +14,7 @@ interface Package {
   id: number;
   address: string;
   status: string;
+  userId: string
 }
 const PackagesSelection: React.FC = () => {
   const user: UserState = useSelector<RootState, UserState>(
@@ -29,7 +30,7 @@ const PackagesSelection: React.FC = () => {
       try {
         const data = await getAllPackages();
         const filteredPackages = data.filter(
-          (packageItem) =>
+          (packageItem: Package) =>
             packageItem.status === "PENDIENTE" && !packageItem.userId
         );
         setPackages(filteredPackages);
