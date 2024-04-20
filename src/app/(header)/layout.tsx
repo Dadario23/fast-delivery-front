@@ -8,6 +8,9 @@ import { set } from "state/user";
 import { usePathname, useRouter } from "next/navigation";
 import authenticateRoute from "utils/routeAuthenticator";
 
+// Configura Axios para incluir las cookies con todas las solicitudes
+axios.defaults.withCredentials = true;
+
 export default function HeaderLayout({
   children,
 }: {
@@ -23,23 +26,19 @@ export default function HeaderLayout({
   useEffect(() => {
     if (!url.includes("/register")) {
       axios
-        .get(`${API_URL}/api/users/me`, { withCredentials: true })
+        .get(`${API_URL}/api/users/me`)
         .then((res) => {
           if (res.data.id) {
             dispatch(set(res.data));
             if (res.data.isAdmin === true) {
-              axios
-                .get(`${API_URL}/api/users/`, {
-                  withCredentials: true,
-                })
-                .then((res2) => {
-                  if (Array.isArray(res2.data)) {
-                    dispatch(setAllUsers(res2.data));
-                  }
-                  if (route.isDriverRoute) {
-                    router.push("/");
-                  } else setLoading(false);
-                });
+              axios.get(`${API_URL}/api/users/`).then((res2) => {
+                if (Array.isArray(res2.data)) {
+                  dispatch(setAllUsers(res2.data));
+                }
+                if (route.isDriverRoute) {
+                  router.push("/");
+                } else setLoading(false);
+              });
             } else if (route.isAdminRoute) {
               router.push("/");
             } else setLoading(false);
