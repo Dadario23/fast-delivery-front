@@ -6,6 +6,9 @@ import { useDispatch } from "react-redux";
 import { set } from "state/user";
 import { setAllUsers } from "state/allUsers";
 
+// Configura Axios para incluir las cookies con todas las solicitudes
+axios.defaults.withCredentials = true;
+
 export default function Home() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [logged, setLogged] = useState<boolean>(false);
@@ -13,21 +16,17 @@ export default function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/users/me`, { withCredentials: true })
+      .get(`${API_URL}/api/users/me`)
       .then((res) => {
         if (res.data.id) {
           dispatch(set(res.data));
           setLogged(true);
           if (res.data.isAdmin === true) {
-            axios
-              .get(`${API_URL}/api/users/`, {
-                withCredentials: true,
-              })
-              .then((res2) => {
-                if (Array.isArray(res2.data)) {
-                  dispatch(setAllUsers(res2.data));
-                }
-              });
+            axios.get(`${API_URL}/api/users/`).then((res2) => {
+              if (Array.isArray(res2.data)) {
+                dispatch(setAllUsers(res2.data));
+              }
+            });
           }
         } else {
           setLogged(false);
