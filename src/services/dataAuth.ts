@@ -8,6 +8,11 @@ const authAxios = axios.create({
   withCredentials: true, // Esta línea asegura que las cookies se incluyan en las solicitudes
 });
 
+authAxios.interceptors.request.use((config) => {
+  config.withCredentials = true; // Asegura que las cookies se incluyan en las solicitudes
+  return config;
+});
+
 export const checkAuth = async (): Promise<any> => {
   try {
     const response: AxiosResponse = await authAxios.get("/api/users/me");
