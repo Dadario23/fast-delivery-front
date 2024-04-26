@@ -58,9 +58,12 @@ export const loginUser = async (
 
 export const dataLogout = async (): Promise<void> => {
   try {
+    // Realiza la solicitud de deslogueo al servidor
     await authAxios.post("/api/users/logout", {});
-    // Limpiar la cookie del token del navegador
-    await axios.get("/api/users/clear-cookie"); // Endpoint en el backend para limpiar la cookie
+
+    // Limpiar la cookie del token del navegador desde el backend
+    await axios.get("/api/users/clear-cookie");
+
     return;
   } catch (error) {
     console.error("Error al cerrar sesión:", error);
