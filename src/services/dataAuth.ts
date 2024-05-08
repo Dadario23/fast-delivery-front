@@ -62,7 +62,7 @@ export const dataLogout = async (): Promise<void> => {
     await authAxios.post("/api/users/logout", {});
 
     // Limpiar la cookie del token del navegador desde el backend
-    await axios.get("/api/users/clear-cookie");
+    // await axios.get("/api/users/clear-cookie");
 
     return;
   } catch (error) {
