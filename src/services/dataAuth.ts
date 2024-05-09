@@ -61,24 +61,9 @@ export const dataLogout = async (): Promise<void> => {
     // Realiza la solicitud de deslogueo al servidor
     await authAxios.post("/api/users/logout", {});
 
-    // Limpiar la cookie del token del navegador desde el backend
-    // await axios.get("/api/users/clear-cookie");
-
     return;
   } catch (error) {
     console.error("Error al cerrar sesión:", error);
-    throw error;
-  }
-};
-
-export const getUserProfileImage = async () => {
-  try {
-    const response: AxiosResponse = await authAxios.get(
-      "/api/users/profile-image"
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error al obtener los datos:", error);
     throw error;
   }
 };

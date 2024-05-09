@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { set } from "state/user";
 import { setAllUsers } from "state/allUsers";
+import CookieConsentPopup from "components/CookieConsentPopup";
 
 // Configura Axios para incluir las cookies con todas las solicitudes
 axios.defaults.withCredentials = true;
@@ -56,6 +57,7 @@ export default function Home() {
   return (
     <main>
       <Login logged={logged} />
+      <CookieConsentPopup />
     </main>
   );
 }
