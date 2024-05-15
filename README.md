@@ -20,8 +20,7 @@ Fast Delivery es una aplicación web diseñada para gestionar la logística de �
 ![Inicio de sesión](https://i.ibb.co/ZfY39yY/Captura-desde-2024-05-15-17-25-49.png)
 ![Manage orders / Admin](https://i.ibb.co/HKr6W2X/Captura-desde-2024-05-15-17-26-56.png)
 ![Home / Delivery](https://i.ibb.co/cy5qxVG/Captura-desde-2024-05-15-17-29-06.png)
-
-https://i.ibb.co/HKr6W2X/Captura-desde-2024-05-15-17-26-56.png
+![Deliverys / Admin](https://i.ibb.co/hHjtSng/Captura-desde-2024-05-15-17-31-49.png)
 
 ## Nice to Have
 
