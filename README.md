@@ -17,7 +17,11 @@ Fast Delivery es una aplicación web diseñada para gestionar la logística de �
 - Creación, visualización y edición de paquetes a entregar.
 - Asignación y reasignación de paquetes a repartidores.
 
-![Inicio de sesión](https://previews.dropbox.com/p/thumb/ACSd0K6-fSuaoK_JzJGEC8uZrtuZpSXvV7f8-6Id2DDBo6XJ155EOzob6nkWi3ZvmEgcfFAtQzVp3lK2kLKAB8W4BncZ7bUN1vAidSyrsVB7f2AvePHVilZehXxDmBVNqJi_QK-emEJLPjeA7blQHXIt6dGpoFMF5edT6AYNaHHejdKLbt_pIKdCVDQ3ZiLtGWY87LshvH8HHj8sRhddKIpmE5IxUkzdVQzWiK9YBI4nBHfDSopxQsNA8tKPGrmTEKYBSTaKP29fMUuepPTD6E38alrdaKjSQonbhF8Obqq2LJLan81wopt1kk_I744Ra8IQbGraebGSJ386Y1xxV5XN/p.png)
+![Inicio de sesión](https://i.ibb.co/ZfY39yY/Captura-desde-2024-05-15-17-25-49.png)
+![Manage orders / Admin](https://i.ibb.co/HKr6W2X/Captura-desde-2024-05-15-17-26-56.png)
+![Home / Delivery](https://i.ibb.co/cy5qxVG/Captura-desde-2024-05-15-17-29-06.png)
+
+https://i.ibb.co/HKr6W2X/Captura-desde-2024-05-15-17-26-56.png
 
 ## Nice to Have
 
